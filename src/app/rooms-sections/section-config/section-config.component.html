@@ -1,0 +1,79 @@
+<div class="main-div">
+  <div class="header-img" fxLayoutAlign="center center">
+    <p class="header-text">
+      {{ configType == "add" ? "Add Section" : "Edit Section" }}
+    </p>
+  </div>
+
+  <form [formGroup]="sectionForm" (ngSubmit)="onSubmit()">
+    <div
+      class="content-div"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      fxLayoutGap="10px"
+    >
+      <mat-form-field style="width: 100%">
+        <mat-label>Course</mat-label>
+        <mat-select formControlName="course">
+          <mat-option value="Information Technology"
+            >Information Technology</mat-option
+          >
+          <mat-option value="Civil Engineering">Civil Engineering</mat-option>
+          <mat-option value="Electrical Engineering"
+            >Electrical Engineering</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        style="width: 100%"
+      >
+        <mat-form-field style="width: 48%">
+          <mat-label>Year</mat-label>
+          <input
+            type="text"
+            matInput
+            placeholder="Ex. 1"
+            formControlName="year"
+          />
+          <mat-error>please input 1 number.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field style="width: 48%">
+          <mat-label>Section</mat-label>
+          <input
+            type="text"
+            matInput
+            placeholder="Ex. 1"
+            formControlName="section"
+          />
+          <mat-error>please input 1 number.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxLayoutAlign="center center" fxLayoutGap="10px">
+        <button
+          mat-raised-button
+          color="primary"
+          class="button"
+          type="submit"
+          [mat-dialog-close]="false"
+          [disabled]="sectionForm.invalid"
+        >
+          {{ configType == "add" ? "Add" : "Save" }}
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          class="button"
+          type="button"
+          [mat-dialog-close]="false"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

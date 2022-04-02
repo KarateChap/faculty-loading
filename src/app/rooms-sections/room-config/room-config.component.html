@@ -1,0 +1,42 @@
+<div class="main-div">
+  <div class="header-img" fxLayoutAlign="center center">
+    <p class="header-text">
+      {{ configType == "add" ? "Add Room" : "Edit Room" }}
+    </p>
+  </div>
+
+  <div class="content-div" fxLayout="column" fxLayoutAlign="center center">
+    <mat-form-field style="width: 100%">
+      <mat-label>Room Name</mat-label>
+      <input
+        type="text"
+        matInput
+        placeholder="Ex. Comlab 2"
+        [(ngModel)]="roomName"
+      />
+      <mat-error>Invalid or missing input.</mat-error>
+    </mat-form-field>
+
+
+    <div fxLayoutAlign="center center" fxLayoutGap="10px">
+      <button
+        mat-raised-button
+        color="primary"
+        class="button"
+        [mat-dialog-close]="false"
+        [disabled]="nameInvalid || (roomName.length == 0)"
+        (click)="onSubmit()"
+      >
+        {{ configType == "add" ? "Add" : "Save" }}
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        class="button"
+        [mat-dialog-close]="false"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

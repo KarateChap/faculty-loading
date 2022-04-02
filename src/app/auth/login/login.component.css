@@ -1,0 +1,40 @@
+.top-bg {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.bottom-bg {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+.logo-img {
+  position: fixed;
+  top: 2vh;
+  left: 8vh;
+}
+
+
+.login-img{
+  height: 60vh;
+}
+
+
+.login-button{
+  margin-top: 25px;
+  border-radius: 10px;
+}
+
+.login-text {
+  font-family: var(--mont);
+  text-transform: uppercase;
+  font-size: 35px;
+  color: var(--primary);
+}
+
+
+.login-div{
+  margin-left: 100px;
+}

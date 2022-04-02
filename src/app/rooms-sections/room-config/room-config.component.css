@@ -1,0 +1,26 @@
+.main-div{
+  width: 40vh;
+  background-color: white;
+}
+
+
+.header-img {
+  height: 15vh;
+  background-color: #173979;
+  background-image: url("../../../assets/plv-bldg.png");
+}
+
+.content-div{
+  width: 100%;
+  padding: 30px 35px;
+}
+
+.button{
+  width: 100px;
+}
+
+.header-text{
+  margin-top: 10px;
+  color: white;
+  font-family: var(--mont);
+}

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "curriculum-load-editor"
+  },
+  "targets": {
+    "curriculum-load-editor": {
+      "hosting": {
+        "faculty-loading": [
+          "curriculum-load-editor"
+        ]
+      }
+    }
+  }
+}

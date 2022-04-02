@@ -1,0 +1,19 @@
+.main-container{
+  height: 95vh;
+}
+
+.error-text{
+  font-size: 25px;
+  font-family: var(--incon);
+  color: var(--primary);
+  cursor: pointer;
+}
+.error-text:hover{
+  text-decoration: underline;
+}
+
+.error-img{
+  width: 60vh;
+  margin: 5vh;
+  border-radius: 20px;
+}

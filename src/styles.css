@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@500;700&display=swap');
+
+:root{
+  --primary: #173979;
+  --accent: #3AB54A;
+  --warn: #E1451B;
+  --gray: rgb(228, 228, 228);
+  --light: #E5EAF1;
+
+  --incon:  'Inconsolata', monospace;
+  --mont: 'Montserrat', sans-serif;
+
+}
+
+
+.mat-dialog-container {
+  border-radius: 20px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+

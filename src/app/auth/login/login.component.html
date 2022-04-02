@@ -1,0 +1,45 @@
+<img src="../../../assets/login-top-bg.png" alt="" class="top-bg" />
+<img src="../../../assets/login-bottom-bg.png" alt="" class="bottom-bg" />
+<img src="../../../assets/plv-logo.png" alt="" class="logo-img" />
+
+<section fxLayout="row" fxLayoutAlign="space-around center" fxFlexFill>
+  <div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div
+        fxLayout="column"
+        fxLayoutGap="25px"
+        fxFlex="300px"
+        class="login-div"
+      >
+        <p class="login-text">Login</p>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input type="email" matInput placeholder="Ex. admin@example.com" formControlName="email"/>
+          <mat-hint>Please enter a valid email.</mat-hint>
+          <mat-error>Invalid or missing email.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input type="password" matInput placeholder="Ex. admin@example.com" formControlName="password"/>
+          <mat-hint align="end">Forgot password</mat-hint>
+          <mat-error>Missing password.</mat-error>
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          type="sumit"
+          color="primary"
+          class="login-button"
+          [disabled]="loginForm.invalid"
+        >
+          Login
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <img src="../../../assets/login-img.png" alt="" class="login-img" />
+  </div>
+</section>

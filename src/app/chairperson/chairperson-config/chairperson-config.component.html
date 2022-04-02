@@ -1,0 +1,128 @@
+<div class="main-div" fxLayout="column" [ngClass]="configType == 'add' ? '' : 'main-div-edit'">
+  <div class="header-img" fxLayoutAlign="center center">
+    <p class="header-text">{{configType == 'add' ? 'Create Account' : 'Edit Account'}}</p>
+  </div>
+
+  <div class="content-div">
+    <form [formGroup]="chairpersonForm" (ngSubmit)="onSubmit()">
+      <div class="form-div" fxLayout="column">
+        <mat-form-field>
+          <mat-label>Full Name</mat-label>
+          <input
+            type="text"
+            matInput
+            placeholder="Ex. Patrick Luis Francisco"
+            formControlName="fullName"
+          />
+          <mat-error>Invalid or missing input.</mat-error>
+        </mat-form-field>
+
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <mat-form-field style="width: 50%">
+            <mat-label>ID Number</mat-label>
+            <input
+              type="text"
+              matInput
+              placeholder="18-0203"
+              formControlName="idNumber"
+            />
+            <mat-error>Invalid or missing input.</mat-error>
+          </mat-form-field>
+
+          <mat-form-field style="width: 45%">
+            <mat-label>Department</mat-label>
+            <mat-select formControlName="department" [(value)]="selected">
+              <mat-option value="Information Technology"
+                >Information Technology</mat-option
+              >
+              <mat-option value="Civil Engineering"
+                >Civil Engineering</mat-option
+              >
+              <mat-option value="Electrical Engineering"
+                >Electrical Engineering</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field *ngIf="configType == 'add'">
+          <mat-label>Email</mat-label>
+          <input
+            type="email"
+            matInput
+            placeholder="Ex. admin@gmail.com"
+            formControlName="email"
+          />
+          <mat-error>Invalid or missing input.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="configType == 'add'">
+          <mat-label>Password</mat-label>
+          <input
+            [type]="passwordType1"
+            matInput
+            formControlName="password"
+            [(ngModel)]="password"
+          />
+          <mat-icon
+            matSuffix
+            style="cursor: pointer"
+            color="primary"
+            (click)="onTogglePasswordVisibility1()"
+            >{{ icon1 }}</mat-icon
+          >
+          <mat-error>Invalid or missing input.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="configType == 'add'">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            [type]="passwordType2"
+            matInput
+            formControlName="confirmPassword"
+            [(ngModel)]="confirmPassword"
+          />
+          <mat-icon
+            matSuffix
+            style="cursor: pointer"
+            color="primary"
+            (click)="onTogglePasswordVisibility2()"
+            >{{ icon2 }}</mat-icon
+          >
+          <mat-error>Invalid or missing input.</mat-error>
+        </mat-form-field>
+
+        <mat-slide-toggle color="primary" checked="false" formControlName="isActivated">
+          Activate Account
+        </mat-slide-toggle>
+
+        <div
+          fxLayout="row"
+          fxLayoutAlign="center center"
+          fxLayoutGap="10px"
+          class="button-group"
+        >
+          <button
+            mat-raised-button
+            color="primary"
+            class="button"
+            type="submit"
+            [mat-dialog-close]="true"
+            [disabled]="chairpersonForm.invalid || (password != confirmPassword)"
+          >
+            {{ configType == "add" ? "Add" : "Save" }}
+          </button>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="button"
+            type="button"
+            [mat-dialog-close]="false"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

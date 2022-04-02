@@ -1,0 +1,124 @@
+<section class="main-div" fxLayout="column" fxLayoutAlign="center center">
+  <div class="sub-div" fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="space-between" class="header-div">
+      <div>
+        <p class="header-text">Rooms and Sections</p>
+      </div>
+    </div>
+
+    <div class="content-div">
+      <mat-tab-group>
+        <mat-tab label="Room">
+          <div
+            fxLayoutAlign="center center"
+            *ngIf="isLoading"
+            style="height: 100vh"
+          >
+            <mat-spinner></mat-spinner>
+          </div>
+
+          <div
+            class="tab-div"
+            fxLayout="row wrap"
+            fxLayoutGap="30px"
+            fxLayoutAlign="start start"
+            *ngIf="!isLoading"
+          >
+            <div class="card-item" fxLayoutAlign="center center">
+              <button mat-icon-button (click)="onAddRoom()">
+                <mat-icon color="primary" style="font-size: 25px"
+                  >add_circle</mat-icon
+                >
+              </button>
+            </div>
+            <div
+              class="card-item"
+              fxLayoutAlign="center center"
+              *ngFor="let room of rooms; let i = index"
+            >
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                class="menu-item"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="onEditRoom(i)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Edit Room</span>
+                </button>
+                <button mat-menu-item (click)="onRemoveRoom(i)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Remove Room</span>
+                </button>
+              </mat-menu>
+
+              <p class="item-text">{{ room.roomName }}</p>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Section">
+          <div
+            fxLayoutAlign="center center"
+            *ngIf="isLoading"
+            style="height: 100vh"
+          >
+            <mat-spinner></mat-spinner>
+          </div>
+
+          <div
+            class="tab-div"
+            fxLayout="row wrap"
+            fxLayoutGap="30px"
+            fxLayoutAlign="start start"
+            *ngIf="!isLoading"
+          >
+            <div class="card-item" fxLayoutAlign="center center">
+              <button mat-icon-button (click)="onAddSection()">
+                <mat-icon color="primary" style="font-size: 25px"
+                  >add_circle</mat-icon
+                >
+              </button>
+            </div>
+
+            <div
+              class="card-item"
+              fxLayoutAlign="center center"
+              fxLayout="column"
+              *ngFor="let section of sections; let i = index"
+            >
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                class="menu-item"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="onEditSection(i)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Edit Section</span>
+                </button>
+                <button mat-menu-item (click)="onRemoveSection(i)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Remove Section</span>
+                </button>
+              </mat-menu>
+
+
+                <p class="item-text">
+                  {{
+                    'BS' + (section.course | firstLetterWord) + " " + section.year + "-" + section.section
+                  }}
+                </p>
+                <span class="course-text">{{section.course}}</span>
+
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</section>

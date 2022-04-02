@@ -1,0 +1,88 @@
+<section class="main-div" fxLayout="column" fxLayoutAlign="center center">
+  <div class="sub-div" fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="space-between" class="header-div">
+      <div fxLayout="row">
+        <p class="header-text">Chairperson</p>
+        <mat-icon
+          class="add-button"
+          color="primary"
+          (click)="onAddChairperson()"
+          >add_circle</mat-icon
+        >
+      </div>
+    </div>
+
+    <div class="content-div" fxLayout="column">
+      <div class="content-header" fxLayout="row" fxLayoutAlign="center center">
+        <p class="headline-text center-text" fxFlex="16.66">ID Number</p>
+        <p class="headline-text center-text" fxFlex="16.66">Full Name</p>
+        <p class="headline-text center-text" fxFlex="16.66">Email</p>
+        <p class="headline-text center-text" fxFlex="16.66">Department</p>
+        <p class="headline-text center-text" fxFlex="16.66">Date Deadline</p>
+        <p class="headline-text center-text" fxFlex="16.66">Account Status</p>
+        <div fxFlex="4"></div>
+      </div>
+
+      <div class="scrollable">
+        <div fxLayoutAlign="center center">
+          <mat-spinner *ngIf="isLoading"></mat-spinner>
+        </div>
+
+        <div *ngFor="let user of users; let i = index">
+          <div
+            class="content-item"
+            fxLayout="row"
+            fxLayoutAlign="center center"
+          >
+            <p class="header-sub-text center-text" fxFlex="16.66">
+              {{ user.idNumber }}
+            </p>
+            <p class="header-sub-text center-text" fxFlex="16.66">
+              {{ user.fullName }}
+            </p>
+            <p class="header-sub-text center-text" fxFlex="16.66">
+              {{ user.email }}
+            </p>
+            <p class="header-sub-text center-text" fxFlex="16.66">
+              {{ user.department }}
+            </p>
+            <p class="header-sub-text center-text" fxFlex="16.66">
+              {{
+                user.department == "admin"
+                  ? ""
+                  : user.startDate
+                  ? (user.startDate.toDate() | date) +
+                    " - " +
+                    (user.endDate.toDate() | date)
+                  : "No Deadline Yet"
+              }}
+            </p>
+            <p class="header-sub-text center-text" fxFlex="16.66">
+              {{ user.isActivated ? "Active" : "Inactive" }}
+            </p>
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="menu"
+              [disabled]="user.department == 'admin'"
+            >
+              <mat-icon class="button-icon">{{
+                user.department == "admin" ? "" : "more_vert"
+              }}</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="onEditAccount(i)">
+                <mat-icon class="">edit</mat-icon>
+                <span>Edit Account</span>
+              </button>
+              <button mat-menu-item (click)="onEditDeadline(i)">
+                <mat-icon class="">schedule</mat-icon>
+                <span>Extend Submission</span>
+              </button>
+            </mat-menu>
+          </div>
+          <hr style="background-color: var(--primary)" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
