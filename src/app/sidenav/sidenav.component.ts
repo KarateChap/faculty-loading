@@ -1,7 +1,9 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AcademicPeriod } from '../shared/models/academic-period.model';
 import { NewUser } from '../shared/models/new-user.model';
+import { AcademicService } from '../shared/services/academic.service';
 import { AuthService } from '../shared/services/auth.service';
 import { UserService } from '../shared/services/user.service';
 
@@ -16,15 +18,23 @@ export class SidenavComponent implements OnInit, OnDestroy {
   activeUserEmail = '';
   currentUser: NewUser;
   currentUserSubs: Subscription;
+  currentAcademic: AcademicPeriod;
+  currentAcademicSubs: Subscription;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private academicService: AcademicService
   ) {}
 
 
   ngOnInit(): void {
+    this.academicService.fetchActiveAcademicYear();
+    this.currentAcademicSubs = this.academicService.activeAcademicChange.subscribe(currentAcademic => {
+      this.currentAcademic = currentAcademic;
+    })
+
     this.activeUserEmail = localStorage.getItem('activeUserEmail') || '{}';
     if(this.activeUserEmail){
       this.userService.fetchCurrentUser(this.activeUserEmail);

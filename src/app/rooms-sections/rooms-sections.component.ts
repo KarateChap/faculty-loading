@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Room } from '../shared/models/room.model';
@@ -13,11 +14,13 @@ import { SectionConfigComponent } from './section-config/section-config.componen
   styleUrls: ['./rooms-sections.component.css'],
 })
 export class RoomsSectionsComponent implements OnInit, OnDestroy {
+  @ViewChild('group', {static: true}) buttonGroup: MatButtonToggleGroup;
   rooms: Room[] = [];
   roomsSubs: Subscription;
   isLoading = false
 
   sections: Section[] = [];
+  unfilteredSections: Section[] = [];
   sectionsSubs: Subscription;
   isLoading2 = false;
 
@@ -39,6 +42,7 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
     this.sectionsSubs = this.rsService.sectionsChanged.subscribe((sections) => {
       this.sections = sections;
       this.isLoading2 = false;
+      this.unfilteredSections = this.sections;
     });
 
   }
@@ -72,6 +76,7 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
   //Section
 
   onAddSection() {
+    this.buttonGroup.value = 'all'
     this.dialog.open(SectionConfigComponent, {
       data: {
         configType: 'add',
@@ -81,6 +86,7 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
 
 
   onEditSection(index: number){
+    this.buttonGroup.value = 'all'
     this.dialog.open(SectionConfigComponent, {
       data: {
         configType: 'edit',
@@ -90,7 +96,23 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
   }
 
   onRemoveSection(index: number){
+    this.buttonGroup.value = 'all'
     this.rsService.deleteSectionToDatabase(this.sections[index].id);
+  }
+
+  filter(value: String){
+    this.sections = this.unfilteredSections;
+
+    if(value !== 'all'){
+      this.sections = this.sections.filter(function (el) {
+        return el.course === value;
+      })
+    }
+    else {
+      this.sections = this.unfilteredSections;
+    }
+
+
   }
 
 

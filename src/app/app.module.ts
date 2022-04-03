@@ -27,6 +27,8 @@ import { DeadlineConfigComponent } from './chairperson/deadline-config/deadline-
 import { RoomConfigComponent } from './rooms-sections/room-config/room-config.component';
 import { SectionConfigComponent } from './rooms-sections/section-config/section-config.component';
 import { FirstLetterWordPipe } from './shared/pipes/first-letter-word.pipe';
+import { SetDeadlineComponent } from './submissions/set-deadline/set-deadline.component';
+import { SetAcademicYearComponent } from './dashboard/set-academic-year/set-academic-year.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { FirstLetterWordPipe } from './shared/pipes/first-letter-word.pipe';
     DeadlineConfigComponent,
     RoomConfigComponent,
     SectionConfigComponent,
-    FirstLetterWordPipe
+    FirstLetterWordPipe,
+    SetDeadlineComponent,
+    SetAcademicYearComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +66,7 @@ import { FirstLetterWordPipe } from './shared/pipes/first-letter-word.pipe';
       timeOut: 3000,
       progressBar: true,
       progressAnimation: 'increasing',
+      preventDuplicates: true
     }),
 
   ],

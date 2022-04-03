@@ -76,4 +76,13 @@ export class UserService {
       .update({ startDate: newStartDate, endDate: newEndDate });
     this.uiService.showSuccessToast('User Updated Succesfully!', 'Success');
   }
+
+  setUserDeadline(startDate: any, endDate: any){
+    this.users.forEach(element => {
+      this.af
+      .doc('user/' + element.id)
+      .update({ startDate: startDate, endDate: endDate });
+    this.uiService.showSuccessToast('All Users Updated Succesfully!', 'Success');
+    });
+  }
 }

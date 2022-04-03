@@ -1,0 +1,51 @@
+<div class="main-div" fxLayout="column" fxLayoutAlign="center center">
+  <div class="text-div">
+    <p>Set Faculty Loading Deadline</p>
+  </div>
+
+  <div class="form-div">
+    <form [formGroup]="academicForm" (ngSubmit)="onSubmit()" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+
+      <mat-label clas="date-text" *ngIf="startYear" color="primary">School Year: {{startYear + " - " + endYear}}</mat-label>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Choose a Starting Year</mat-label>
+        <input matInput [matDatepicker]="picker" readonly="true">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker (yearSelected)="close($event)" startView="multi-year"></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Semester</mat-label>
+        <mat-select formControlName="semester">
+          <mat-option value="First Semester"
+            >First Semester</mat-option
+          >
+          <mat-option value="Second Semester"
+            >Second Semester</mat-option
+          >
+          <mat-option value="Mid Year"
+            >Mid Year</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <div class="buttons" fxLayoutGap="10px" fxLayoutAlign="center center">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [mat-dialog-close]="true"
+          [disabled]="academicForm.invalid || !startYear"
+        >
+          Save
+        </button>
+        <button mat-stroked-button color="primary" [mat-dialog-close]="false" type="button">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+
+</div>

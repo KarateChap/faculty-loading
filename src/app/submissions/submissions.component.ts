@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { SetDeadlineComponent } from './set-deadline/set-deadline.component';
 
 @Component({
   selector: 'app-submissions',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SubmissionsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  openDeadlineModal(){
+    this.dialog.open(SetDeadlineComponent);
   }
 
 }

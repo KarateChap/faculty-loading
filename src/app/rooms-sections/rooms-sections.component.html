@@ -68,6 +68,23 @@
             <mat-spinner></mat-spinner>
           </div>
 
+          <mat-button-toggle-group
+            #group="matButtonToggleGroup"
+            color="primary"
+            fxLayoutAlign="end center"
+            class="button-toggle"
+
+          >
+            <mat-button-toggle value="all" (click)="filter(group.value)">All</mat-button-toggle>
+            <mat-button-toggle value="Information Technology" (click)="filter(group.value)"
+              >Information Technology</mat-button-toggle
+            >
+            <mat-button-toggle value="Civil Engineering" (click)="filter(group.value)">Civil Engineering</mat-button-toggle>
+            <mat-button-toggle value="Electrical Engineering" (click)="filter(group.value)"
+              >Electrical Engineering</mat-button-toggle
+            >
+          </mat-button-toggle-group>
+
           <div
             class="tab-div"
             fxLayout="row wrap"
@@ -107,15 +124,20 @@
                 </button>
               </mat-menu>
 
-
-                <p class="item-text">
-                  {{
-                    'BS' + (section.course | firstLetterWord) + " " + section.year + "-" + section.section
-                  }}
-                </p>
-                <span class="course-text">{{section.course}}</span>
-
+              <p class="item-text">
+                {{
+                  "BS" +
+                    (section.course | firstLetterWord) +
+                    " " +
+                    section.year +
+                    "-" +
+                    section.section
+                }}
+              </p>
+              <span class="course-text">{{ section.course }}</span>
             </div>
+
+
           </div>
         </mat-tab>
       </mat-tab-group>

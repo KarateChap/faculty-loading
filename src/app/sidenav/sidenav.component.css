@@ -13,6 +13,11 @@
 
 }
 
+.toolbar-text{
+  margin-top: 10px;
+  font-size: 18px;
+  color: var(--primary);
+}
 
 .navigation{
   background-color: var(--primary);

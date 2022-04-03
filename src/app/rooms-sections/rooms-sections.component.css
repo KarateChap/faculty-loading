@@ -58,20 +58,20 @@
   height: 65vh;
 }
 
-.tab-div{
+.tab-div {
   height: 100vh;
   width: 100%;
   overflow-y: scroll;
   background-color: var(--light);
-  padding: 5vh;
+  padding: 5vh 5vh 0vh 5vh;
 }
 
-.card-item{
+.card-item {
   width: 25vh;
   height: 12vh;
   background-color: white;
   box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.438);
-  background-image: url('../../assets/grass.png');
+  background-image: url("../../assets/grass.png");
   background-repeat: no-repeat;
   background-position-y: bottom;
   background-position-x: right;
@@ -80,7 +80,7 @@
   position: relative;
 }
 
-.item-text{
+.item-text {
   color: var(--primary);
   font-size: 18px;
   font-family: var(--mont);
@@ -93,20 +93,41 @@
   background-color: red;
 }
 
-.menu-item{
+.menu-item {
   position: absolute;
   right: 0px;
   top: 0px;
 }
 
-
-.mat-focus-indicator:hover{
+.mat-focus-indicator:hover {
   background-color: var(--light);
   color: var(--primary);
 }
 
-.course-text{
+.course-text {
   color: var(--primary);
   font-size: 12px;
   font-family: var(--mont);
 }
+
+.button-toggle {
+  background-color: var(--light);
+  padding: 13px 13px;
+  height: 25px;
+}
+
+mat-button-toggle{
+  font-family: var(--mont);
+  font-size: 13px !important;
+}
+
+mat-button-toggle:hover {
+  background-color: var(--primary) !important;
+  color: white;
+}
+
+.mat-button-toggle-checked {
+  background-color: var(--primary) !important;
+  color: white;
+}
+

@@ -1,0 +1,16 @@
+.main-div{
+  padding: 5vh;
+}
+
+.text-div{
+  font-size: 20px;
+  font-family: var(--mont);
+  color: var(--primary);
+  text-align: left;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.buttons{
+  margin-top: 10px;
+}

@@ -1,6 +1,12 @@
-<div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="20px" *ngIf="!currentUser" style="height: 100vh;">
+<div
+  fxLayoutAlign="center center"
+  fxLayout="column"
+  fxLayoutGap="20px"
+  *ngIf="!currentUser"
+  style="height: 100vh"
+>
   <mat-spinner></mat-spinner>
-  <p style="color: var(--primary);">Wait a sec...</p>
+  <p style="color: var(--primary)">Wait a sec...</p>
 </div>
 <section fxLayout="row" *ngIf="currentUser">
   <div class="navigation">
@@ -11,13 +17,23 @@
       fxLayoutGap="10px"
     >
       <img src="../../assets/admin-img.png" alt="" class="profile-pic" />
-      <p class="profile-name">{{currentUser ? (currentUser.fullName | uppercase) : 'Greetings!' }}</p>
-      <p class="profile-description">{{currentUser ? (currentUser.department == 'admin' ? 'Dean' : (currentUser.department | firstLetterWord) + ' Chairperson'): ''}}</p>
+      <p class="profile-name">
+        {{ currentUser ? (currentUser.fullName | uppercase) : "Greetings!" }}
+      </p>
+      <p class="profile-description">
+        {{
+          currentUser
+            ? currentUser.department == "admin"
+              ? "Dean"
+              : (currentUser.department | firstLetterWord) + " Chairperson"
+            : ""
+        }}
+      </p>
     </div>
 
     <div class="button-group" fxLayout="column" fxLayoutGap="15px">
       <button
-      *ngIf="currentUser.department == 'admin'"
+        *ngIf="currentUser.department == 'admin'"
         mat-raised-button
         class="left-align"
         routerLinkActive="active"
@@ -104,12 +120,35 @@
 
   <div fxFlex class="body">
     <mat-toolbar class="toolbar">
+      <div>
+        <p class="toolbar-text">
+          Academic Year:
+          {{
+            currentAcademic.startYear +
+              " - " +
+              currentAcademic.endYear +
+              " " +
+              currentAcademic.semester
+          }}
+        </p>
+      </div>
       <div fxFlex fxLayout fxLayoutAlign="flex-end">
         <div>
           <mat-icon color="primary" class="bell-icon">notifications</mat-icon>
         </div>
         <ul fxLayout class="navigation-items" fxLayoutGap="10px">
-          <li><a>Hi, {{currentUser ? (currentUser.department == 'admin' ? 'Dean' : (currentUser.fullName.split(" ")[1])) : 'Welcome!'}}!</a></li>
+          <li>
+            <a
+              >Hi,
+              {{
+                currentUser
+                  ? currentUser.department == "admin"
+                    ? "Dean"
+                    : currentUser.fullName.split(" ")[1]
+                  : "Welcome!"
+              }}!</a
+            >
+          </li>
         </ul>
       </div>
     </mat-toolbar>

@@ -1,0 +1,36 @@
+<div class="main-div" fxLayout="column" fxLayoutAlign="center center">
+  <div class="text-div">
+    <p>Set Faculty Loading Deadline</p>
+  </div>
+
+  <div class="form-div">
+    <form [formGroup]="deadlineForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="Start date" formControlName="startDate"/>
+          <input matEndDate placeholder="End date" formControlName="endDate"/>
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <div class="buttons" fxLayoutGap="10px" fxLayoutAlign="center center">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [mat-dialog-close]="true"
+          [disabled]="deadlineForm.invalid"
+        >
+          Save
+        </button>
+        <button mat-stroked-button color="primary" [mat-dialog-close]="false" type="button">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+
+</div>
