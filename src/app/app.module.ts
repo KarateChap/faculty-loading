@@ -29,6 +29,7 @@ import { SectionConfigComponent } from './rooms-sections/section-config/section-
 import { FirstLetterWordPipe } from './shared/pipes/first-letter-word.pipe';
 import { SetDeadlineComponent } from './submissions/set-deadline/set-deadline.component';
 import { SetAcademicYearComponent } from './dashboard/set-academic-year/set-academic-year.component';
+import { NgxCsvParserModule} from 'ngx-csv-parser';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { SetAcademicYearComponent } from './dashboard/set-academic-year/set-acad
     ReactiveFormsModule,
     FormsModule,
     OverlayModule,
+    NgxCsvParserModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       progressBar: true,

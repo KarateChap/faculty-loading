@@ -4,17 +4,170 @@
       <div>
         <p class="header-text">Dashboard</p>
       </div>
-      <div>
-        <button mat-raised-button color="primary" class="acad-button" (click)="setAcademicYear()">
+      <div fxLayout="column" class="sub-headers">
+        <button
+          mat-raised-button
+          color="primary"
+          class="acad-button"
+          (click)="setAcademicYear()"
+        >
           <mat-icon>web_asset</mat-icon>
           Set Academic Year
         </button>
-        <button mat-raised-button color="primary" class="acad-button">
-          <mat-icon>file_upload</mat-icon>
-          Import Course Curriculum</button>
+
+        <div fxLayout="column" fxLayoutAlign="start start" class="csv-div">
+          <mat-form-field>
+            <mat-label>Department</mat-label>
+            <mat-select [(value)]="selectedDepartment" (valueChange)="onsee()">
+              <mat-option value="Information Technology"
+                >Information Technology</mat-option
+              >
+              <mat-option value="Civil Engineering"
+                >Civil Engineering</mat-option
+              >
+              <mat-option value="Electrical Engineering"
+                >Electrical Engineering</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="primary"
+            disabled
+            *ngIf="!selectedDepartment"
+            style="width: 100%"
+          >
+            Upload CSV
+          </button>
+
+          <label fxFlexFill *ngIf="selectedDepartment">
+            <div class="upload-csv">Upload CSV</div>
+            <input
+              type="file"
+              #fileImportInput
+              name="File Upload"
+              id="csvFileUpload"
+              (change)="fileChangeListener($event)"
+              accept=".csv"
+            />
+          </label>
+        </div>
       </div>
     </div>
+    <div fxLayoutAlign="center center">
+      <p
+      style="font-size: 20px; font-family: var(--mont); color: var(--primary)"
+    >
+      Course Curriculum
+    </p>
+    </div>
 
-    <div class="content-div"></div>
+    <div class="content-div" style="text-align: center">
+      <div>
+        <mat-button-toggle-group
+          #group="matButtonToggleGroup"
+          color="primary"
+          fxLayoutAlign="end center"
+          class="button-toggle"
+        >
+          <mat-button-toggle value="All" (click)="filter(group.value)"
+            >All</mat-button-toggle
+          >
+          <mat-button-toggle
+            value="Information Technology"
+            (click)="filter(group.value)"
+            >Information Technology</mat-button-toggle
+          >
+          <mat-button-toggle
+            value="Civil Engineering"
+            (click)="filter(group.value)"
+            >Civil Engineering</mat-button-toggle
+          >
+          <mat-button-toggle
+            value="Electrical Engineering"
+            (click)="filter(group.value)"
+            >Electrical Engineering</mat-button-toggle
+          >
+        </mat-button-toggle-group>
+      </div>
+
+      <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="code">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Code</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{ element.code }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="subjectTitle">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Subject Title</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{
+            element.subjectTitle
+          }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="units">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Units</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{
+            element.units | number
+          }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="preReq">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Pre Requisite</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{ element.preReq }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="subjectSemester">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Subject Semester</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{
+            element.subjectSemester
+          }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="subjectYear">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Subject Year</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{
+            element.subjectYear
+          }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="department">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Department</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{
+            element.department
+          }}</mat-cell>
+        </ng-container>
+
+        <mat-header-row
+          *matHeaderRowDef="displayedColumns"
+          color="primary"
+          style="background-color: var(--primary)"
+        ></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+
+      <mat-paginator
+        #paginator
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
   </div>
 </section>
