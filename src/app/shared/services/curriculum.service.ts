@@ -17,7 +17,7 @@ export class CurriculumService {
     curriculum.forEach((element) => {
       this.af.collection('curriculum').add(element);
     });
-    this.uiService.showSuccessToast('Curriculum Added Succesfully!', 'Success');
+    this.uiService.showSuccessToast('Curriculum Added/Edited Succesfully!', 'Success');
   }
 
   deleteCurriculum(department: string){
@@ -41,10 +41,16 @@ export class CurriculumService {
       .snapshotChanges()
       .pipe(
         map((docArray) => {
-          return docArray.map((doc) => {
+          return docArray.map((doc: any) => {
             return {
               id: doc.payload.doc.id,
-              ...(doc.payload.doc.data() as any),
+              code: doc.payload.doc.data()['code'],
+              subjectTitle: doc.payload.doc.data()['subjectTitle'],
+              units: doc.payload.doc.data()['units'],
+              preReq: doc.payload.doc.data()['preReq'],
+              subjectSemester: doc.payload.doc.data()['subjectSemester'],
+              subjectYear: doc.payload.doc.data()['subjectYear'],
+              department: doc.payload.doc.data()['department'],
             };
           });
         })
@@ -52,6 +58,8 @@ export class CurriculumService {
       .subscribe((curriculums: Curriculum[]) => {
         this.curriculums = curriculums;
         this.fetchCurriculumChanged.next([...this.curriculums]);
+      }, (error) => {
+        console.log(error);
       });
   }
 }

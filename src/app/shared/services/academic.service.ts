@@ -12,7 +12,7 @@ export class AcademicService {
   activeAcademicYear: AcademicPeriod;
   activeAcademicChange = new Subject<AcademicPeriod>();
   activeIdChange = new Subject<string>();
-  academicYears: AcademicPeriod [] = [];
+  academicYears: AcademicPeriod[] = [];
   academicYearChange = new Subject<AcademicPeriod[]>();
 
   constructor(private af: AngularFirestore, private uiService: UIService) {}
@@ -37,21 +37,21 @@ export class AcademicService {
       .ref.where('isActive', '==', true)
       .get()
       .then((result) => {
-        const id = result.docs[0].id;
+        let id = '';
+        id = result.docs[0].id;
         this.activeAcadId = id;
         this.activeIdChange.next(id);
 
         this.af
-            .collection('academic')
-            .doc(id)
-            .snapshotChanges()
-            .subscribe((result) => {
-              this.activeAcademicYear = result.payload.data() as AcademicPeriod;
-              this.activeAcademicChange.next(this.activeAcademicYear);
-            });
+          .collection('academic')
+          .doc(id)
+          .snapshotChanges()
+          .subscribe((result) => {
+            this.activeAcademicYear = result.payload.data() as AcademicPeriod;
+            this.activeAcademicChange.next(this.activeAcademicYear);
+          });
       });
   }
-
 
   fetchAllAcademicYear() {
     this.af
@@ -67,18 +67,22 @@ export class AcademicService {
           });
         })
       )
-      .subscribe((academicYear: AcademicPeriod[]) => {
-        this.academicYears = academicYear;
-        this.academicYearChange.next([...this.academicYears]);
-      });
+      .subscribe(
+        (academicYear: AcademicPeriod[]) => {
+          this.academicYears = academicYear;
+          this.academicYearChange.next([...this.academicYears]);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
-  updateActiveAcademicYear(academicId: string){
+  updateActiveAcademicYear(academicId: string) {
     this.af.doc('academic/' + academicId).update({ isActive: true });
     this.uiService.showSuccessToast(
       'Academic Year Changed Succesfully!',
       'Success'
     );
   }
-
 }

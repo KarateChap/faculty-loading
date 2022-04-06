@@ -18,7 +18,7 @@
         <div fxLayout="column" fxLayoutAlign="start start" class="csv-div">
           <mat-form-field>
             <mat-label>Department</mat-label>
-            <mat-select [(value)]="selectedDepartment" (valueChange)="onsee()">
+            <mat-select [(value)]="selectedDepartment">
               <mat-option value="Information Technology"
                 >Information Technology</mat-option
               >
@@ -92,7 +92,7 @@
         </mat-button-toggle-group>
       </div>
 
-      <mat-table [dataSource]="dataSource" matSort>
+      <mat-table [dataSource]="dataSource" matSort style="width: 100%;">
         <ng-container matColumnDef="code">
           <mat-header-cell *matHeaderCellDef mat-sort-header
             >Code</mat-header-cell

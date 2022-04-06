@@ -28,7 +28,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   csvRecords: any;
   selectedDepartment = '';
 
-  displayedColumns = ['code', 'subjectTitle', 'units', 'preReq', 'subjectSemester', 'subjectYear', 'department'];
+  displayedColumns = [
+    'code',
+    'subjectTitle',
+    'units',
+    'preReq',
+    'subjectSemester',
+    'subjectYear',
+    'department',
+  ];
   dataSource = new MatTableDataSource<Curriculum>();
   curriculumSubs: Subscription;
   newCurriculum: Curriculum[] = [];
@@ -45,12 +53,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.curriculumService.fetchAllCurriculum();
-    this.curriculumSubs = this.curriculumService.fetchCurriculumChanged.subscribe(curriculum => {
-      this.newCurriculum = curriculum;
-      this.unfilteredNewCurriculum = this.newCurriculum;
-      this.dataSource.data = this.newCurriculum;
-      console.log(this.dataSource);
-    })
+    this.curriculumSubs =
+      this.curriculumService.fetchCurriculumChanged.subscribe((curriculum) => {
+        this.newCurriculum = curriculum;
+        this.unfilteredNewCurriculum = this.newCurriculum;
+        this.dataSource.data = this.newCurriculum;
+      });
+
     this.AcademicService.fetchAllAcademicYear();
     this.academicSubs = this.AcademicService.academicYearChange.subscribe(
       (academicYears) => {
@@ -59,9 +68,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-  onsee(){
-
-  }
+  onsee() {}
 
   setAcademicYear() {
     this.dialog.open(SetAcademicYearComponent, {
@@ -75,41 +82,50 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   fileChangeListener($event: any): void {
     this.deleteCurrentCurriculum();
-    this.curriculumService.curriculumChanged.subscribe( () =>{
-      if(this.selectedDepartment != ''){
-        const files = $event.srcElement.files;
-         this.ngxCsvParser
-          .parse(files[0], { header: true, delimiter: ',' })
-          .pipe()
-          .subscribe((result) => {
-            this.csvRecords = result;
-            this.csvRecords.forEach((element: any) => {
-              this.curriculum.push({
-                code: element['Code'],
-                subjectTitle: element['Subject Title'],
-                units: element['Units'],
-                preReq: element['Pre Req'],
-                subjectSemester: element['Subject Semester'],
-                subjectYear: element['Subject Year'],
-                department: this.selectedDepartment
-              })
-            });
-            this.curriculumService.setCurriculumToDatabase(this.curriculum);
-          }),
-          (error: NgxCSVParserError) => {
-            console.log('Error', error);
-          };
+    let runAlready = false;
+
+    this.curriculumService.curriculumChanged.subscribe(() => {
+      if (runAlready == false) {
+        if (this.selectedDepartment != '') {
+          const files = $event.srcElement.files;
+          this.ngxCsvParser
+            .parse(files[0], { header: true, delimiter: ',' })
+            .pipe()
+            .subscribe((result) => {
+              this.csvRecords = result;
+              this.csvRecords.forEach((element: any) => {
+                this.curriculum.push({
+                  code: element['Code'],
+                  subjectTitle: element['Subject Title'],
+                  units: element['Units'],
+                  preReq: element['Pre Req'],
+                  subjectSemester: element['Subject Semester'],
+                  subjectYear: element['Subject Year'],
+                  department: this.selectedDepartment,
+                });
+              });
+              this.curriculumService.setCurriculumToDatabase(this.curriculum);
+              this.curriculum = [];
+              this.csvRecords = [];
+              runAlready = true;
+            }),(error: NgxCSVParserError) => {
+              console.log('Error', error);
+            }
+        } else {
+          runAlready = true;
+          this.uiService.showErrorToast(
+            'Please select a department first!',
+            'Error'
+          );
+        }
+        runAlready = true;
       }
-      else{
-        this.uiService.showErrorToast('Please select a department first!', 'Error');
-      }
-    })
+    });
   }
 
-  deleteCurrentCurriculum(){
+  deleteCurrentCurriculum() {
     this.curriculumService.deleteCurriculum(this.selectedDepartment);
   }
-
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
@@ -120,22 +136,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-
-  filter(value: String){
+  filter(value: String) {
     this.newCurriculum = this.unfilteredNewCurriculum;
 
-    if(value !== 'All'){
+    if (value !== 'All') {
       this.dataSource.data = this.newCurriculum.filter(function (el) {
-
         return el.department === value;
-      })
-    }
-    else {
+      });
+    } else {
       this.newCurriculum = this.unfilteredNewCurriculum;
       this.dataSource.data = this.newCurriculum;
     }
-
-
   }
 
   ngOnDestroy(): void {

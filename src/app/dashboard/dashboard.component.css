@@ -122,3 +122,8 @@ mat-button-toggle:hover {
   background-color: var(--primary) !important;
   color: white;
 }
+
+mat-cell, mat-header-cell {
+  text-align: center;
+  justify-content:center;
+}

@@ -48,6 +48,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
       if(this.currentUser.department == 'admin'){
         this.router.navigate(['/sidenav/' + 'dashboard']);
         this.activeLink = 'dashboard';
+        console.log('admin works');
       }
       else{
         this.router.navigate(['/sidenav/' + 'facultyload']);
