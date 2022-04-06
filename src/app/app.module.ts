@@ -30,6 +30,8 @@ import { FirstLetterWordPipe } from './shared/pipes/first-letter-word.pipe';
 import { SetDeadlineComponent } from './submissions/set-deadline/set-deadline.component';
 import { SetAcademicYearComponent } from './dashboard/set-academic-year/set-academic-year.component';
 import { NgxCsvParserModule} from 'ngx-csv-parser';
+import { FacultyConfigComponent } from './faculty-load/faculty-config/faculty-config.component';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,8 @@ import { NgxCsvParserModule} from 'ngx-csv-parser';
     SectionConfigComponent,
     FirstLetterWordPipe,
     SetDeadlineComponent,
-    SetAcademicYearComponent
+    SetAcademicYearComponent,
+    FacultyConfigComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +67,7 @@ import { NgxCsvParserModule} from 'ngx-csv-parser';
     FormsModule,
     OverlayModule,
     NgxCsvParserModule,
+    NgxMaterialTimepickerModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       progressBar: true,

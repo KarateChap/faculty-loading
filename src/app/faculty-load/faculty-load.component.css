@@ -40,9 +40,91 @@
 .content-div {
   width: 100%;
   height: 65vh;
+  padding: 5vh 5vh 0vh 5vh;
+  background-color: var(--light);
 }
 
 .acad-button {
   margin-top: 5vh;
   margin-right: 3vh;
+}
+
+.card-item {
+  background-color: white;
+  width: 250px;
+  height: 250px;
+  margin-bottom: 30px;
+
+}
+
+.card-top {
+  /* background-color: green; */
+  background-color: #000000;
+  background-image: url('../../assets/faculty-top-bg.png');
+  position: relative;
+}
+
+.menu-icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: white;
+
+}
+
+.mat-focus-indicator:hover {
+  background-color: var(--light);
+  color: var(--primary);
+}
+
+.name-text {
+  margin-top: 90px;
+  font-family: var(--mont);
+  margin-left: 15px;
+  color: white;
+  font-size: 13px;
+}
+
+.card-bottom {
+  /* background-color: blue; */
+  position: relative;
+}
+
+.id-text {
+  margin-top: 15px;
+  margin-left: 15px;
+  font-family: var(--mont);
+  line-height: 0.02em;
+  font-size: 12px;
+}
+
+.faculty-icon{
+  position: absolute;
+  right: 10px;
+  transform: translateY(-25px);
+  background-color: rgb(255, 255, 255);
+  border-radius: 100%;
+  padding: 10px;
+  font-size: 25px;
+}
+
+.semester-text{
+  margin-left: 15px;
+  font-family: var(--mont);
+  font-size: 12px;
+}
+
+.schedule-text {
+  margin-bottom: 65px;
+  margin-left: 15px;
+  font-family: var(--mont);
+  font-size: 13px;
+  line-height: 0.3em;
+}
+
+.folder-icon {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  cursor: pointer;
 }

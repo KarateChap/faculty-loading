@@ -27,3 +27,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 
+.timepicker-overlay{
+  z-index: 10000000 !important;
+}
+.timepicker-background-overlay{
+  z-index: 10000000 !important;
+}
+
+.timepicker__header{
+  background-color: var(--primary) !important;
+}

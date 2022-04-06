@@ -24,6 +24,7 @@
     "@angular/router": "~13.3.0",
     "firebase": "^7.0 || ^8.0",
     "ngx-csv-parser": "^1.1.1",
+    "ngx-material-timepicker": "^5.5.3",
     "ngx-toastr": "^14.2.2",
     "rxjs": "~7.5.0",
     "rxjs-compat": "^6.6.7",

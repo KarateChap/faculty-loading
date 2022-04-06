@@ -1,0 +1,274 @@
+<section>
+  <form
+    fxLayout="column"
+    style="padding: 20px"
+    fxLayoutGap="15px"
+    [formGroup]="facultyForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <p>Input information</p>
+
+    <div fxLayout="row" fxLayoutGap="15px">
+      <mat-form-field>
+        <mat-label>ID Number</mat-label>
+        <input
+          type="text"
+          matInput
+          placeholder="18-0203"
+          formControlName="idNumber"
+        />
+        <mat-error>Invalid or missing input.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Department</mat-label>
+        <mat-select formControlName="department">
+          <mat-option value="Information Technology"
+            >Information Technology</mat-option
+          >
+          <mat-option value="Civil Engineering">Civil Engineering</mat-option>
+          <mat-option value="Electrical Engineering"
+            >Electrical Engineering</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input
+        type="text"
+        matInput
+        placeholder="Ex. Your Name"
+        formControlName="fullName"
+      />
+      <mat-error>Invalid or missing input.</mat-error>
+    </mat-form-field>
+
+    <p>Available days & time</p>
+
+    <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="15px">
+      <div fxLayout="column" fxLayoutGap="10px">
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+          <mat-checkbox
+            color="primary"
+            formControlName="monday"
+            (change)="onMondayChange($event)"
+            >Monday</mat-checkbox
+          >
+
+          <div fxLayout="row" *ngIf="facultyForm.value.monday">
+            <input
+              [ngxTimepicker]="picker"
+              style="width: 60px"
+              formControlName="mondayStart"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+            <p>-</p>
+            <input
+              [ngxTimepicker]="picker2"
+              style="width: 60px"
+              formControlName="mondayEnd"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker2
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+          <mat-checkbox
+            color="primary"
+            formControlName="tuesday"
+            (change)="onTuesdayChange($event)"
+            >Tuesday</mat-checkbox
+          >
+          <div fxLayout="row" *ngIf="facultyForm.value.tuesday">
+            <input
+              [ngxTimepicker]="picker"
+              style="width: 60px"
+              formControlName="tuesdayStart"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+            <p>-</p>
+            <input
+              [ngxTimepicker]="picker2"
+              style="width: 60px"
+              formControlName="tuesdayEnd"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker2
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+          <mat-checkbox
+            color="primary"
+            formControlName="wednesday"
+            (change)="onWednesdayChange($event)"
+            >Wednesday</mat-checkbox
+          >
+
+          <div fxLayout="row" *ngIf="facultyForm.value.wednesday">
+            <input
+              [ngxTimepicker]="picker"
+              style="width: 60px"
+              formControlName="wednesdayStart"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+            <p>-</p>
+            <input
+              [ngxTimepicker]="picker2"
+              style="width: 60px"
+              formControlName="wednesdayEnd"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker2
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="column" fxLayoutGap="10px">
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+          <mat-checkbox
+            color="primary"
+            formControlName="thursday"
+            (change)="onThursdayChange($event)"
+            >Thursday</mat-checkbox
+          >
+
+          <div fxLayout="row" *ngIf="facultyForm.value.thursday">
+            <input
+              [ngxTimepicker]="picker"
+              style="width: 60px"
+              formControlName="thursdayStart"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+            <p>-</p>
+            <input
+              [ngxTimepicker]="picker2"
+              style="width: 60px"
+              formControlName="thursdayEnd"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker2
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+          <mat-checkbox
+            color="primary"
+            formControlName="friday"
+            (change)="onFridayChange($event)"
+            >Friday</mat-checkbox
+          >
+
+          <div fxLayout="row" *ngIf="facultyForm.value.friday">
+            <input
+              [ngxTimepicker]="picker"
+              style="width: 60px"
+              formControlName="fridayStart"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+            <p>-</p>
+            <input
+              [ngxTimepicker]="picker2"
+              style="width: 60px"
+              formControlName="fridayEnd"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker2
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+          <mat-checkbox
+            color="primary"
+            formControlName="saturday"
+            (change)="onSaturdayChange($event)"
+            >Saturday</mat-checkbox
+          >
+
+          <div fxLayout="row" *ngIf="facultyForm.value.saturday">
+            <input
+              [ngxTimepicker]="picker"
+              style="width: 60px"
+              formControlName="saturdayStart"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+            <p>-</p>
+            <input
+              [ngxTimepicker]="picker2"
+              style="width: 60px"
+              formControlName="saturdayEnd"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker2
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="facultyForm.invalid"
+      [mat-dialog-close]="true"
+    >
+      SAVE
+    </button>
+  </form>
+</section>

@@ -53,6 +53,11 @@ export class AcademicService {
       });
   }
 
+
+  getActiveAcademicYear(){
+    return {...this.activeAcademicYear};
+  }
+
   fetchAllAcademicYear() {
     this.af
       .collection('academic')

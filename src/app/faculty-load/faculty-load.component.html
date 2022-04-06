@@ -5,12 +5,55 @@
         <p class="header-text">Information Technology Faculty</p>
       </div>
       <div>
-        <button mat-raised-button color="primary" class="acad-button">
+        <button
+          mat-raised-button
+          color="primary"
+          class="acad-button"
+          (click)="onAddFaculty()"
+        >
           <mat-icon>person_add_alt</mat-icon>
-          Add Faculty</button>
+          Add Faculty
+        </button>
       </div>
     </div>
 
-    <div class="content-div"></div>
+    <div class="content-div" fxLayoutGap="30px" fxLayout="row wrap">
+
+      <div
+        fxLayout="column"
+        class="card-item"
+        *ngFor="let faculty of faculties; let i = index"
+      >
+        <div class="card-top">
+          <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-icon">
+            <mat-icon class="button-icon">more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onEditFaculty(i)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit Account</span>
+            </button>
+            <button mat-menu-item (click)="onRemoveFaculty(i)">
+              <mat-icon>delete</mat-icon>
+              <span>Remove Faculty</span>
+            </button>
+          </mat-menu>
+          <p class="name-text">{{ faculty.fullName }}</p>
+        </div>
+
+        <div class="card-bottom">
+          <mat-icon class="faculty-icon">person</mat-icon>
+          <p class="id-text">{{ faculty.idNumber }}</p>
+          <p class="semester-text">{{activeAcademicYear.semester}}</p>
+          <p class="schedule-text">Schedule:</p>
+          <mat-icon class="folder-icon" color="primary">folder</mat-icon>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
   </div>
 </section>
