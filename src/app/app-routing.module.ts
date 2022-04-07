@@ -5,6 +5,7 @@ import { ChairpersonComponent } from './chairperson/chairperson.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { FacultyLoadComponent } from './faculty-load/faculty-load.component';
+import { LoadMainComponent } from './faculty-load/load-main/load-main.component';
 import { HistoryComponent } from './history/history.component';
 import { RoomsSectionsComponent } from './rooms-sections/rooms-sections.component';
 import { AuthGuard } from './shared/guards/auth.guard';
@@ -23,6 +24,7 @@ const routes: Routes = [
     {path: 'chairperson', component: ChairpersonComponent},
     {path: 'roomsection', component: RoomsSectionsComponent},
     {path: 'facultyload', component: FacultyLoadComponent},
+    {path: 'facultyload/:id', component: LoadMainComponent},
     {path: 'history', component: HistoryComponent},
     {path: 'error', component: ErrorPageComponent},
     {path: '**', redirectTo: 'error'},

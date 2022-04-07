@@ -1,0 +1,186 @@
+<div class="main-div" fxLayout="column" fxLayoutGap="20px">
+  <div class="options-div" fxLayoutAlign="start center">
+    <p>
+      View as:
+      <mat-button-toggle-group class="button-toggle">
+        <mat-button-toggle value="facultyMode" color="primary"
+          >Faculty Mode</mat-button-toggle
+        >
+        <mat-button-toggle value="sectionMode" color="primary"
+          >Section Mode</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+    </p>
+  </div>
+
+  <form>
+    <div>
+      <mat-form-field fxFlex="65%">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput type="text" (keyup)="doFilter($event.target.value)" />
+      </mat-form-field>
+      <div
+        class="actions-div"
+        fxLayoutAlign="end center"
+        fxLayoutGap="15px"
+        fxFlex="35%"
+      >
+        <button mat-raised-button color="primary">
+          <mat-icon>add</mat-icon>Add Load
+        </button>
+        <button mat-stroked-button color="warn">
+          <mat-icon>clear</mat-icon>Clear
+        </button>
+      </div>
+    </div>
+
+    <div class="forms-div">
+
+      <div fxLayout="row" fxLayoutGap="15px">
+        <mat-form-field fxFlex="30%">
+          <mat-label>Code</mat-label>
+          <mat-select>
+            <mat-option
+              >CC1</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%">
+          <mat-label>Subject Description</mat-label>
+          <mat-select>
+            <mat-option
+              >Computer Programming 1</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%">
+          <mat-label>Units</mat-label>
+          <input
+            type="text"
+            matInput
+          />
+          <mat-error>please enter a valid input.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="15px">
+        <mat-form-field fxFlex="25%">
+          <mat-label>No. of Hours</mat-label>
+          <input
+            type="text"
+            matInput
+          />
+          <mat-error>please enter a valid input.</mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="45%">
+          <mat-label>Section</mat-label>
+          <mat-select>
+            <mat-option
+              >BSIT 4-1</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="30%">
+          <mat-label>Day</mat-label>
+          <mat-select>
+            <mat-option
+              >Monday</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="15px">
+        <mat-form-field fxFlex="60%">
+          <mat-label>Time</mat-label>
+          <mat-select>
+            <mat-option
+              >1:00 PM</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="40%">
+          <mat-label>Room</mat-label>
+          <mat-select>
+            <mat-option
+              >COMLAB 1</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+  </form>
+
+  <!-- <div class="table-div">
+    <mat-table [dataSource]="dataSource" matSort style="width: 100%;">
+        <ng-container matColumnDef="code">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Code</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{ element.code }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="subjectTitle">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Subject Title</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{
+            element.subjectTitle
+          }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="units">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Units</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{
+            element.units | number
+          }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="preReq">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Pre Requisite</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{ element.preReq }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="subjectSemester">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Subject Semester</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{
+            element.subjectSemester
+          }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="subjectYear">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Subject Year</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{
+            element.subjectYear
+          }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="department">
+          <mat-header-cell *matHeaderCellDef mat-sort-header
+            >Department</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element">{{
+            element.department
+          }}</mat-cell>
+        </ng-container>
+
+        <mat-header-row
+          *matHeaderRowDef="displayedColumns"
+          color="primary"
+          style="background-color: var(--primary)"
+        ></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+  </div> -->
+</div>

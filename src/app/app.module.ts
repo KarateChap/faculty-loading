@@ -32,6 +32,9 @@ import { SetAcademicYearComponent } from './dashboard/set-academic-year/set-acad
 import { NgxCsvParserModule} from 'ngx-csv-parser';
 import { FacultyConfigComponent } from './faculty-load/faculty-config/faculty-config.component';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { LoadMainComponent } from './faculty-load/load-main/load-main.component';
+import { LoadEditorComponent } from './faculty-load/load-main/load-editor/load-editor.component';
+import { LoadViewComponent } from './faculty-load/load-main/load-view/load-view.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,10 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     FirstLetterWordPipe,
     SetDeadlineComponent,
     SetAcademicYearComponent,
-    FacultyConfigComponent
+    FacultyConfigComponent,
+    LoadMainComponent,
+    LoadEditorComponent,
+    LoadViewComponent
   ],
   imports: [
     BrowserModule,

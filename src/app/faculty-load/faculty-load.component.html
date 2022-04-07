@@ -46,12 +46,9 @@
           <p class="id-text">{{ faculty.idNumber }}</p>
           <p class="semester-text">{{activeAcademicYear.semester}}</p>
           <p class="schedule-text">Schedule:</p>
-          <mat-icon class="folder-icon" color="primary">folder</mat-icon>
+          <mat-icon class="folder-icon" color="primary" [routerLink]="['/sidenav/facultyload', faculty.id]">post_add</mat-icon>
         </div>
       </div>
-
-
-
 
     </div>
 

@@ -6,11 +6,14 @@ import { map } from 'rxjs/operators';
 import { Faculty } from '../models/faculty.model';
 import { Subject } from 'rxjs';
 
+
 @Injectable({ providedIn: 'root' })
 export class FacultyService {
   faculties: Faculty[] = [];
   facultyChanged = new Subject<Faculty[]>();
   facultyAddedChanged = new Subject<void>();
+  activeFaculty: Faculty;
+  activeFacultyChanged = new Subject<Faculty>();
 
   constructor(private af: AngularFirestore, private uiService: UIService) {}
 
@@ -19,8 +22,19 @@ export class FacultyService {
     this.uiService.showSuccessToast('Faculty Added Succesfully!', 'Success');
   }
 
-  fetchFaculty(startYear: string, semester: string, chairpersonName: string) {
+  fetchActiveFaculty(facultyId: string) {
+    this.af.doc('faculty/' + facultyId)
+    .snapshotChanges()
+    .subscribe(faculty =>{
+      this.activeFaculty = {
+        id: faculty.payload.id,
+        ...faculty.payload.data() as NewFaculty
+      }
+      this.activeFacultyChanged.next(this.activeFaculty);
+    })
+  }
 
+  fetchFaculty(startYear: string, semester: string, chairpersonName: string) {
     this.af
       .collection('faculty')
       .ref.where('startYear', '==', startYear)

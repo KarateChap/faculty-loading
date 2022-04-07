@@ -1,0 +1,21 @@
+<section class="main-div">
+  <div class="sub-div" fxLayout="row" fxLayoutAlign="space-between">
+    <div class="arrow-back" fxLayout="row" routerLink="/sidenav/facultyload">
+      <mat-icon>arrow_back</mat-icon>
+      <p class="back-text">Back</p>
+    </div>
+
+    <div class="editor-div">
+      <div *ngIf="activeFaculty">
+        <app-load-editor [activeFaculty]="activeFaculty"></app-load-editor>
+      </div>
+    </div>
+
+    <div class="division"></div>
+    <div class="view-div">
+      <div *ngIf="activeFaculty">
+        <app-load-view [activeFaculty]="activeFaculty"></app-load-view>
+      </div>
+    </div>
+  </div>
+</section>
