@@ -42,9 +42,42 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
     this.sectionsSubs = this.rsService.sectionsChanged.subscribe((sections) => {
       this.sections = sections;
       this.isLoading2 = false;
+
+
+      console.log(this.sections);
+
+
+      this.sections = this.sections.sort((a,b) => {
+        return +a.section - +b.section
+      })
+      this.sections = this.sections.sort((a, b) => {
+        return +a.year - +b.year;
+      })
+      this.sections = this.sections.sort((a,b)=> {
+        if ( a.course < b.course ){
+          return -1;
+        }
+        if ( a.course > b.course ){
+          return 1;
+        }
+        return 0;
+      });
+
       this.unfilteredSections = this.sections;
+
+
     });
 
+  }
+
+  compareCourseName(a: any, b: any){
+    if ( a.course < b.a.course ){
+      return -1;
+    }
+    if ( a.a.course > b.a.course ){
+      return 1;
+    }
+    return 0;
   }
 
 

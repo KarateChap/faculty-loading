@@ -92,7 +92,7 @@
             fxLayoutAlign="start start"
             *ngIf="!isLoading"
           >
-            <div class="card-item" fxLayoutAlign="center center">
+            <div class="card-item" fxLayoutAlign="center center" [ngClass]="section.department == 'Information Technology' ? '' : ''">
               <button mat-icon-button (click)="onAddSection()">
                 <mat-icon color="primary" style="font-size: 25px"
                   >add_circle</mat-icon
@@ -139,6 +139,8 @@
 
 
           </div>
+
+
         </mat-tab>
       </mat-tab-group>
     </div>

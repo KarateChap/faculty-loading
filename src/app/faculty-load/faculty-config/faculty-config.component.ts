@@ -28,7 +28,7 @@ export class FacultyConfigComponent implements OnInit {
     if (this.configType == 'add') {
       this.facultyForm = new FormGroup({
         idNumber: new FormControl('', Validators.required),
-        department: new FormControl('', Validators.required),
+        department: new FormControl(this.passedData.currentUser.department, Validators.required),
         fullName: new FormControl('', Validators.required),
         monday: new FormControl(false),
         tuesday: new FormControl(false),
@@ -46,7 +46,7 @@ export class FacultyConfigComponent implements OnInit {
           Validators.required
         ),
         department: new FormControl(
-          this.passedData.faculty.department,
+          this.passedData.currentUser.department,
           Validators.required
         ),
         fullName: new FormControl(

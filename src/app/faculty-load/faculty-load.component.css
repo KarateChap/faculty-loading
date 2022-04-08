@@ -54,14 +54,17 @@
   width: 250px;
   height: 250px;
   margin-bottom: 30px;
-
+  border-radius: 20px
 }
 
 .card-top {
   /* background-color: green; */
-  background-color: #000000;
-  background-image: url('../../assets/faculty-top-bg.png');
+  background-color: var(--primary);
+  background-image: url('../../assets/plv-bldg.png');
+  background-repeat: no-repeat;
+  background-size: auto;
   position: relative;
+  border-radius: 20px 0 0 0;
 }
 
 .menu-icon {
@@ -96,6 +99,7 @@
   font-family: var(--mont);
   line-height: 0.02em;
   font-size: 12px;
+  color: var(--primary);
 }
 
 .faculty-icon{

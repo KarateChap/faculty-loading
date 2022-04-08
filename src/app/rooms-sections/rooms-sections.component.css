@@ -55,13 +55,13 @@
 
 .content-div {
   width: 100%;
-  height: 65vh;
+  height: 66vh;
+  overflow-y: scroll;
 }
 
 .tab-div {
   height: 100vh;
   width: 100%;
-  overflow-y: scroll;
   background-color: var(--light);
   padding: 5vh 5vh 0vh 5vh;
 }
@@ -131,3 +131,14 @@ mat-button-toggle:hover {
   color: white;
 }
 
+.it-card{
+  background-color: var(--light);
+}
+
+.ee-card{
+  background-color: #ffb120b2;
+}
+
+.ce-card{
+  background-color: #cf7c00b9;
+}

@@ -2,7 +2,11 @@
   <div class="options-div" fxLayoutAlign="start center">
     <p>
       View as:
-      <mat-button-toggle-group class="button-toggle">
+      <mat-button-toggle-group
+        class="button-toggle"
+        [(ngModel)]="viewMode"
+        (change)="onChangeToggle($event)"
+      >
         <mat-button-toggle value="facultyMode" color="primary"
           >Faculty Mode</mat-button-toggle
         >
@@ -13,54 +17,88 @@
     </p>
   </div>
 
-  <form>
+  <form
+    *ngIf="viewMode == 'facultyMode'"
+    [formGroup]="loadForm"
+    (ngSubmit)="onSubmit()"
+  >
     <div>
-      <mat-form-field fxFlex="65%">
-        <mat-icon matPrefix>search</mat-icon>
-        <input matInput type="text" (keyup)="doFilter($event.target.value)" />
+      <mat-form-field fxFlex="60%">
+        <mat-icon matSuffix>search</mat-icon>
+        <input
+          matInput
+          type="text"
+          (keyup)="doFilter($event.target.value)"
+          autocomplete="off"
+          #search
+        />
       </mat-form-field>
+
       <div
         class="actions-div"
         fxLayoutAlign="end center"
         fxLayoutGap="15px"
-        fxFlex="35%"
+        fxFlex="40%"
       >
-        <button mat-raised-button color="primary">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="loadForm.invalid"
+        >
           <mat-icon>add</mat-icon>Add Load
         </button>
-        <button mat-stroked-button color="warn">
+        <button mat-stroked-button color="warn" type="button" (click)="onClear()">
           <mat-icon>clear</mat-icon>Clear
         </button>
       </div>
     </div>
 
-    <div class="forms-div">
+    <div *ngIf="onSearching">
+      <mat-chip-list>
+        <mat-chip
+          color="primary"
+          selected
+          *ngFor="let filteredCurriculum of filteredCurriculums; let i = index"
+          (click)="onChipClicked(i)"
+          >{{ filteredCurriculum.subjectTitle }}</mat-chip
+        >
+      </mat-chip-list>
+    </div>
 
+    <div class="forms-div">
       <div fxLayout="row" fxLayoutGap="15px">
         <mat-form-field fxFlex="30%">
           <mat-label>Code</mat-label>
-          <mat-select>
+          <mat-select
+            formControlName="subjectCode"
+            (selectionChange)="onCodeChange($event)"
+          >
             <mat-option
-              >CC1</mat-option
+              *ngFor="let subjectCode of subjectCodes"
+              [value]="subjectCode"
+              >{{ subjectCode }}</mat-option
             >
           </mat-select>
         </mat-form-field>
 
         <mat-form-field fxFlex="50%">
           <mat-label>Subject Description</mat-label>
-          <mat-select>
+          <mat-select
+            formControlName="subjectDescription"
+            (selectionChange)="onSubjectChange($event)"
+          >
             <mat-option
-              >Computer Programming 1</mat-option
+              *ngFor="let subjectDescription of subjectDescriptions"
+              [value]="subjectDescription"
+              >{{ subjectDescription }}</mat-option
             >
           </mat-select>
         </mat-form-field>
 
         <mat-form-field fxFlex="20%">
           <mat-label>Units</mat-label>
-          <input
-            type="text"
-            matInput
-          />
+          <input type="text" matInput formControlName="units" />
           <mat-error>please enter a valid input.</mat-error>
         </mat-form-field>
       </div>
@@ -71,46 +109,62 @@
           <input
             type="text"
             matInput
+            formControlName="noHour"
+            (ngModelChange)="onChangeHours($event)"
+            maxlength="1"
           />
-          <mat-error>please enter a valid input.</mat-error>
+          <mat-error>please enter only 1 digit number.</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex="45%">
           <mat-label>Section</mat-label>
-          <mat-select>
+          <mat-select formControlName="section">
             <mat-option
-              >BSIT 4-1</mat-option
+              *ngFor="let section of trimmedSections"
+              [value]="section"
+              >{{ section }}</mat-option
             >
           </mat-select>
         </mat-form-field>
         <mat-form-field fxFlex="30%">
           <mat-label>Day</mat-label>
-          <mat-select>
-            <mat-option
-              >Monday</mat-option
-            >
+          <mat-select formControlName="day">
+            <mat-option *ngFor="let day of days" [value]="day">{{
+              day
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
       <div fxLayout="row" fxLayoutGap="15px">
-        <mat-form-field fxFlex="60%">
-          <mat-label>Time</mat-label>
-          <mat-select>
-            <mat-option
-              >1:00 PM</mat-option
-            >
+        <mat-form-field fxFlex="30%">
+          <mat-label>Start Time</mat-label>
+          <mat-select
+            formControlName="startTime"
+            [disabled]="startTimeDisabled"
+            (selectionChange)="onStartTimeChange($event)"
+          >
+            <mat-option *ngFor="let time of times" [value]="time">{{
+              time
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="30%">
+          <mat-label>End Time</mat-label>
+          <mat-select formControlName="endTime" disabled>
+            <mat-option *ngFor="let time of times" [value]="time">{{
+              time
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field fxFlex="40%">
           <mat-label>Room</mat-label>
-          <mat-select>
-            <mat-option
-              >COMLAB 1</mat-option
-            >
+          <mat-select formControlName="room">
+            <mat-option *ngFor="let room of rooms" [value]="room">{{
+              room.roomName | uppercase
+            }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-
     </div>
   </form>
 

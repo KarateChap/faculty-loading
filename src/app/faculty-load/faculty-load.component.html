@@ -10,6 +10,7 @@
           color="primary"
           class="acad-button"
           (click)="onAddFaculty()"
+          [disabled]="!currentUser.isActivated"
         >
           <mat-icon>person_add_alt</mat-icon>
           Add Faculty
@@ -25,7 +26,7 @@
         *ngFor="let faculty of faculties; let i = index"
       >
         <div class="card-top">
-          <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-icon">
+          <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-icon" [disabled]="!currentUser.isActivated">
             <mat-icon class="button-icon">more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
@@ -46,7 +47,7 @@
           <p class="id-text">{{ faculty.idNumber }}</p>
           <p class="semester-text">{{activeAcademicYear.semester}}</p>
           <p class="schedule-text">Schedule:</p>
-          <mat-icon class="folder-icon" color="primary" [routerLink]="['/sidenav/facultyload', faculty.id]">post_add</mat-icon>
+          <mat-icon class="folder-icon" color="primary" [routerLink]="['/sidenav/facultyload', faculty.id]" *ngIf="currentUser.isActivated">post_add</mat-icon>
         </div>
       </div>
 
