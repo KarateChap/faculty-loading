@@ -36,6 +36,7 @@ export class FacultyConfigComponent implements OnInit {
         thursday: new FormControl(false),
         friday: new FormControl(false),
         saturday: new FormControl(false),
+        sunday: new FormControl(false)
       });
     } else {
       console.log(this.passedData.faculty.facultySchedule);
@@ -59,6 +60,7 @@ export class FacultyConfigComponent implements OnInit {
         thursday: new FormControl(false),
         friday: new FormControl(false),
         saturday: new FormControl(false),
+        sunday: new FormControl(false),
       });
 
       this.checkSchedule();
@@ -131,6 +133,17 @@ export class FacultyConfigComponent implements OnInit {
           );
           this.facultyForm.addControl(
             'saturdayEnd',
+            new FormControl(element.endTime, Validators.required)
+          );
+        }
+        if (element.day == 'sunday') {
+          this.facultyForm.patchValue({ sunday: true });
+          this.facultyForm.addControl(
+            'sundayStart',
+            new FormControl(element.startTime, Validators.required)
+          );
+          this.facultyForm.addControl(
+            'sundayEnd',
             new FormControl(element.endTime, Validators.required)
           );
         }
@@ -238,6 +251,22 @@ export class FacultyConfigComponent implements OnInit {
     }
   }
 
+  onSundayChange(event: any) {
+    if (this.facultyForm.value.sunday == true) {
+      this.facultyForm.addControl(
+        'sundayStart',
+        new FormControl('', Validators.required)
+      );
+      this.facultyForm.addControl(
+        'sundayEnd',
+        new FormControl('', Validators.required)
+      );
+    } else {
+      this.facultyForm.removeControl('sundayStart');
+      this.facultyForm.removeControl('sundayEnd');
+    }
+  }
+
   onSubmit() {
     if (this.configType == 'add') {
       this.checkDaysIncluded();
@@ -311,6 +340,13 @@ export class FacultyConfigComponent implements OnInit {
         day: 'saturday',
         startTime: this.facultyForm.value.saturdayStart,
         endTime: this.facultyForm.value.saturdayEnd,
+      });
+    }
+    if (this.facultyForm.value.sunday) {
+      this.daysIncluded.push({
+        day: 'sunday',
+        startTime: this.facultyForm.value.sundayStart,
+        endTime: this.facultyForm.value.sundayEnd,
       });
     }
   }

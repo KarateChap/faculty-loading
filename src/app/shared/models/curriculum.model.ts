@@ -7,4 +7,5 @@ export interface Curriculum {
   subjectSemester: string;
   subjectYear: string;
   department: string
+  year: string
 }

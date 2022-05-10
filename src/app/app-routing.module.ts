@@ -8,9 +8,10 @@ import { FacultyLoadComponent } from './faculty-load/faculty-load.component';
 import { LoadMainComponent } from './faculty-load/load-main/load-main.component';
 import { HistoryComponent } from './history/history.component';
 import { RoomsSectionsComponent } from './rooms-sections/rooms-sections.component';
+import { SectionLoadComponent } from './section-load/section-load.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { SidenavComponent } from './sidenav/sidenav.component';
-import { SubmissionsComponent } from './submissions/submissions.component';
+import { SubmissionsComponent } from './submissions/submissions.component'
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -23,6 +24,7 @@ const routes: Routes = [
     {path: 'submission', component: SubmissionsComponent},
     {path: 'chairperson', component: ChairpersonComponent},
     {path: 'roomsection', component: RoomsSectionsComponent},
+    {path: 'sectionload', component: SectionLoadComponent},
     {path: 'facultyload', component: FacultyLoadComponent},
     {path: 'facultyload/:id', component: LoadMainComponent},
     {path: 'history', component: HistoryComponent},

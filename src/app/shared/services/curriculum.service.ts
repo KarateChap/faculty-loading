@@ -9,6 +9,8 @@ import { Curriculum } from '../models/curriculum.model';
 @Injectable({ providedIn: 'root' })
 export class CurriculumService {
   curriculums: Curriculum[] = [];
+  sectionCurriculum: Curriculum[] = [];
+  sectionCurriculumChanged = new Subject<Curriculum[]>();
   fetchCurriculumChanged = new Subject<Curriculum[]>();
   curriculumChanged = new Subject<void>();
   constructor(private af: AngularFirestore, private uiService: UIService) {}
@@ -20,19 +22,13 @@ export class CurriculumService {
     this.uiService.showSuccessToast('Curriculum Added/Edited Succesfully!', 'Success');
   }
 
-  deleteCurriculum(department: string){
-    this.af
-      .collection('curriculum')
-      .ref.where('department', '==', department)
-      .get()
-      .then((result) => {
-
-        result.forEach((element) => {
-          const id = element.id;
-          this.af.doc('curriculum/' + id).delete();
-        });
-        this.curriculumChanged.next();
+  async deleteCurriculum(){
+    await this.af.collection('curriculum')
+    .get().forEach((res: any) => {
+      res.forEach((element:any) => {
+        element.ref.delete();
       });
+    });
   }
 
   fetchAllCurriculum() {
@@ -51,6 +47,7 @@ export class CurriculumService {
               subjectSemester: doc.payload.doc.data()['subjectSemester'],
               subjectYear: doc.payload.doc.data()['subjectYear'],
               department: doc.payload.doc.data()['department'],
+              year: doc.payload.doc.data()['year']
             };
           });
         })
@@ -61,5 +58,20 @@ export class CurriculumService {
       }, (error) => {
         console.log(error);
       });
+  }
+
+  fetchSectionCurriculum(department: string, semester: string, chairperson: string, year: string){
+    this.af
+    .collection('curriculum')
+    .ref.where('department', '==', department)
+    .where('subjectSemester', '==', semester)
+    .where('subjectYear', '==', year)
+    .onSnapshot((result) => {
+      this.sectionCurriculum = [];
+      result.forEach((doc) => {
+        this.sectionCurriculum.push({ id: doc.id, ...(doc.data() as NewCurriculum) });
+      });
+      this.sectionCurriculumChanged.next(this.sectionCurriculum);
+    });
   }
 }

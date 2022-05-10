@@ -142,3 +142,20 @@ mat-button-toggle:hover {
 .ce-card{
   background-color: #cf7c00b9;
 }
+
+mat-header-cell{
+  color: white;
+  font-family: var(--mont);
+  text-transform: uppercase;
+
+}
+
+.mat-header-cell {
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mat-cell {
+  text-align: center;
+  justify-content:center;
+}

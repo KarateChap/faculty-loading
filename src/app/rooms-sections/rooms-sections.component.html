@@ -9,58 +9,108 @@
     <div class="content-div">
       <mat-tab-group>
         <mat-tab label="Room">
-          <div
-            fxLayoutAlign="center center"
-            *ngIf="isLoading"
-            style="height: 100vh"
-          >
-            <mat-spinner></mat-spinner>
-          </div>
+          <mat-table [dataSource]="dataSource" matSort #sorter1="matSort" style="width: 100%;">
 
-          <div
-            class="tab-div"
-            fxLayout="row wrap"
-            fxLayoutGap="30px"
-            fxLayoutAlign="start start"
-            *ngIf="!isLoading"
-          >
-            <div class="card-item" fxLayoutAlign="center center">
-              <button mat-icon-button (click)="onAddRoom()">
-                <mat-icon color="primary" style="font-size: 25px"
-                  >add_circle</mat-icon
-                >
-              </button>
-            </div>
-            <div
-              class="card-item"
-              fxLayoutAlign="center center"
-              *ngFor="let room of rooms; let i = index"
-            >
-              <button
-                mat-icon-button
-                [matMenuTriggerFor]="menu"
-                class="menu-item"
+            <ng-container matColumnDef="roomName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Room Name</mat-header-cell
               >
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="onEditRoom(i)">
-                  <mat-icon>edit</mat-icon>
-                  <span>Edit Room</span>
-                </button>
-                <button mat-menu-item (click)="onRemoveRoom(i)">
-                  <mat-icon>delete</mat-icon>
-                  <span>Remove Room</span>
-                </button>
-              </mat-menu>
+              <mat-cell *matCellDef="let element">{{
+                element.roomName
+              }}</mat-cell>
+            </ng-container>
 
-              <p class="item-text">{{ room.roomName }}</p>
-            </div>
+            <ng-container matColumnDef="actions">
+              <mat-header-cell  *matHeaderCellDef > Actions </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                   <button mat-button (click)="onEditRoom(element)"><mat-icon>edit</mat-icon></button>
+                   <button mat-button (click)="onRemoveRoom(element.id)"><mat-icon>delete</mat-icon></button>
+              </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row
+              *matHeaderRowDef="displayedColumns"
+              color="primary"
+              style="background-color: var(--primary)"
+            ></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+          </mat-table>
+
+          <div fxLayoutAlign="center center" style="margin-top: 15px">
+            <button mat-stroked-button color="primary" (click)="onAddRoom()"><mat-icon>add</mat-icon> Add New Room</button>
           </div>
+          <mat-paginator fxLayoutAlign="center center"
+            #paginator1
+            [pageSize]="8"
+            [pageSizeOptions]="[8, 16, 100]"
+            showFirstLastButtons
+          >
+          </mat-paginator>
         </mat-tab>
 
+
+
+
         <mat-tab label="Section">
-          <div
+          <mat-table [dataSource]="dataSource2" matSort #sorter2="matSort" style="width: 100%;">
+
+            <ng-container matColumnDef="course">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Course</mat-header-cell
+              >
+              <mat-cell *matCellDef="let element">{{
+                element.course
+              }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="year">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Year</mat-header-cell
+              >
+              <mat-cell *matCellDef="let element">{{
+                element.year
+              }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="section">
+              <mat-header-cell *matHeaderCellDef mat-sort-header
+                >Section</mat-header-cell
+              >
+              <mat-cell *matCellDef="let element">{{
+                element.section
+              }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <mat-header-cell  *matHeaderCellDef > Actions </mat-header-cell>
+              <mat-cell *matCellDef="let element" >
+                   <button mat-button (click)="onEditSection(element)"><mat-icon>edit</mat-icon></button>
+                   <button mat-button (click)="onRemoveSection(element.id)"><mat-icon>delete</mat-icon></button>
+              </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row
+              *matHeaderRowDef="displayedColumns2"
+              color="primary"
+              style="background-color: var(--primary)"
+            ></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns2"></mat-row>
+          </mat-table>
+
+          <div fxLayoutAlign="center center" style="margin-top: 15px">
+            <button mat-stroked-button color="primary" (click)="onAddSection()"><mat-icon>add</mat-icon> Add New Section</button>
+          </div>
+          <mat-paginator fxLayoutAlign="center center"
+            #paginator2
+            [pageSize]="8"
+            [pageSizeOptions]="[8, 16, 100]"
+            showFirstLastButtons
+          >
+          </mat-paginator>
+
+          <!-- <div
             fxLayoutAlign="center center"
             *ngIf="isLoading"
             style="height: 100vh"
@@ -92,7 +142,7 @@
             fxLayoutAlign="start start"
             *ngIf="!isLoading"
           >
-            <div class="card-item" fxLayoutAlign="center center" [ngClass]="section.department == 'Information Technology' ? '' : ''">
+            <div class="card-item" fxLayoutAlign="center center" >
               <button mat-icon-button (click)="onAddSection()">
                 <mat-icon color="primary" style="font-size: 25px"
                   >add_circle</mat-icon
@@ -138,7 +188,7 @@
             </div>
 
 
-          </div>
+          </div> -->
 
 
         </mat-tab>

@@ -35,6 +35,9 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { LoadMainComponent } from './faculty-load/load-main/load-main.component';
 import { LoadEditorComponent } from './faculty-load/load-main/load-editor/load-editor.component';
 import { LoadViewComponent } from './faculty-load/load-main/load-view/load-view.component';
+import { SectionLoadComponent } from './section-load/section-load.component';
+import { SectionLoadEditorComponent } from './section-load/section-load-editor/section-load-editor.component';
+import { SectionLoadViewComponent } from './section-load/section-load-view/section-load-view.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,10 @@ import { LoadViewComponent } from './faculty-load/load-main/load-view/load-view.
     FacultyConfigComponent,
     LoadMainComponent,
     LoadEditorComponent,
-    LoadViewComponent
+    LoadViewComponent,
+    SectionLoadComponent,
+    SectionLoadEditorComponent,
+    SectionLoadViewComponent,
   ],
   imports: [
     BrowserModule,

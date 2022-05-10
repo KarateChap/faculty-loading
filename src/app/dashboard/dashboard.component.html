@@ -6,6 +6,7 @@
       </div>
       <div fxLayout="column" class="sub-headers">
         <button
+         *ngIf="currentUser.department == 'admin'"
           mat-raised-button
           color="primary"
           class="acad-button"
@@ -15,33 +16,8 @@
           Set Academic Year
         </button>
 
-        <div fxLayout="column" fxLayoutAlign="start start" class="csv-div">
-          <mat-form-field>
-            <mat-label>Department</mat-label>
-            <mat-select [(value)]="selectedDepartment">
-              <mat-option value="Information Technology"
-                >Information Technology</mat-option
-              >
-              <mat-option value="Civil Engineering"
-                >Civil Engineering</mat-option
-              >
-              <mat-option value="Electrical Engineering"
-                >Electrical Engineering</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-
-          <button
-            mat-raised-button
-            color="primary"
-            disabled
-            *ngIf="!selectedDepartment"
-            style="width: 100%"
-          >
-            Upload CSV
-          </button>
-
-          <label fxFlexFill *ngIf="selectedDepartment">
+        <div fxLayout="column" fxLayoutAlign="start start" class="csv-div" *ngIf="currentUser.department == 'admin'">
+          <label fxFlexFill>
             <div class="upload-csv">Upload CSV</div>
             <input
               type="file"

@@ -1,5 +1,4 @@
-export interface LoadItem{
-  id: string;
+export interface NewLoadItem {
   facultyName: string;
   facultyId: string;
   department: string;

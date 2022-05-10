@@ -8,8 +8,10 @@ import { Subscription } from 'rxjs';
 import { AcademicPeriod } from '../shared/models/academic-period.model';
 import { Curriculum } from '../shared/models/curriculum.model';
 import { NewCurriculum } from '../shared/models/new-curriculum.model';
+import { NewUser } from '../shared/models/new-user.model';
 import { AcademicService } from '../shared/services/academic.service';
 import { CurriculumService } from '../shared/services/curriculum.service';
+import { UserService } from '../shared/services/user.service';
 import { UIService } from '../shared/UIService/ui.service';
 import { SetAcademicYearComponent } from './set-academic-year/set-academic-year.component';
 
@@ -26,7 +28,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   academicSubs: Subscription;
   curriculum: NewCurriculum[] = [];
   csvRecords: any;
-  selectedDepartment = '';
 
   displayedColumns = [
     'code',
@@ -40,18 +41,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<Curriculum>();
   curriculumSubs: Subscription;
   newCurriculum: Curriculum[] = [];
-
   unfilteredNewCurriculum: Curriculum[] = [];
+  newCSVSubs: Subscription;
+  currentUser: NewUser;
 
   constructor(
     private dialog: MatDialog,
     private AcademicService: AcademicService,
     private ngxCsvParser: NgxCsvParser,
     private curriculumService: CurriculumService,
-    private uiService: UIService
+    private uiService: UIService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
+
+    this.currentUser = this.userService.getCurrentUser();
     this.curriculumService.fetchAllCurriculum();
     this.curriculumSubs =
       this.curriculumService.fetchCurriculumChanged.subscribe((curriculum) => {
@@ -80,53 +85,44 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   uploadCsv() {}
 
-  fileChangeListener($event: any): void {
-    this.deleteCurrentCurriculum();
-    let runAlready = false;
+  async fileChangeListener($event: any){
 
-    this.curriculumService.curriculumChanged.subscribe(() => {
-      if (runAlready == false) {
-        if (this.selectedDepartment != '') {
-          const files = $event.srcElement.files;
-          this.ngxCsvParser
-            .parse(files[0], { header: true, delimiter: ',' })
-            .pipe()
-            .subscribe((result) => {
-              this.csvRecords = result;
-              this.csvRecords.forEach((element: any) => {
-                this.curriculum.push({
-                  code: element['Code'],
-                  subjectTitle: element['Subject Title'],
-                  units: element['Units'],
-                  preReq: element['Pre Req'],
-                  subjectSemester: element['Subject Semester'],
-                  subjectYear: element['Subject Year'],
-                  department: this.selectedDepartment,
-                });
-              });
-              this.curriculumService.setCurriculumToDatabase(this.curriculum);
-              this.curriculum = [];
-              this.csvRecords = [];
-              runAlready = true;
-            }),(error: NgxCSVParserError) => {
-              console.log('Error', error);
-            }
-        } else {
-          runAlready = true;
-          this.uiService.showErrorToast(
-            'Please select a department first!',
-            'Error'
-          );
-        }
-        runAlready = true;
+    if(this.unfilteredNewCurriculum.length > 0){
+      await this.curriculumService.deleteCurriculum();
+      this.createCurriculum($event);
+    }
+    else{
+      this.createCurriculum($event);
+    }
+  }
+
+  createCurriculum($event: any){
+    const files = $event.srcElement.files;
+    this.ngxCsvParser
+      .parse(files[0], { header: true, delimiter: ',' })
+      .pipe()
+      .subscribe((result) => {
+        this.csvRecords = result;
+        this.csvRecords.forEach((element: any) => {
+          this.curriculum.push({
+            code: element['Code'],
+            subjectTitle: element['Subject Title'],
+            units: element['Units'],
+            preReq: element['Pre Req'],
+            subjectSemester: element['Subject Semester'],
+            subjectYear: element['Subject Year'],
+            department: element['Department'],
+            year: element['Year']
+          });
+        });
+        this.curriculumService.setCurriculumToDatabase(this.curriculum);
+        this.curriculum = [];
+        this.csvRecords = [];
+        // runAlready = true;
+      }),(error: NgxCSVParserError) => {
+        console.log('Error', error);
       }
-    });
   }
-
-  deleteCurrentCurriculum() {
-    this.curriculumService.deleteCurriculum(this.selectedDepartment);
-  }
-
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;

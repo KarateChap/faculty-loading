@@ -1,0 +1,108 @@
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--light);
+  border-radius: 20px;
+  transition: all ease-in-out 1s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+.button-toggle {
+  background-color: var(--light);
+  margin-left: 10px;
+  padding: 1px;
+  height: 30px;
+  align-items: center;
+}
+
+mat-button-toggle {
+  font-family: var(--mont);
+  transition: all ease-in-out 0.1s;
+}
+
+mat-button-toggle:hover {
+}
+
+mat-button-toggle:active {
+  background-color: var(--primary) !important;
+  color: white;
+}
+
+.mat-button-toggle-checked {
+  background-color: var(--primary) !important;
+  color: white;
+}
+
+.main-div {
+  padding: 15px;
+  height: 77vh;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  /* overflow-y: scroll; */
+}
+
+.main-div::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.button-toggle {
+  padding: 13px 13px;
+  height: 25px;
+}
+.forms-div {
+  background-color: rgba(255, 255, 255, 0.774);
+  padding: 10px;
+  border: 0.5px solid var(--light);
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+mat-header-cell {
+  color: white;
+  font-family: var(--incon);
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+mat-cell {
+  font-size: 11px;
+}
+
+.actions {
+  font-size: 20px;
+  cursor: pointer;
+}
+.actions:hover {
+  color: var(--primary);
+}
+
+mat-cell,
+mat-header-cell {
+  text-align: center;
+  justify-content: center;
+}
+
+.table-div {
+  margin-top: 15px;
+}
+
+.status-text {
+  font-family: var(--mont);
+  margin-top: 15px;
+  color: var(--primary);
+  font-weight: bold;
+}

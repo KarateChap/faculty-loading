@@ -51,8 +51,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
         console.log('admin works');
       }
       else{
-        this.router.navigate(['/sidenav/' + 'facultyload']);
-        this.activeLink = 'facultyload';
+        this.router.navigate(['/sidenav/' + 'dashboard']);
+        this.activeLink = 'dashboard';
       }
     })
     // this.activeLink = localStorage.getItem('activeLink') || '{}';
@@ -71,6 +71,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
     localStorage.setItem('activeLink', this.activeLink);
   }
   onRoomSectionActive(link: string) {
+    this.activeLink = link;
+    localStorage.setItem('activeLink', this.activeLink);
+  }
+  onSectionLoadActive(link: string) {
     this.activeLink = link;
     localStorage.setItem('activeLink', this.activeLink);
   }

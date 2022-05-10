@@ -1,13 +1,21 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
+import { AcademicPeriod } from 'src/app/shared/models/academic-period.model';
 import { Curriculum } from 'src/app/shared/models/curriculum.model';
 import { Faculty } from 'src/app/shared/models/faculty.model';
+import { LoadItem } from 'src/app/shared/models/load-item.model';
+import { NewUser } from 'src/app/shared/models/new-user.model';
 import { Room } from 'src/app/shared/models/room.model';
 import { Section } from 'src/app/shared/models/section.model';
+import { AcademicService } from 'src/app/shared/services/academic.service';
 import { CurriculumService } from 'src/app/shared/services/curriculum.service';
+import { LoadService } from 'src/app/shared/services/load.service';
 import { RoomSectionService } from 'src/app/shared/services/room-section.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-load-editor',
@@ -15,29 +23,44 @@ import { RoomSectionService } from 'src/app/shared/services/room-section.service
   styleUrls: ['./load-editor.component.css'],
 })
 export class LoadEditorComponent implements OnInit, OnDestroy {
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() activeFaculty: Faculty;
   @ViewChild('search') searchInput: ElementRef;
-  viewMode = 'facultyMode';
+  // viewMode = 'facultyMode';
   curriculums: Curriculum[] = [];
   departmentCurriculums: Curriculum[] = [];
   curriculumSubs: Subscription;
   displayedColumns = [
-    'code',
-    'subjectTitle',
+    'subjectCode',
+    'subjectDescription',
     'units',
-    'preReq',
-    'subjectSemester',
-    'subjectYear',
-    'department',
+    'noHour',
+    'section',
+    'facultyName',
+    'day',
+    'startTime',
+    'endTime',
+    'room',
+    'actions',
   ];
-  dataSource = new MatTableDataSource<void>();
+  dataSource = new MatTableDataSource<LoadItem>();
 
   loadForm: FormGroup;
   startTimeDisabled = true;
 
   subjectCodes: string[] = [];
   subjectDescriptions: string[] = [];
-  days: string[] = [];
+  days: string[] = [
+    'monday',
+    'tuesday',
+    'wednesday',
+    'tuesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday',
+  ];
   sections: Section[] = [];
   sectionSubs: Subscription;
   roomsSubs: Subscription;
@@ -78,15 +101,25 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
   onSearching = false;
   filteredCurriculums: Curriculum[] = [];
 
+  activeAcademicYear: AcademicPeriod;
+  currentChairperson: NewUser;
+
+  loads: LoadItem[] = [];
+  loadSubs: Subscription;
+
+
   constructor(
     private curriculumService: CurriculumService,
-    private roomSectionService: RoomSectionService
+    private roomSectionService: RoomSectionService,
+    private loadService: LoadService,
+    private academicService: AcademicService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
-    this.activeFaculty.facultySchedule.forEach((element) => {
-      this.days.push(element.day);
-    });
+
+    this.currentChairperson = this.userService.getCurrentUser();
+    this.activeAcademicYear = this.academicService.getActiveAcademicYear();
 
     this.roomSectionService.fetchRooms();
     this.roomsSubs = this.roomSectionService.roomsChanged.subscribe((rooms) => {
@@ -177,6 +210,18 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
       ),
       room: new FormControl('', Validators.required),
     });
+
+    this.loadService.fetchFacultyLoad(
+      this.activeAcademicYear.startYear,
+      this.activeAcademicYear.semester,
+      this.currentChairperson.fullName,
+      this.activeFaculty.fullName
+      );
+
+    this.loadSubs = this.loadService.loadChange.subscribe(loads => {
+      this.loads = loads;
+      this.dataSource.data = this.loads;
+    })
   }
 
   onChangeHours(event: any) {
@@ -243,9 +288,9 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  onChangeToggle(event: any) {
-    this.viewMode = event.value;
-  }
+  // onChangeToggle(event: any) {
+  //   this.viewMode = event.value;
+  // }
 
   onCodeChange(event: any) {
     let codeValue = event.value;
@@ -270,9 +315,15 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  onSubmit(){
+
+  }
+
   ngOnDestroy(): void {
     this.curriculumSubs.unsubscribe();
     this.sectionSubs.unsubscribe();
     this.roomsSubs.unsubscribe();
+    this.loadSubs.unsubscribe();
   }
 }

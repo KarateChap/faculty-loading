@@ -5,5 +5,6 @@ export interface NewCurriculum {
   preReq: string;
   subjectSemester: string;
   subjectYear: string;
-  department: string
+  department: string;
+  year: string
 }

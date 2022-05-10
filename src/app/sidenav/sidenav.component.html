@@ -34,7 +34,6 @@
 
     <div class="button-group" fxLayout="column" fxLayoutGap="15px">
       <button
-        *ngIf="currentUser.department == 'admin'"
         mat-raised-button
         class="left-align"
         routerLinkActive="active"
@@ -86,6 +85,18 @@
         <mat-icon class="text-margin">room_preferences</mat-icon> Rooms &
         Sections
       </button>
+      <button
+      *ngIf="currentUser.department != 'admin'"
+      mat-raised-button
+      class="left-align"
+      routerLinkActive="active"
+      routerLink="sectionload"
+      [ngStyle]="{
+        backgroundColor: activeLink == 'sectionload' ? 'white' : ''
+      }"
+      (click)="onSectionLoadActive('sectionload')"
+    ><mat-icon class="text-margin">folder_shared</mat-icon> Section Load
+  </button>
       <button
         *ngIf="currentUser.department != 'admin'"
         mat-raised-button

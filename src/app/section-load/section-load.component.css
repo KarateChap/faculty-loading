@@ -1,0 +1,49 @@
+.main-div {
+  width: 100%;
+  height: 92%;
+  overflow: hidden;
+}
+
+.sub-div {
+  margin: 32px;
+  width: 95%;
+  height: 93%;
+  background-color: white;
+  overflow: hidden;
+  padding: 50px 0px;
+  position: relative;
+}
+
+.division {
+  width: 1px;
+  height: 100%;
+  background-color: rgba(66, 66, 66, 0.349);
+}
+
+.arrow-back{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+}
+
+.back-text{
+  margin: 2px 0 0 5px;
+  font-family: var(--mont);
+}
+
+.back-text:hover{
+  color: var(--primary);
+}
+
+.editor-div{
+  width: 50%;
+  height: 100%;
+  padding: 20px;
+}
+
+.view-div{
+  width: 50%;
+  height: 100%;
+  padding: 20px;
+}

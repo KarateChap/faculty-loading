@@ -1,11 +1,31 @@
-<div class="main-div" fxLayout="column" fxLayoutGap="20px">
+<div class="main-div" fxLayout="column">
 
+  <div fxLayoutAlign="start center" fxLayout="row" fxLayoutGap="15px" #target>
+    <p style="font-family: var(--mont);" >Choose Section:</p>
+    <div style="width: 60%;" fxLayoutAlign="start center">
+      <mat-form-field fxFlex="45%" appearance="fill">
+        <mat-label>Section</mat-label>
+        <mat-select (selectionChange)="onSectionChanged($event)" [disabled]="!currentChairperson.isActivated">
+          <mat-option [value]="section"
+            *ngFor="let section of trimmedSections"
+            >{{ section }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
   <form
     [formGroup]="loadForm"
     (ngSubmit)="onSubmit()"
+    *ngIf="loads.length > 0"
+    style="margin-top: -55px;"
   >
-    <div>
-      <mat-form-field fxFlex="60%">
+    <div fxLayout="column">
+
+     <div fxLayoutAlign="start center">
+
+      <!-- <p style="font-family: var(--mont);" fxFlex="20%">Choose Subject:</p>
+      <mat-form-field fxFlex="40%">
         <mat-icon matSuffix>search</mat-icon>
         <input
           matInput
@@ -14,26 +34,38 @@
           autocomplete="off"
           #search
         />
-      </mat-form-field>
+      </mat-form-field> -->
 
       <div
         class="actions-div"
         fxLayoutAlign="end center"
         fxLayoutGap="15px"
-        fxFlex="40%"
+        fxFlex="100%"
       >
+      <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="onAddLoadMode()"
+          [disabled]="onEditMode"
+        >
+          <mat-icon>add</mat-icon>Add Load
+        </button>
         <button
           mat-raised-button
           color="primary"
           type="submit"
           [disabled]="loadForm.invalid"
         >
-          <mat-icon>add</mat-icon>Add Load
+          <mat-icon>save</mat-icon>Save Load
         </button>
-        <button mat-stroked-button color="warn" type="button" (click)="onClear()">
+        <button mat-stroked-button color="warn" type="button" (click)="onClear()" [disabled]="!onEditMode && !onAddMode">
           <mat-icon>clear</mat-icon>Clear
         </button>
       </div>
+     </div>
+
+
     </div>
 
     <div *ngIf="onSearching">
@@ -47,8 +79,9 @@
         >
       </mat-chip-list>
     </div>
+    <p class="status-text" *ngIf="onEditMode || onAddMode">{{onEditMode ? 'Edit Load Mode' : 'Add Load Mode'}}</p>
 
-    <div class="forms-div">
+    <div class="forms-div" *ngIf="onEditMode || onAddMode">
       <div fxLayout="row" fxLayoutGap="15px">
         <mat-form-field fxFlex="30%">
           <mat-label>Code</mat-label>
@@ -98,12 +131,12 @@
           <mat-error>please enter only 1 digit number.</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex="45%">
-          <mat-label>Section</mat-label>
-          <mat-select formControlName="section">
+          <mat-label>Faculty</mat-label>
+          <mat-select formControlName="faculty">
             <mat-option
-              *ngFor="let section of trimmedSections"
-              [value]="section"
-              >{{ section }}</mat-option
+              *ngFor="let faculty of faculties"
+              [value]="faculty"
+              >{{ faculty.fullName}}</mat-option
             >
           </mat-select>
         </mat-form-field>
@@ -122,7 +155,6 @@
           <mat-label>Start Time</mat-label>
           <mat-select
             formControlName="startTime"
-            [disabled]="startTimeDisabled"
             (selectionChange)="onStartTimeChange($event)"
           >
             <mat-option *ngFor="let time of times" [value]="time">{{
@@ -132,7 +164,7 @@
         </mat-form-field>
         <mat-form-field fxFlex="30%">
           <mat-label>End Time</mat-label>
-          <mat-select formControlName="endTime" disabled>
+          <mat-select formControlName="endTime">
             <mat-option *ngFor="let time of times" [value]="time">{{
               time
             }}</mat-option>
@@ -149,8 +181,6 @@
       </div>
     </div>
   </form>
-
-  <!-- table -->
 
   <div class="table-div">
     <mat-table [dataSource]="dataSource" matSort style="width: 100%;">
@@ -246,7 +276,8 @@
               <mat-header-cell  *matHeaderCellDef > Manage </mat-header-cell>
               <mat-cell *matCellDef="let element" >
                    <mat-icon class="actions" (click)="onEditLoad(element, target)">edit</mat-icon>
-                   <!-- <mat-icon class="actions" (click)="onDeleteLoad(element.id)">delete</mat-icon> -->
+                   <mat-icon class="actions" (click)="onDeleteLoad(element.id)">delete</mat-icon>
+                   <mat-icon class="actions" (click)="onSplit(element)" *ngIf="+element.noHour > 5">hourglass_bottom</mat-icon>
               </mat-cell>
          </ng-container>
 

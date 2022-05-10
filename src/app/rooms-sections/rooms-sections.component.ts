@@ -1,6 +1,9 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { Room } from '../shared/models/room.model';
 import { Section } from '../shared/models/section.model';
@@ -15,6 +18,10 @@ import { SectionConfigComponent } from './section-config/section-config.componen
 })
 export class RoomsSectionsComponent implements OnInit, OnDestroy {
   @ViewChild('group', {static: true}) buttonGroup: MatButtonToggleGroup;
+  @ViewChild('sorter1', {static: false}) sorter1: MatSort;
+  @ViewChild('sorter2', {static: false}) sorter2: MatSort;
+  @ViewChild('paginator1') paginator1: MatPaginator;
+  @ViewChild('paginator2') paginator2: MatPaginator;
   rooms: Room[] = [];
   roomsSubs: Subscription;
   isLoading = false
@@ -23,6 +30,19 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
   unfilteredSections: Section[] = [];
   sectionsSubs: Subscription;
   isLoading2 = false;
+
+  displayedColumns = [
+    'roomName',
+    'actions'
+  ];
+  displayedColumns2 = [
+    'course',
+    'year',
+    'section',
+    'actions'
+  ];
+  dataSource = new MatTableDataSource<Room>();
+  dataSource2 = new MatTableDataSource<Section>();
 
   constructor(
     private dialog: MatDialog,
@@ -35,17 +55,13 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
     this.roomsSubs = this.rsService.roomsChanged.subscribe((rooms) => {
       this.rooms = rooms;
       this.isLoading = false;
+      this.dataSource.data = this.rooms;
     });
 
     this.isLoading2 = true;
     this.rsService.fetchSections();
     this.sectionsSubs = this.rsService.sectionsChanged.subscribe((sections) => {
       this.sections = sections;
-      this.isLoading2 = false;
-
-
-      console.log(this.sections);
-
 
       this.sections = this.sections.sort((a,b) => {
         return +a.section - +b.section
@@ -63,7 +79,15 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
         return 0;
       });
 
-      this.unfilteredSections = this.sections;
+      this.isLoading2 = false;
+      this.dataSource2.data = this.sections;
+
+      // console.log(this.sections);
+
+
+
+
+      // this.unfilteredSections = this.sections;
 
 
     });
@@ -80,6 +104,13 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
     return 0;
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sorter1;
+    this.dataSource.paginator = this.paginator1;
+
+    this.dataSource2.sort = this.sorter2;
+    this.dataSource2.paginator = this.paginator2;
+  }
 
   //Room
   onAddRoom() {
@@ -91,17 +122,17 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
   }
 
 
-  onEditRoom(index: number){
+  onEditRoom(room: Room){
     this.dialog.open(RoomConfigComponent, {
       data: {
         configType: 'edit',
-        room: this.rooms[index]
+        room: room
       },
     });
   }
 
-  onRemoveRoom(index: number){
-    this.rsService.deleteRoomToDatabase(this.rooms[index].id);
+  onRemoveRoom(roomId: string){
+    this.rsService.deleteRoomToDatabase(roomId);
   }
 
 
@@ -109,7 +140,7 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
   //Section
 
   onAddSection() {
-    this.buttonGroup.value = 'all'
+    // this.buttonGroup.value = 'all'
     this.dialog.open(SectionConfigComponent, {
       data: {
         configType: 'add',
@@ -118,35 +149,35 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
   }
 
 
-  onEditSection(index: number){
-    this.buttonGroup.value = 'all'
+  onEditSection(section: Section){
+    // this.buttonGroup.value = 'all'
     this.dialog.open(SectionConfigComponent, {
       data: {
         configType: 'edit',
-        section: this.sections[index]
+        section: section
       },
     });
   }
 
   onRemoveSection(index: number){
-    this.buttonGroup.value = 'all'
+    // this.buttonGroup.value = 'all'
     this.rsService.deleteSectionToDatabase(this.sections[index].id);
   }
 
-  filter(value: String){
-    this.sections = this.unfilteredSections;
+  // filter(value: String){
+  //   this.sections = this.unfilteredSections;
 
-    if(value !== 'all'){
-      this.sections = this.sections.filter(function (el) {
-        return el.course === value;
-      })
-    }
-    else {
-      this.sections = this.unfilteredSections;
-    }
+  //   if(value !== 'all'){
+  //     this.sections = this.sections.filter(function (el) {
+  //       return el.course === value;
+  //     })
+  //   }
+  //   else {
+  //     this.sections = this.unfilteredSections;
+  //   }
 
 
-  }
+  // }
 
 
 

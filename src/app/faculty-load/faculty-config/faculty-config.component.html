@@ -152,8 +152,6 @@
             ></ngx-material-timepicker>
           </div>
         </div>
-      </div>
-      <div fxLayout="column" fxLayoutGap="10px">
         <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
           <mat-checkbox
             color="primary"
@@ -188,6 +186,9 @@
             ></ngx-material-timepicker>
           </div>
         </div>
+      </div>
+      <div fxLayout="column" fxLayoutGap="10px">
+
 
         <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
           <mat-checkbox
@@ -249,6 +250,40 @@
               [ngxTimepicker]="picker2"
               style="width: 60px"
               formControlName="saturdayEnd"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker2
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+          <mat-checkbox
+            color="primary"
+            formControlName="sunday"
+            (change)="onSundayChange($event)"
+            >Sunday</mat-checkbox
+          >
+
+          <div fxLayout="row" *ngIf="facultyForm.value.sunday">
+            <input
+              [ngxTimepicker]="picker"
+              style="width: 60px"
+              formControlName="sundayStart"
+              [disableClick]="pickerDisabled"
+            />
+            <ngx-material-timepicker
+              #picker
+              (opened)="togglePicker($event)"
+              (closed)="togglePicker($event)"
+            ></ngx-material-timepicker>
+            <p>-</p>
+            <input
+              [ngxTimepicker]="picker2"
+              style="width: 60px"
+              formControlName="sundayEnd"
               [disableClick]="pickerDisabled"
             />
             <ngx-material-timepicker
