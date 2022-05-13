@@ -1,0 +1,47 @@
+<div fxLayout="column" style="margin-left: 15px; margin-top: 15px;">
+  <div class="time" fxFlex="16%">
+    <div>
+      <p class=" section" *ngIf="currentSectionLoad[0]">SECTION: {{currentSectionLoad[0]?.section + ' ' + (currentSectionLoad[0].semester | uppercase)}}</p>
+    </div>
+  </div>
+  <div class="time" fxFlex="16%">
+    <div>
+      <p class=" section" *ngIf="!currentSectionLoad[0]">SECTION</p>
+    </div>
+  </div>
+  <div class="load-headers" fxLayout="row" style="width: 100%;">
+    <div fxFlex="33%">
+      <p class="load-header" style="background-color: rgb(255, 249, 160);">SUBJECT</p>
+    </div>
+    <div fxFlex="10%">
+      <p class="load-header" style="background-color: rgb(167, 188, 255);">DAY</p>
+    </div>
+    <div fxFlex="16%">
+      <p class="load-header" style="background-color: rgb(255, 201, 188);">TIME</p>
+    </div>
+    <div fxFlex="13%">
+      <p class="load-header" style="background-color: rgb(255, 234, 167);">ROOM</p>
+    </div>
+    <div fxFlex="28%">
+      <p class="load-header" style="background-color: rgb(179, 226, 152);">INSTRUCTOR</p>
+    </div>
+  </div>
+
+  <div class="load-texts" fxLayout="row" fxLayoutAlign="center" *ngFor="let load of allLoads" style="width: 99.7%;">
+    <div fxFlex="33%">
+      <p class="load-text" fxFill>{{load.subjectDescription | uppercase}}</p>
+    </div>
+    <div fxFlex="10%">
+      <p class="load-text" fxFill>{{(load.day.substring(0, 3) | uppercase)}}</p>
+    </div>
+    <div fxFlex="16%">
+      <p class="load-text" fxFill>{{load.startTime.substring(0, load.startTime.length - 3) + ' - ' + load.endTime}}</p>
+    </div>
+    <div fxFlex="13%">
+      <p class="load-text" fxFill>{{load.room | uppercase}}</p>
+    </div>
+    <div fxFlex="28%">
+      <p class="load-text" fxFill>{{load.facultyName | uppercase}}</p>
+    </div>
+</div>
+</div>

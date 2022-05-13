@@ -164,7 +164,7 @@
         </mat-form-field>
         <mat-form-field fxFlex="30%">
           <mat-label>End Time</mat-label>
-          <mat-select formControlName="endTime">
+          <mat-select formControlName="endTime" disabled>
             <mat-option *ngFor="let time of times" [value]="time">{{
               time
             }}</mat-option>
@@ -277,7 +277,7 @@
               <mat-cell *matCellDef="let element" >
                    <mat-icon class="actions" (click)="onEditLoad(element, target)">edit</mat-icon>
                    <mat-icon class="actions" (click)="onDeleteLoad(element.id)">delete</mat-icon>
-                   <mat-icon class="actions" (click)="onSplit(element)" *ngIf="+element.noHour > 5">hourglass_bottom</mat-icon>
+                   <mat-icon class="actions" (click)="onSplit(element)" *ngIf="+element.noHour > 5">manage_history</mat-icon>
               </mat-cell>
          </ng-container>
 

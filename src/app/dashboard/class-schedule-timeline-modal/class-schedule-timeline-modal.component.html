@@ -1,0 +1,40 @@
+<div fxLayout="column" class="main-div" >
+  <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="15px">
+    <p class="header">CLASS SCHEDULE</p>
+    <button mat-raised-button color="primary" style="width: 200px;" (click)="exportToPDF()">Export as PDF</button>
+
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <p class="view-text">View as:</p>
+      <mat-button-toggle-group
+        #group="matButtonToggleGroup"
+        color="primary"
+        fxLayoutAlign="end center"
+        class="button-toggle"
+      >
+        <mat-button-toggle
+          value="Class Schedule Timeline"
+          (click)="filter(group.value)"
+          >Class Schedule Timeline</mat-button-toggle
+        >
+        <mat-button-toggle
+          value="Class Schedule Table"
+          (click)="filter(group.value)"
+          >Class Schedule Table</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+    </div>
+  </div>
+
+    <div *ngIf="isLoading" fxLayoutAlign="center center" style="height: 100vh;">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div #content>
+      <div *ngIf="!isLoading">
+        <div *ngFor="let load of loads">
+          <app-class-schedule-timeline [classScheduleTimeline]="load" *ngIf="view =='Class Schedule Timeline'"></app-class-schedule-timeline>
+          <app-class-schedule-table [classScheduleTable]="load" *ngIf="view =='Class Schedule Table'"></app-class-schedule-table>
+        </div>
+      </div>
+    </div>
+</div>

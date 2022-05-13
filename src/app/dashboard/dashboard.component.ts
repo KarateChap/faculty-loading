@@ -13,6 +13,8 @@ import { AcademicService } from '../shared/services/academic.service';
 import { CurriculumService } from '../shared/services/curriculum.service';
 import { UserService } from '../shared/services/user.service';
 import { UIService } from '../shared/UIService/ui.service';
+import { ClassScheduleTimelineModalComponent } from './class-schedule-timeline-modal/class-schedule-timeline-modal.component';
+import { FacultyLoadTimelineModalComponent } from './faculty-load-timeline-modal/faculty-load-timeline-modal.component';
 import { SetAcademicYearComponent } from './set-academic-year/set-academic-year.component';
 
 @Component({
@@ -44,6 +46,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   unfilteredNewCurriculum: Curriculum[] = [];
   newCSVSubs: Subscription;
   currentUser: NewUser;
+  activeAcademicYear: AcademicPeriod;
+
 
   constructor(
     private dialog: MatDialog,
@@ -51,11 +55,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private ngxCsvParser: NgxCsvParser,
     private curriculumService: CurriculumService,
     private uiService: UIService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
 
+
+    this.activeAcademicYear = this.AcademicService.getActiveAcademicYear();
     this.currentUser = this.userService.getCurrentUser();
     this.curriculumService.fetchAllCurriculum();
     this.curriculumSubs =
@@ -143,6 +149,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.newCurriculum = this.unfilteredNewCurriculum;
       this.dataSource.data = this.newCurriculum;
     }
+  }
+
+
+  openClassScheduleTimeline(){
+    this.dialog.open(ClassScheduleTimelineModalComponent, {
+      data: {
+        currentUser: this.currentUser,
+        activeAcademicYear: this.activeAcademicYear
+      },
+    });
+  }
+  openFacultyLoadTimeline(){
+    this.dialog.open(FacultyLoadTimelineModalComponent, {
+      data: {
+        currentUser: this.currentUser,
+        activeAcademicYear: this.activeAcademicYear
+      },
+    });
   }
 
   ngOnDestroy(): void {

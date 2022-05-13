@@ -13,9 +13,11 @@ import { Room } from 'src/app/shared/models/room.model';
 import { Section } from 'src/app/shared/models/section.model';
 import { AcademicService } from 'src/app/shared/services/academic.service';
 import { CurriculumService } from 'src/app/shared/services/curriculum.service';
+import { FacultyService } from 'src/app/shared/services/faculty.service';
 import { LoadService } from 'src/app/shared/services/load.service';
 import { RoomSectionService } from 'src/app/shared/services/room-section.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { UIService } from 'src/app/shared/UIService/ui.service';
 
 @Component({
   selector: 'app-load-editor',
@@ -107,19 +109,49 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
   loads: LoadItem[] = [];
   loadSubs: Subscription;
 
+  onAddMode = false;;
+  onEditMode = false;
+
+  currentLoad: LoadItem;
+  isAllowedToEdit = false;
+
+  faculties: Faculty[] = [];
+
+  facultySubs: Subscription;
 
   constructor(
     private curriculumService: CurriculumService,
     private roomSectionService: RoomSectionService,
     private loadService: LoadService,
     private academicService: AcademicService,
-    private userService: UserService
+    private userService: UserService,
+    private uiService: UIService,
+    private facultyService: FacultyService
   ) {}
 
   ngOnInit(): void {
 
     this.currentChairperson = this.userService.getCurrentUser();
+    let currentDate = new Date();
+    let currentTimeStamp = currentDate.getTime() / 1000.0;
+
+    if (
+      +currentTimeStamp > +this.currentChairperson.startDate.seconds &&
+      +currentTimeStamp < +this.currentChairperson.endDate.seconds
+    ) {
+      this.isAllowedToEdit = true;
+    } else {
+      this.isAllowedToEdit = false;
+    }
+
     this.activeAcademicYear = this.academicService.getActiveAcademicYear();
+
+
+    this.facultySubs = this.facultyService.facultyChanged.subscribe(
+      (faculties) => {
+        this.faculties = faculties;
+      }
+    );
 
     this.roomSectionService.fetchRooms();
     this.roomsSubs = this.roomSectionService.roomsChanged.subscribe((rooms) => {
@@ -163,7 +195,7 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
             .split(/\s/)
             .reduce((response, word) => (response += word.slice(0, 1)), '');
           this.trimmedSections.push(
-            acronym + ' ' + element.year + '-' + element.section
+            'BS' + acronym + ' ' + element.year + '-' + element.section
           );
         });
       }
@@ -190,10 +222,7 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     this.loadForm = new FormGroup({
       subjectCode: new FormControl({ value: '' }, Validators.required),
       subjectDescription: new FormControl({ value: '' }, Validators.required),
-      units: new FormControl(
-        { value: '', disabled: true },
-        Validators.required
-      ),
+      units: new FormControl('', Validators.required),
       noHour: new FormControl('', {
         validators: [
           Validators.pattern(/^[0-9]*$/),
@@ -210,6 +239,7 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
       ),
       room: new FormControl('', Validators.required),
     });
+    console.log(this.loadForm.value.units);
 
     this.loadService.fetchFacultyLoad(
       this.activeAcademicYear.startYear,
@@ -221,7 +251,13 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     this.loadSubs = this.loadService.loadChange.subscribe(loads => {
       this.loads = loads;
       this.dataSource.data = this.loads;
+      this.loadService.changeCurrentFacultyLoad(this.loads);
     })
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   onChangeHours(event: any) {
@@ -255,6 +291,11 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     this.onSearching = false;
   }
 
+  onAddLoadMode(){
+    this.onAddMode = true;
+    this.onEditMode = false;
+  }
+
 
   doFilter(filterValue: string) {
     if(filterValue == ''){
@@ -276,6 +317,8 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
   }
   onClear(){
     this.loadForm.reset();
+    this.onEditMode = false;
+    this.onAddMode = false;
   }
 
 
@@ -315,8 +358,149 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     });
   }
 
+  onDeleteLoad(loadId: string) {
+    if(this.loads.length > 1){
+      this.loadService.onRemoveLoad(loadId);
+      this.onEditMode = false;
+      this.onAddMode = false;
+    }
+    else {
+      this.uiService.showErrorToast('You should have atleast 1 load!','Error')
+    }
+  }
+
+  onEditLoad(load: LoadItem, target: HTMLElement) {
+    this.onEditMode = true;
+    this.onAddMode = false;
+
+    if (this.isAllowedToEdit) {
+      this.currentLoad = load;
+      // const selectedFacultyName = this.faculties.find(
+      //   (item) =>
+      //     JSON.stringify(item.fullName) === JSON.stringify(load.facultyName)
+      // );
+      const selectedRoomName = this.rooms.find(
+        (item) => JSON.stringify(item.roomName) === JSON.stringify(load.room)
+      );
+      console.log(load);
+      this.loadForm.patchValue({ subjectCode: load.subjectCode });
+      this.loadForm.patchValue({ subjectDescription: load.subjectDescription });
+      this.loadForm.patchValue({ units: load.units });
+      this.loadForm.patchValue({ noHour: load.noHour });
+      this.loadForm.patchValue({ section: load.section });
+      this.loadForm.patchValue({ day: load.day });
+      this.loadForm.patchValue({ startTime: load.startTime });
+      this.loadForm.patchValue({ endTime: load.endTime });
+      this.loadForm.patchValue({ room: selectedRoomName });
+
+      target.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      this.uiService.showWarningToast(
+        'You are not allowed to edit yet, contact the administrator to ask permission.',
+        'Warning'
+      );
+    }
+  }
+
+  onSplit(element: any){
+    console.log(element);
+    this.loadService.updateLoadToDatabase(
+      {
+        facultyName: element.facultyName,
+        facultyId: element.facultyId,
+        department: element.department,
+        chairperson: element.chairperson,
+        semester: element.semester,
+        schoolYear: element.schoolYear,
+        subjectCode: element.subjectCode,
+        subjectDescription: element.subjectDescription,
+        units: element.units,
+        noHour: (+element.noHour/2).toString(),
+        section: element.section,
+        day: '',
+        startTime: '',
+        endTime: '',
+        room: '',
+      },
+      element.id
+    );
+
+    this.loadService.addLoad({
+      facultyName: element.facultyName,
+      facultyId: element.facultyId,
+      department: element.department,
+      chairperson: element.chairperson,
+      semester: element.semester,
+      schoolYear: element.schoolYear,
+      subjectCode: element.subjectCode,
+      subjectDescription: element.subjectDescription,
+      units: element.units,
+      noHour: (+element.noHour/2).toString(),
+      section: element.section,
+      day: '',
+      startTime: '',
+      endTime: '',
+      room: '',
+    });
+
+  }
+
 
   onSubmit(){
+    if(this.onAddMode){
+      this.loadService.addLoad({
+        facultyName: this.activeFaculty.fullName,
+        facultyId: this.activeFaculty.id,
+        department: this.currentChairperson.department,
+        chairperson: this.currentChairperson.fullName,
+        semester: this.activeAcademicYear.semester,
+        schoolYear: this.activeAcademicYear.startYear,
+        subjectCode: this.loadForm.value.subjectCode,
+        subjectDescription: this.loadForm.value.subjectDescription,
+        units: this.loadForm.value.units,
+        noHour: this.loadForm.value.noHour,
+        section: this.loadForm.value.section,
+        day: this.loadForm.value.day,
+        startTime: this.loadForm.value.startTime,
+        endTime: this.loadForm.value.endTime,
+        room: this.loadForm.value.room.roomName,
+      })
+      this.loadForm.reset();
+      this.onEditMode = false;
+      this.onAddMode = false;
+    }
+    else {
+      if (this.currentLoad.id != '') {
+        this.loadService.updateLoadToDatabase(
+          {
+            facultyName: this.activeFaculty.fullName,
+            facultyId: this.activeFaculty.id,
+            department: this.currentLoad.department,
+            chairperson: this.currentLoad.chairperson,
+            semester: this.currentLoad.semester,
+            schoolYear: this.currentLoad.schoolYear,
+            subjectCode: this.loadForm.value.subjectCode,
+            subjectDescription: this.loadForm.value.subjectDescription,
+            units: this.loadForm.value.units,
+            noHour: this.loadForm.value.noHour,
+            section: this.loadForm.value.section,
+            day: this.loadForm.value.day,
+            startTime: this.loadForm.value.startTime,
+            endTime: this.loadForm.value.endTime,
+            room: this.loadForm.value.room.roomName,
+          },
+          this.currentLoad.id
+        );
+        this.loadForm.reset();
+        this.onEditMode = false;
+        this.onAddMode = false;
+      } else {
+        this.uiService.showErrorToast(
+          'Cannot Add new Load, please select a load to Edit!',
+          'Error'
+        );
+      }
+    }
 
   }
 
@@ -324,6 +508,7 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     this.curriculumSubs.unsubscribe();
     this.sectionSubs.unsubscribe();
     this.roomsSubs.unsubscribe();
+    this.facultySubs.unsubscribe();
     this.loadSubs.unsubscribe();
   }
 }

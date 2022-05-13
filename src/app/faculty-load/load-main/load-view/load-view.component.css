@@ -1,0 +1,131 @@
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--light);
+  border-radius: 20px;
+  transition: all ease-in-out 1s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+.main-div{
+  height: 77vh;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  overflow-y: scroll;
+}
+
+.main-div::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+.button-toggle {
+  padding: 13px 13px;
+  height: 25px;
+}
+
+mat-button-toggle{
+  font-family: var(--mont);
+  font-size: 13px !important;
+}
+
+mat-button-toggle:hover {
+  background-color: var(--primary) !important;
+  color: white;
+}
+
+.mat-button-toggle-checked {
+  background-color: var(--primary) !important;
+  color: white;
+}
+
+.mat-button-toggle-group{
+  border: 0px !important;
+}
+
+.view-text{
+  font-family: var(--mont);
+  margin-top: 12px;
+}
+
+.export-btn{
+  background-color: rgb(212, 212, 212);
+  margin-right: 15px;
+}
+
+.timeline{
+  margin-top: 15px;
+}
+
+.table-item{
+  border: 1px solid black;
+  text-align: center;
+  margin: 0;
+}
+
+.header{
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+}
+
+.on-schedule{
+  background-color: rgb(219, 219, 219);
+}
+
+.section{
+  font-weight: bold; font-family: var(--incon);
+}
+
+.load-headers{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.load-header{
+  border: 1px solid black;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.load-texts{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.load-text{
+  border: 1px solid black;
+  letter-spacing: 0.1em;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+}
+
+
+.total-texts{
+  text-align: center;
+}
+
+.total-text{
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  border: 1px solid black;
+}

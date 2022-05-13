@@ -95,7 +95,7 @@
         backgroundColor: activeLink == 'sectionload' ? 'white' : ''
       }"
       (click)="onSectionLoadActive('sectionload')"
-    ><mat-icon class="text-margin">folder_shared</mat-icon> Section Load
+    ><mat-icon class="text-margin">folder_shared</mat-icon> Class Schedule Mode
   </button>
       <button
         *ngIf="currentUser.department != 'admin'"
@@ -108,7 +108,7 @@
         }"
         (click)="onFacultyLoadActive('facultyload')"
       >
-        <mat-icon class="text-margin">group_add</mat-icon> Faculty Load
+        <mat-icon class="text-margin">group_add</mat-icon> Faculty Mode
       </button>
       <button
         *ngIf="currentUser.department != 'admin'"

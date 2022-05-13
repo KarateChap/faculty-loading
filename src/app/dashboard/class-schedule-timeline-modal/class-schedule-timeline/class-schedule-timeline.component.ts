@@ -1,20 +1,17 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
 import { LoadItem } from 'src/app/shared/models/load-item.model';
+import { NewLoad } from 'src/app/shared/models/new-load.model';
 import { LoadService } from 'src/app/shared/services/load.service';
-import jsPDF from 'jspdf';
 import { UIService } from 'src/app/shared/UIService/ui.service';
 
 @Component({
-  selector: 'app-section-load-view',
-  templateUrl: './section-load-view.component.html',
-  styleUrls: ['./section-load-view.component.css'],
+  selector: 'app-class-schedule-timeline',
+  templateUrl: './class-schedule-timeline.component.html',
+  styleUrls: ['./class-schedule-timeline.component.css']
 })
-export class SectionLoadViewComponent implements OnInit, OnDestroy{
-  @ViewChild('content', { static: true }) content: ElementRef;
-  view = 'Class Schedule Timeline';
+export class ClassScheduleTimelineComponent implements OnInit {
+  @Input() classScheduleTimeline: NewLoad;
   currentSectionLoad: LoadItem[] = [];
-  sectionSubs: Subscription;
   times: string[] = [
     '7:00 - 7:30 AM',
     '7:30 - 8:00 AM',
@@ -45,6 +42,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
     '8:00 - 8:30 PM',
   ];
 
+
   mondayLoad: LoadItem[] = [];
   tuesdayLoad: LoadItem[] = [];
   wednesdayLoad: LoadItem[] = [];
@@ -62,15 +60,16 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
   saturday: string[] = [];
   sunday: string[] = [];
 
-  constructor(private loadService: LoadService, private uiService: UIService) {}
+  constructor(private loadService: LoadService, private uiService: UIService) { }
 
   ngOnInit(): void {
+    console.log(this.classScheduleTimeline);
     this.fillDayArrays();
-    this.sectionSubs = this.loadService.currentSectionLoadChange.subscribe(
-      (currentSection) => {
+    // this.sectionSubs = this.loadService.currentSectionLoadChange.subscribe(
+    //   (currentSection) => {
         this.fillDayArrays();
-        this.currentSectionLoad = currentSection;
-        this.getDays(currentSection);
+        this.currentSectionLoad = this.classScheduleTimeline.loadItem;
+        this.getDays(this.classScheduleTimeline.loadItem);
         this.checkMondayLoads();
         this.checkTuesdayLoads();
         this.checkWednesdayLoads();
@@ -78,9 +77,10 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
         this.checkFridayLoads();
         this.checkSaturdayLoads();
         this.checkSundayLoads();
-      }
-    );
+    //   }
+    // );
   }
+
 
   checkMondayLoads() {
     this.mondayLoad.forEach((load) => {
@@ -570,29 +570,4 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
 
   }
 
-  exportToPDF() {
-    const DATA = this.content.nativeElement;
-    let doc: jsPDF = new jsPDF('p', 'mm', [730, 730]);
-    doc.canvas;
-    doc.html(DATA, {
-      callback: (doc) => {
-        try {
-          doc.save(`${this.currentSectionLoad[0].section}.pdf`);
-        } catch {
-          this.uiService.showErrorToast(
-            'Please choose a section first!',
-            'Error'
-          );
-        }
-      },
-    });
-  }
-
-  filter(value: string) {
-    this.view = value;
-  }
-
-  ngOnDestroy(): void {
-      this.sectionSubs.unsubscribe();
-  }
 }

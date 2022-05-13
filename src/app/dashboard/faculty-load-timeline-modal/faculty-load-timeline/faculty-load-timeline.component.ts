@@ -1,20 +1,19 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoadItem } from 'src/app/shared/models/load-item.model';
+import { NewLoad } from 'src/app/shared/models/new-load.model';
 import { LoadService } from 'src/app/shared/services/load.service';
-import jsPDF from 'jspdf';
 import { UIService } from 'src/app/shared/UIService/ui.service';
 
 @Component({
-  selector: 'app-section-load-view',
-  templateUrl: './section-load-view.component.html',
-  styleUrls: ['./section-load-view.component.css'],
+  selector: 'app-faculty-load-timeline',
+  templateUrl: './faculty-load-timeline.component.html',
+  styleUrls: ['./faculty-load-timeline.component.css']
 })
-export class SectionLoadViewComponent implements OnInit, OnDestroy{
-  @ViewChild('content', { static: true }) content: ElementRef;
-  view = 'Class Schedule Timeline';
-  currentSectionLoad: LoadItem[] = [];
-  sectionSubs: Subscription;
+export class FacultyLoadTimelineComponent implements OnInit {
+  @Input() facultyLoadTimeline: NewLoad;
+  currentFacultyLoad: LoadItem[] = [];
+  facultySubs: Subscription;
   times: string[] = [
     '7:00 - 7:30 AM',
     '7:30 - 8:00 AM',
@@ -62,24 +61,24 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
   saturday: string[] = [];
   sunday: string[] = [];
 
-  constructor(private loadService: LoadService, private uiService: UIService) {}
+  totalHours = 0;
+  totalUnits = 0;
+  constructor(private uiService: UIService, private loadService: LoadService) {}
 
   ngOnInit(): void {
     this.fillDayArrays();
-    this.sectionSubs = this.loadService.currentSectionLoadChange.subscribe(
-      (currentSection) => {
-        this.fillDayArrays();
-        this.currentSectionLoad = currentSection;
-        this.getDays(currentSection);
-        this.checkMondayLoads();
-        this.checkTuesdayLoads();
-        this.checkWednesdayLoads();
-        this.checkThursdayLoads();
-        this.checkFridayLoads();
-        this.checkSaturdayLoads();
-        this.checkSundayLoads();
-      }
-    );
+    this.totalHours = 0;
+    this.totalUnits = 0;
+    this.fillDayArrays();
+    this.currentFacultyLoad = this.facultyLoadTimeline.loadItem;
+    this.getDays( this.facultyLoadTimeline.loadItem);
+    this.checkMondayLoads();
+    this.checkTuesdayLoads();
+    this.checkWednesdayLoads();
+    this.checkThursdayLoads();
+    this.checkFridayLoads();
+    this.checkSaturdayLoads();
+    this.checkSundayLoads();
   }
 
   checkMondayLoads() {
@@ -90,7 +89,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
       let startIndexCounter = 0;
       let endIndexCounter = 0;
       let subjectCode = '';
-      let facultyName = '';
+      let facultySection = '';
 
       if (load.startTime == '7:00 AM') {
         subjectCode = load.subjectCode;
@@ -103,8 +102,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
           startIndex = startIndexCounter + 1;
         }
         if (time.includes(load.endTime)) {
-          let n = load.facultyName.split(' ');
-          facultyName = n[n.length - 1];
+          facultySection = load.section;
           endIndex = endIndexCounter;
         }
         startIndexCounter++;
@@ -115,20 +113,19 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
         indexDifference = endIndex - startIndex;
         offset = Math.floor(indexDifference / 2);
         this.monday[startIndex + offset] = subjectCode;
-        this.monday[endIndex - offset] = facultyName;
+        this.monday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
           this.monday[startIndex] = '-';
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.monday[endIndex] = '-';
           endIndex--;
         }
       } else {
         this.monday[startIndex] = subjectCode;
-        this.monday[endIndex] = facultyName;
+        this.monday[endIndex] = facultySection;
       }
 
       offset = 0;
@@ -139,6 +136,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
       endIndexCounter = 0;
     });
   }
+
   checkTuesdayLoads() {
     this.tuesdayLoad.forEach((load) => {
       let startIndex = 0;
@@ -147,7 +145,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
       let startIndexCounter = 0;
       let endIndexCounter = 0;
       let subjectCode = '';
-      let facultyName = '';
+      let facultySection = '';
       if (load.startTime == '7:00 AM') {
         subjectCode = load.subjectCode;
         startIndex = startIndexCounter;
@@ -158,8 +156,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
           startIndex = startIndexCounter + 1;
         }
         if (time.includes(load.endTime)) {
-          let n = load.facultyName.split(' ');
-          facultyName = n[n.length - 1];
+          facultySection = load.section;
           endIndex = endIndexCounter;
         }
         startIndexCounter++;
@@ -171,20 +168,19 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
         indexDifference = endIndex - startIndex;
         offset = Math.floor(indexDifference / 2);
         this.tuesday[startIndex + offset] = subjectCode;
-        this.tuesday[endIndex - offset] = facultyName;
+        this.tuesday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
           this.tuesday[startIndex] = '-';
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.tuesday[endIndex] = '-';
           endIndex--;
         }
       } else {
         this.tuesday[startIndex] = subjectCode;
-        this.tuesday[endIndex] = facultyName;
+        this.tuesday[endIndex] = facultySection;
       }
 
       offset = 0;
@@ -203,7 +199,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
       let startIndexCounter = 0;
       let endIndexCounter = 0;
       let subjectCode = '';
-      let facultyName = '';
+      let facultySection = '';
 
       if (load.startTime == '7:00 AM') {
         subjectCode = load.subjectCode;
@@ -215,8 +211,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
           startIndex = startIndexCounter + 1;
         }
         if (time.includes(load.endTime)) {
-          let n = load.facultyName.split(' ');
-          facultyName = n[n.length - 1];
+          facultySection = load.section;
           endIndex = endIndexCounter;
         }
         startIndexCounter++;
@@ -228,20 +223,19 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
         indexDifference = endIndex - startIndex;
         offset = Math.floor(indexDifference / 2);
         this.wednesday[startIndex + offset] = subjectCode;
-        this.wednesday[endIndex - offset] = facultyName;
+        this.wednesday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
           this.wednesday[startIndex] = '-';
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.wednesday[endIndex] = '-';
           endIndex--;
         }
       } else {
         this.wednesday[startIndex] = subjectCode;
-        this.wednesday[endIndex] = facultyName;
+        this.wednesday[endIndex] = facultySection;
       }
 
       offset = 0;
@@ -260,7 +254,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
       let startIndexCounter = 0;
       let endIndexCounter = 0;
       let subjectCode = '';
-      let facultyName = '';
+      let facultySection = '';
 
       if (load.startTime == '7:00 AM') {
         subjectCode = load.subjectCode;
@@ -272,8 +266,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
           startIndex = startIndexCounter + 1;
         }
         if (time.includes(load.endTime)) {
-          let n = load.facultyName.split(' ');
-          facultyName = n[n.length - 1];
+          facultySection = load.section;
           endIndex = endIndexCounter;
         }
         startIndexCounter++;
@@ -286,20 +279,19 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
         indexDifference = endIndex - startIndex;
         offset = Math.floor(indexDifference / 2);
         this.thursday[startIndex + offset] = subjectCode;
-        this.thursday[endIndex - offset] = facultyName;
+        this.thursday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
           this.thursday[startIndex] = '-';
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.thursday[endIndex] = '-';
           endIndex--;
         }
       } else {
         this.thursday[startIndex] = subjectCode;
-        this.thursday[endIndex] = facultyName;
+        this.thursday[endIndex] = facultySection;
       }
 
       offset = 0;
@@ -318,7 +310,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
       let startIndexCounter = 0;
       let endIndexCounter = 0;
       let subjectCode = '';
-      let facultyName = '';
+      let facultySection = '';
 
       if (load.startTime == '7:00 AM') {
         subjectCode = load.subjectCode;
@@ -330,8 +322,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
           startIndex = startIndexCounter + 1;
         }
         if (time.includes(load.endTime)) {
-          let n = load.facultyName.split(' ');
-          facultyName = n[n.length - 1];
+          facultySection = load.section;
           endIndex = endIndexCounter;
         }
         startIndexCounter++;
@@ -343,20 +334,19 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
         indexDifference = endIndex - startIndex;
         offset = Math.floor(indexDifference / 2);
         this.friday[startIndex + offset] = subjectCode;
-        this.friday[endIndex - offset] = facultyName;
+        this.friday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
           this.friday[startIndex] = '-';
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.friday[endIndex] = '-';
           endIndex--;
         }
       } else {
         this.friday[startIndex] = subjectCode;
-        this.friday[endIndex] = facultyName;
+        this.friday[endIndex] = facultySection;
       }
 
       offset = 0;
@@ -376,7 +366,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
       let startIndexCounter = 0;
       let endIndexCounter = 0;
       let subjectCode = '';
-      let facultyName = '';
+      let facultySection = '';
 
       if (load.startTime == '7:00 AM') {
         subjectCode = load.subjectCode;
@@ -388,8 +378,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
           startIndex = startIndexCounter + 1;
         }
         if (time.includes(load.endTime)) {
-          let n = load.facultyName.split(' ');
-          facultyName = n[n.length - 1];
+          facultySection = load.section;
           endIndex = endIndexCounter;
         }
         startIndexCounter++;
@@ -401,20 +390,19 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
         indexDifference = endIndex - startIndex;
         offset = Math.floor(indexDifference / 2);
         this.saturday[startIndex + offset] = subjectCode;
-        this.saturday[endIndex - offset] = facultyName;
+        this.saturday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
           this.saturday[startIndex] = '-';
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.saturday[endIndex] = '-';
           endIndex--;
         }
       } else {
         this.saturday[startIndex] = subjectCode;
-        this.saturday[endIndex] = facultyName;
+        this.saturday[endIndex] = facultySection;
       }
 
       offset = 0;
@@ -434,7 +422,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
       let startIndexCounter = 0;
       let endIndexCounter = 0;
       let subjectCode = '';
-      let facultyName = '';
+      let facultySection = '';
       if (load.startTime == '7:00 AM') {
         subjectCode = load.subjectCode;
         startIndex = startIndexCounter;
@@ -445,8 +433,7 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
           startIndex = startIndexCounter + 1;
         }
         if (time.includes(load.endTime)) {
-          let n = load.facultyName.split(' ');
-          facultyName = n[n.length - 1];
+          facultySection = load.section;
           endIndex = endIndexCounter;
         }
         startIndexCounter++;
@@ -458,20 +445,19 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
         indexDifference = endIndex - startIndex;
         offset = Math.floor(indexDifference / 2);
         this.sunday[startIndex + offset] = subjectCode;
-        this.sunday[endIndex - offset] = facultyName;
+        this.sunday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
           this.sunday[startIndex] = '-';
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.sunday[endIndex] = '-';
           endIndex--;
         }
       } else {
         this.sunday[startIndex] = subjectCode;
-        this.sunday[endIndex] = facultyName;
+        this.sunday[endIndex] = facultySection;
       }
 
       offset = 0;
@@ -481,6 +467,76 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
       startIndexCounter = 0;
       endIndexCounter = 0;
     });
+  }
+
+  getDays(currentFaculty: LoadItem[]) {
+    this.allLoads = [];
+    this.mondayLoad = currentFaculty.filter((load) => {
+      return load.day == 'monday';
+    });
+    this.tuesdayLoad = currentFaculty.filter((load) => {
+      return load.day == 'tuesday';
+    });
+    this.wednesdayLoad = currentFaculty.filter((load) => {
+      return load.day == 'wednesday';
+    });
+    this.thursdayLoad = currentFaculty.filter((load) => {
+      return load.day == 'thursday';
+    });
+    this.fridayLoad = currentFaculty.filter((load) => {
+      return load.day == 'friday';
+    });
+    this.saturdayLoad = currentFaculty.filter((load) => {
+      return load.day == 'saturday';
+    });
+    this.sundayLoad = currentFaculty.filter((load) => {
+      return load.day == 'sunday';
+    });
+
+    this.mondayLoad.forEach((element) => {
+      this.allLoads.push(element);
+    });
+    this.tuesdayLoad.forEach((element) => {
+      this.allLoads.push(element);
+    });
+    this.wednesdayLoad.forEach((element) => {
+      this.allLoads.push(element);
+    });
+    this.thursdayLoad.forEach((element) => {
+      this.allLoads.push(element);
+    });
+    this.fridayLoad.forEach((element) => {
+      this.allLoads.push(element);
+    });
+    this.saturdayLoad.forEach((element) => {
+      this.allLoads.push(element);
+    });
+    this.sundayLoad.forEach((element) => {
+      this.allLoads.push(element);
+    });
+
+    this.allLoads.forEach((element) => {
+      this.totalHours += +element.noHour;
+    });
+
+    var uniqueArray = this.removeDuplicates(this.allLoads, 'subjectCode');
+    uniqueArray.forEach((element) => {
+      this.totalUnits += +element.units;
+    });
+  }
+
+  removeDuplicates(originalArray: any, prop: any) {
+    var newArray: LoadItem[] = [];
+    var lookupObject: any = {};
+
+    for (var i in originalArray) {
+      lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    for (i in lookupObject) {
+      newArray.push(lookupObject[i]);
+    }
+    return newArray;
   }
 
   fillDayArrays() {
@@ -520,79 +576,5 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
       count++;
     });
     count = 0;
-  }
-
-  getDays(currentSection: LoadItem[]) {
-    this.allLoads = [];
-    this.mondayLoad = currentSection.filter((load) => {
-      return load.day == 'monday';
-    });
-    this.tuesdayLoad = currentSection.filter((load) => {
-      return load.day == 'tuesday';
-    });
-    this.wednesdayLoad = currentSection.filter((load) => {
-      return load.day == 'wednesday';
-    });
-    this.thursdayLoad = currentSection.filter((load) => {
-      return load.day == 'thursday';
-    });
-    this.fridayLoad = currentSection.filter((load) => {
-      return load.day == 'friday';
-    });
-    this.saturdayLoad = currentSection.filter((load) => {
-      return load.day == 'saturday';
-    });
-    this.sundayLoad = currentSection.filter((load) => {
-      return load.day == 'sunday';
-    });
-
-    this.mondayLoad.forEach(element => {
-      this.allLoads.push(element)
-    });
-    this.tuesdayLoad.forEach(element => {
-      this.allLoads.push(element)
-    });
-    this.wednesdayLoad.forEach(element => {
-      this.allLoads.push(element)
-    });
-    this.thursdayLoad.forEach(element => {
-      this.allLoads.push(element)
-    });
-    this.fridayLoad.forEach(element => {
-      this.allLoads.push(element)
-    });
-    this.saturdayLoad.forEach(element => {
-      this.allLoads.push(element)
-    });
-    this.sundayLoad.forEach(element => {
-      this.allLoads.push(element)
-    });
-
-  }
-
-  exportToPDF() {
-    const DATA = this.content.nativeElement;
-    let doc: jsPDF = new jsPDF('p', 'mm', [730, 730]);
-    doc.canvas;
-    doc.html(DATA, {
-      callback: (doc) => {
-        try {
-          doc.save(`${this.currentSectionLoad[0].section}.pdf`);
-        } catch {
-          this.uiService.showErrorToast(
-            'Please choose a section first!',
-            'Error'
-          );
-        }
-      },
-    });
-  }
-
-  filter(value: string) {
-    this.view = value;
-  }
-
-  ngOnDestroy(): void {
-      this.sectionSubs.unsubscribe();
   }
 }

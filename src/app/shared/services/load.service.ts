@@ -10,7 +10,12 @@ export class LoadService {
   currentSectionLoad: LoadItem[] = [];
   currentSectionLoadChange = new Subject<LoadItem[]>();
 
+  currentFacultyLoad: LoadItem[] = [];
+  currentFacultyLoadChange = new Subject<LoadItem[]>();
+
   loads: LoadItem[] = [];
+  allLoads: LoadItem[] = [];
+  allLoadChange = new Subject<LoadItem[]>();
   loadChange = new Subject<LoadItem[]>();
   constructor(private af: AngularFirestore, private uiService: UIService){
   }
@@ -18,6 +23,11 @@ export class LoadService {
   changeCurrentSectionLoad(currentSection: LoadItem[]){
     this.currentSectionLoad = currentSection;
     this.currentSectionLoadChange.next(currentSection);
+  }
+
+  changeCurrentFacultyLoad(currentFaculty: LoadItem[]){
+    this.currentFacultyLoad = currentFaculty;
+    this.currentFacultyLoadChange.next(currentFaculty);
   }
 
   fetchLoad(startYear: string, semester: string, chairpersonName: string, section: string) {
@@ -53,8 +63,24 @@ export class LoadService {
     });
   }
 
-  addSectionLoad(load: NewLoadItem){
+  fetchAllLoad(startYear: string, semester: string, chairpersonName: string){
+    this.af
+      .collection('load')
+      .ref.where('schoolYear', '==', startYear)
+      .where('semester', '==', semester)
+      .where('chairperson', '==', chairpersonName)
+      .onSnapshot((result) => {
+        this.allLoads = [];
+        result.forEach((doc) => {
+          this.allLoads.push({ id: doc.id, ...(doc.data() as NewLoadItem) });
+        });
+        this.allLoadChange.next(this.allLoads);
+      });
+  }
+
+  addLoad(load: NewLoadItem){
       this.af.collection('load').add(load);
+      this.uiService.showSuccessToast('Load Added Succesfully!', 'Success');
   }
 
   onRemoveLoad(loadId: string){

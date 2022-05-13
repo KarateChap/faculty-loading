@@ -29,6 +29,11 @@
             />
           </label>
         </div>
+
+        <div fxLayoutGap="15px" *ngIf="currentUser.department != 'admin'" style="margin-top: 15px;">
+          <button mat-raised-button color="primary" (click)="openClassScheduleTimeline()">View Class Schedule</button>
+          <button mat-raised-button color="primary" (click)="openFacultyLoadTimeline()">View Faculty Load</button>
+        </div>
       </div>
     </div>
     <div fxLayoutAlign="center center">

@@ -1,0 +1,23 @@
+.timeline{
+  margin-top: 15px;
+}
+
+.table-item{
+  border: 1px solid black;
+  text-align: center;
+  margin: 0;
+}
+
+.header{
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+}
+
+.on-schedule{
+  background-color: rgb(219, 219, 219);
+}
+
+.section{
+  font-weight: bold; font-family: var(--incon);
+}

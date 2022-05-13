@@ -1,0 +1,66 @@
+<div class="timeline" fxLayout="column"  style="margin-left: 15px;">
+  <div class="time" fxFlex="16%">
+    <div>
+      <p class=" section" *ngIf="currentFacultyLoad[0]">FACULTY: {{currentFacultyLoad[0]?.facultyName | uppercase}}</p>
+    </div>
+  </div>
+  <div class="time" fxFlex="16%">
+    <div>
+      <p class=" section" *ngIf="!currentFacultyLoad[0]">FACULTY</p>
+    </div>
+  </div>
+
+
+  <div fxFlex="84%">
+  </div>
+  <div class="table" fxLayout="row">
+    <div class="time" fxFlex="16%">
+      <div>
+        <p class="table-item header">TIME</p>
+        <p class="table-item" *ngFor="let time of times">{{ time }}</p>
+      </div>
+    </div>
+    <div class="monday" fxFlex="12%">
+      <div>
+        <p class="table-item header">MONDAY</p>
+        <p class="table-item" *ngFor="let mon of monday" [ngClass]="{'on-schedule': mon != ' '}">{{mon == '-' ? '  ' : mon}}</p>
+      </div>
+    </div>
+    <div class="tuesday" fxFlex="12%">
+      <div>
+        <p class="table-item header">TUESDAY</p>
+        <p class="table-item" *ngFor="let tue of tuesday" [ngClass]="{'on-schedule': tue != ' '}">{{tue == '-' ? '  ' : tue}}</p>
+      </div>
+    </div>
+    <div class="wednesday" fxFlex="12%">
+      <div>
+        <p class="table-item header">WEDNESDAY</p>
+        <p class="table-item" *ngFor="let wed of wednesday" [ngClass]="{'on-schedule': wed != ' '}">{{wed == '-' ? '  ' : wed}}</p>
+      </div>
+    </div>
+    <div class="thursday" fxFlex="12%">
+      <div>
+        <p class="table-item header">THURSDAY</p>
+        <p class="table-item" *ngFor="let thu of thursday" [ngClass]="{'on-schedule': thu != ' '}">{{thu == '-' ? '  ' : thu}}</p>
+      </div>
+    </div>
+    <div class="friday" fxFlex="12%">
+      <div>
+        <p class="table-item header">FRIDAY</p>
+        <p class="table-item" *ngFor="let fri of friday" [ngClass]="{'on-schedule': fri != ' '}">{{fri == '-' ? '  ' : fri}}</p>
+      </div>
+    </div>
+    <div class="saturday" fxFlex="12%">
+      <div>
+        <p class="table-item header">SATURDAY</p>
+        <p class="table-item" *ngFor="let sat of saturday" [ngClass]="{'on-schedule': sat != ' '}">{{sat == '-' ? '  ' : sat}}</p>
+      </div>
+    </div>
+    <div class="sunday" fxFlex="12%">
+      <div>
+        <p class="table-item header">SUNDAY</p>
+        <p class="table-item" *ngFor="let sun of sunday" [ngClass]="{'on-schedule': sun != ' '}">{{sun == '-' ? '  ' : sun}}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -38,6 +38,12 @@ import { LoadViewComponent } from './faculty-load/load-main/load-view/load-view.
 import { SectionLoadComponent } from './section-load/section-load.component';
 import { SectionLoadEditorComponent } from './section-load/section-load-editor/section-load-editor.component';
 import { SectionLoadViewComponent } from './section-load/section-load-view/section-load-view.component';
+import { ClassScheduleTimelineModalComponent } from './dashboard/class-schedule-timeline-modal/class-schedule-timeline-modal.component';
+import { FacultyLoadTimelineModalComponent } from './dashboard/faculty-load-timeline-modal/faculty-load-timeline-modal.component';
+import { ClassScheduleTimelineComponent } from './dashboard/class-schedule-timeline-modal/class-schedule-timeline/class-schedule-timeline.component';
+import { FacultyLoadTimelineComponent } from './dashboard/faculty-load-timeline-modal/faculty-load-timeline/faculty-load-timeline.component';
+import { ClassScheduleTableComponent } from './dashboard/class-schedule-timeline-modal/class-schedule-table/class-schedule-table.component';
+import { FacultyLoadTableComponent } from './dashboard/faculty-load-timeline-modal/faculty-load-table/faculty-load-table.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +71,12 @@ import { SectionLoadViewComponent } from './section-load/section-load-view/secti
     SectionLoadComponent,
     SectionLoadEditorComponent,
     SectionLoadViewComponent,
+    ClassScheduleTimelineModalComponent,
+    FacultyLoadTimelineModalComponent,
+    ClassScheduleTimelineComponent,
+    FacultyLoadTimelineComponent,
+    ClassScheduleTableComponent,
+    FacultyLoadTableComponent,
   ],
   imports: [
     BrowserModule,

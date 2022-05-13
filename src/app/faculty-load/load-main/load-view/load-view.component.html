@@ -1,1 +1,206 @@
-<p>{{activeFaculty.fullName}}</p>
+<div class="main-div">
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <p class="view-text">View as:</p>
+    <mat-button-toggle-group
+      #group="matButtonToggleGroup"
+      color="primary"
+      fxLayoutAlign="end center"
+      class="button-toggle"
+    >
+      <mat-button-toggle
+        value="Faculty Schedule Timeline"
+        (click)="filter(group.value)"
+        >Faculty Schedule Timeline</mat-button-toggle
+      >
+      <mat-button-toggle
+        value="Faculty Schedule Load"
+        (click)="filter(group.value)"
+        >Faculty Schedule Load</mat-button-toggle
+      >
+    </mat-button-toggle-group>
+  </div>
+  <div fxLayoutAlign="end center" fxLayout="row" style="margin-bottom: -30px;">
+    <button mat-raised-button class="export-btn" (click)="exportToPDF()">
+      <mat-icon>ios_share</mat-icon> Export as pdf
+    </button>
+  </div>
+
+
+  <div class="sub-div" #content style="margin-right: 10px">
+
+
+    <div class="timeline" fxLayout="column"  style="margin-left: 15px;" *ngIf="view=='Faculty Schedule Timeline'">
+      <div class="time" fxFlex="16%">
+        <div>
+          <p class=" section" *ngIf="currentFacultyLoad[0]">FACULTY: {{currentFacultyLoad[0]?.facultyName | uppercase}}</p>
+        </div>
+      </div>
+      <div class="time" fxFlex="16%">
+        <div>
+          <p class=" section" *ngIf="!currentFacultyLoad[0]">FACULTY</p>
+        </div>
+      </div>
+
+
+      <div fxFlex="84%">
+      </div>
+      <div class="table" fxLayout="row">
+        <div class="time" fxFlex="16%">
+          <div>
+            <p class="table-item header">TIME</p>
+            <p class="table-item" *ngFor="let time of times">{{ time }}</p>
+          </div>
+        </div>
+        <div class="monday" fxFlex="12%">
+          <div>
+            <p class="table-item header">MONDAY</p>
+            <p class="table-item" *ngFor="let mon of monday" [ngClass]="{'on-schedule': mon != ' '}">{{mon == '-' ? '  ' : mon}}</p>
+          </div>
+        </div>
+        <div class="tuesday" fxFlex="12%">
+          <div>
+            <p class="table-item header">TUESDAY</p>
+            <p class="table-item" *ngFor="let tue of tuesday" [ngClass]="{'on-schedule': tue != ' '}">{{tue == '-' ? '  ' : tue}}</p>
+          </div>
+        </div>
+        <div class="wednesday" fxFlex="12%">
+          <div>
+            <p class="table-item header">WEDNESDAY</p>
+            <p class="table-item" *ngFor="let wed of wednesday" [ngClass]="{'on-schedule': wed != ' '}">{{wed == '-' ? '  ' : wed}}</p>
+          </div>
+        </div>
+        <div class="thursday" fxFlex="12%">
+          <div>
+            <p class="table-item header">THURSDAY</p>
+            <p class="table-item" *ngFor="let thu of thursday" [ngClass]="{'on-schedule': thu != ' '}">{{thu == '-' ? '  ' : thu}}</p>
+          </div>
+        </div>
+        <div class="friday" fxFlex="12%">
+          <div>
+            <p class="table-item header">FRIDAY</p>
+            <p class="table-item" *ngFor="let fri of friday" [ngClass]="{'on-schedule': fri != ' '}">{{fri == '-' ? '  ' : fri}}</p>
+          </div>
+        </div>
+        <div class="saturday" fxFlex="12%">
+          <div>
+            <p class="table-item header">SATURDAY</p>
+            <p class="table-item" *ngFor="let sat of saturday" [ngClass]="{'on-schedule': sat != ' '}">{{sat == '-' ? '  ' : sat}}</p>
+          </div>
+        </div>
+        <div class="sunday" fxFlex="12%">
+          <div>
+            <p class="table-item header">SUNDAY</p>
+            <p class="table-item" *ngFor="let sun of sunday" [ngClass]="{'on-schedule': sun != ' '}">{{sun == '-' ? '  ' : sun}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="view=='Faculty Schedule Load'" fxLayout="column" style="margin-left: 15px; margin-top: 15px;">
+      <div class="time" fxFlex="16%">
+        <div>
+          <p class=" section" *ngIf="currentFacultyLoad[0]">FACULTY: {{currentFacultyLoad[0]?.facultyName | uppercase}}</p>
+        </div>
+      </div>
+      <div class="time" fxFlex="16%">
+        <div>
+          <p class=" section" *ngIf="!currentFacultyLoad[0]">FACULTY</p>
+        </div>
+      </div>
+      <div class="load-headers" fxLayout="row" style="width: 100%;">
+        <div fxFlex="5.11%">
+          <p class="load-header" style="background-color: rgb(189, 189, 189);">No.</p>
+        </div>
+        <div fxFlex="11.11%">
+          <p class="load-header" style="background-color: rgb(189, 189, 189);">Code</p>
+        </div>
+        <div fxFlex="25.11%">
+          <p class="load-header" style="background-color: rgb(189, 189, 189);">Subject</p>
+        </div>
+        <div fxFlex="6.11%">
+          <p class="load-header" style="background-color: rgb(189, 189, 189);">Units</p>
+        </div>
+        <div fxFlex="6.11%">
+          <p class="load-header" style="background-color: rgb(189, 189, 189);">Hours</p>
+        </div>
+        <div fxFlex="11.11%">
+          <p class="load-header" style="background-color: rgb(189, 189, 189);">Section</p>
+        </div>
+        <div fxFlex="11.11%">
+          <p class="load-header" style="background-color: rgb(189, 189, 189);">Day</p>
+        </div>
+        <div fxFlex="13.11%">
+          <p class="load-header" style="background-color: rgb(189, 189, 189);">Time</p>
+        </div>
+        <div fxFlex="11.11%">
+          <p class="load-header" style="background-color: rgb(189, 189, 189);">Room</p>
+        </div>
+
+      </div>
+
+      <div class="load-texts" fxLayout="row" fxLayoutAlign="center" *ngFor="let load of allLoads; let i = index" style="width: 99.7%;">
+        <div fxFlex="5.11%">
+          <p class="load-text" fxFill>{{i + 1}}</p>
+        </div>
+        <div fxFlex="11.11%">
+          <p class="load-text" fxFill>{{load.subjectCode | uppercase}}</p>
+        </div>
+        <div fxFlex="25.11%">
+          <p class="load-text" fxFill>{{load.subjectDescription | uppercase}}</p>
+        </div>
+        <div fxFlex="6.11%">
+          <p class="load-text" fxFill>{{load.units | uppercase}}</p>
+        </div>
+        <div fxFlex="6.11%">
+          <p class="load-text" fxFill>{{load.noHour | uppercase}}</p>
+        </div>
+        <div fxFlex="11.11%">
+          <p class="load-text" fxFill>{{load.section | uppercase}}</p>
+        </div>
+        <div fxFlex="11.11%">
+          <p class="load-text" fxFill>{{(load.day.substring(0, 3) | uppercase)}}</p>
+        </div>
+        <div fxFlex="13.11%">
+          <p class="load-text" fxFill>{{load.startTime.substring(0, load.startTime.length - 3) + ' - ' + load.endTime}}</p>
+        </div>
+        <div fxFlex="11.11%">
+          <p class="load-text" fxFill>{{load.room | uppercase}}</p>
+        </div>
+
+
+
+
+    </div>
+
+    <div class="total-texts"  fxLayout="row" style="width: 99.7%;">
+      <div fxFlex="5.11%">
+        <p  fxFill></p>
+      </div>
+      <div fxFlex="11.11%">
+        <p  fxFill></p>
+      </div>
+      <div fxFlex="25.11%">
+        <p class="total-text" fxFill style="background-color: rgb(189, 189, 189);">Total</p>
+      </div>
+      <div fxFlex="6.11%">
+        <p class="total-text" fxFill>{{totalUnits}}</p>
+      </div>
+      <div fxFlex="6.11%">
+        <p class="total-text" fxFill>{{totalHours}}</p>
+      </div>
+      <div fxFlex="11.11%">
+        <p  fxFill></p>
+      </div>
+      <div fxFlex="11.11%">
+        <p  fxFill></p>
+      </div>
+      <div fxFlex="13.11%">
+        <p  fxFill></p>
+      </div>
+      <div fxFlex="11.11%">
+        <p  fxFill></p>
+      </div>
+  </div>
+
+  </div>
+</div>

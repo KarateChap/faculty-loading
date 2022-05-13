@@ -3,10 +3,11 @@
   <form
     [formGroup]="loadForm"
     (ngSubmit)="onSubmit()"
+    #target
   >
     <div>
-      <mat-form-field fxFlex="60%">
-        <mat-icon matSuffix>search</mat-icon>
+      <mat-form-field fxFlex="40%" *ngIf="onEditMode || onAddMode">
+        <mat-icon matSuffix >search</mat-icon>
         <input
           matInput
           type="text"
@@ -20,17 +21,26 @@
         class="actions-div"
         fxLayoutAlign="end center"
         fxLayoutGap="15px"
-        fxFlex="40%"
+        fxFlex="100%"
       >
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="onAddLoadMode()"
+          [disabled]="onEditMode"
+        >
+          <mat-icon>add</mat-icon>Add Load
+        </button>
         <button
           mat-raised-button
           color="primary"
           type="submit"
           [disabled]="loadForm.invalid"
         >
-          <mat-icon>add</mat-icon>Add Load
+          <mat-icon>add</mat-icon>Save Load
         </button>
-        <button mat-stroked-button color="warn" type="button" (click)="onClear()">
+        <button mat-stroked-button color="warn" type="button" (click)="onClear()" [disabled]="!onEditMode && !onAddMode">
           <mat-icon>clear</mat-icon>Clear
         </button>
       </div>
@@ -48,7 +58,7 @@
       </mat-chip-list>
     </div>
 
-    <div class="forms-div">
+    <div class="forms-div" *ngIf="onEditMode || onAddMode">
       <div fxLayout="row" fxLayoutGap="15px">
         <mat-form-field fxFlex="30%">
           <mat-label>Code</mat-label>
@@ -122,7 +132,6 @@
           <mat-label>Start Time</mat-label>
           <mat-select
             formControlName="startTime"
-            [disabled]="startTimeDisabled"
             (selectionChange)="onStartTimeChange($event)"
           >
             <mat-option *ngFor="let time of times" [value]="time">{{
@@ -246,6 +255,8 @@
               <mat-header-cell  *matHeaderCellDef > Manage </mat-header-cell>
               <mat-cell *matCellDef="let element" >
                    <mat-icon class="actions" (click)="onEditLoad(element, target)">edit</mat-icon>
+                   <mat-icon class="actions" (click)="onDeleteLoad(element.id)">delete</mat-icon>
+                   <mat-icon class="actions" (click)="onSplit(element)" *ngIf="+element.noHour > 5">manage_history</mat-icon>
                    <!-- <mat-icon class="actions" (click)="onDeleteLoad(element.id)">delete</mat-icon> -->
               </mat-cell>
          </ng-container>

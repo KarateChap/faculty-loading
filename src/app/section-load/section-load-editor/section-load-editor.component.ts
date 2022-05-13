@@ -43,7 +43,7 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
   curriculumSubs: Subscription;
   onEditMode = false;
   onAddMode = false;
-  onSingleDelete = true;
+  // onSingleDelete = true;
 
   displayedColumns = [
     'subjectCode',
@@ -266,9 +266,10 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
       this.loadSubs = this.loadService.loadChange.subscribe((loads) => {
         this.loads = loads;
         if (loads.length == 0) {
-          if(this.onSingleDelete){
+          // if(this.onSingleDelete){
+            // console.log(this.onSingleDelete);
             this.autoCreateLoad();
-          }
+          // }
         } else {
           this.dataSource.data = loads;
           this.loadService.changeCurrentSectionLoad(this.loads);
@@ -307,7 +308,7 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
     console.log("sectionCurriculums")
     console.log(this.sectionCurriculums);
     await this.sectionCurriculums.forEach((element) => {
-      this.loadService.addSectionLoad({
+      this.loadService.addLoad({
         facultyName: '',
         facultyId: '',
         department: this.currentChairperson.department,
@@ -324,9 +325,8 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
         endTime: '',
         room: '',
       });
+      // this.onSingleDelete = true;
     });
-
-    this.onSingleDelete = false;
   }
 
   ngAfterViewInit(): void {
@@ -421,9 +421,12 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
   }
 
   async onSectionChanged(event: any) {
+    this.onEditMode = false;
+    this.onAddMode = false;
     let year = event.value.charAt(3);
     this.section = 'BS' + event.value;
-      this.loadService.fetchLoad(
+    console.log(this.section)
+    await this.loadService.fetchLoad(
       this.activeAcademicYear.startYear,
       this.activeAcademicYear.semester,
       this.currentChairperson.fullName,
@@ -441,11 +444,14 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
   }
 
   onDeleteLoad(loadId: string) {
-    this.loadService.onRemoveLoad(loadId);
-    this.onEditMode = false;
-    this.onAddMode = false;
-    console.log('Sheet');
-    this.onSingleDelete = true;
+    if(this.loads.length > 1){
+      this.loadService.onRemoveLoad(loadId);
+      this.onEditMode = false;
+      this.onAddMode = false;
+    }
+    else {
+      this.uiService.showErrorToast('You should have atleast 1 load!','Error')
+    }
   }
 
   onEditLoad(load: LoadItem, target: HTMLElement) {
@@ -525,18 +531,18 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
         );
       }
     } else if (this.onAddMode) {
-      this.loadService.addSectionLoad({
+      this.loadService.addLoad({
         facultyName: this.loadForm.value.faculty.fullName,
         facultyId: this.loadForm.value.faculty.id,
-        department: this.currentLoad.department,
-        chairperson: this.currentLoad.chairperson,
-        semester: this.currentLoad.semester,
-        schoolYear: this.currentLoad.schoolYear,
+        department: this.currentChairperson.department,
+        chairperson: this.currentChairperson.fullName,
+        semester: this.activeAcademicYear.semester,
+        schoolYear: this.activeAcademicYear.startYear,
         subjectCode: this.loadForm.value.subjectCode,
         subjectDescription: this.loadForm.value.subjectDescription,
         units: this.loadForm.value.units,
         noHour: this.loadForm.value.noHour,
-        section: this.currentLoad.section,
+        section: this.section,
         day: this.loadForm.value.day,
         startTime: this.loadForm.value.startTime,
         endTime: this.loadForm.value.endTime,
@@ -576,7 +582,7 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
       element.id
     );
 
-    this.loadService.addSectionLoad({
+    this.loadService.addLoad({
       facultyName: element.facultyName,
       facultyId: element.facultyId,
       department: element.department,
