@@ -4,7 +4,7 @@
       <div>
         <p class="header-text">Dashboard</p>
       </div>
-      <div fxLayout="column" class="sub-headers">
+      <div fxLayout="column" class="sub-headers" >
         <button
          *ngIf="currentUser.department == 'admin'"
           mat-raised-button
@@ -29,10 +29,15 @@
             />
           </label>
         </div>
+        <div fxLayoutAlign="end" fxLayoutGap="15px">
+        </div>
 
         <div fxLayoutGap="15px" *ngIf="currentUser.department != 'admin'" style="margin-top: 15px;">
           <button mat-raised-button color="primary" (click)="openClassScheduleTimeline()">View Class Schedule</button>
           <button mat-raised-button color="primary" (click)="openFacultyLoadTimeline()">View Faculty Load</button>
+        </div>
+        <div *ngIf="currentUser.department != 'admin'">
+          <button mat-stroked-button color="primary" style="width: 100%; margin-top: 15px;" (click)="onSubmitLoads()" [disabled]="currentUserLoad?.status == 'accepted' || currentUserLoad?.status == 'pending'">Submit Completed Loads</button>
         </div>
       </div>
     </div>

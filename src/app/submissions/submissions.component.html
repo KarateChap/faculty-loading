@@ -5,12 +5,203 @@
         <p class="header-text">Submission</p>
       </div>
       <div>
-        <button mat-raised-button color="primary" class="acad-button" (click)="openDeadlineModal()">
+        <button
+          mat-raised-button
+          color="primary"
+          class="acad-button"
+          (click)="openDeadlineModal()"
+        >
           <mat-icon>expand_more</mat-icon>
-          Set Deadline</button>
+          Set Deadline
+        </button>
       </div>
     </div>
 
-    <div class="content-div"></div>
+    <div
+      class="content-div"
+      fxLayoutGap="30px"
+      fxLayout="row wrap"
+      style="overflow-y: scroll"
+    >
+      <mat-tab-group>
+        <!-- pending -->
+        <mat-tab label="Pending">
+          <div
+            class="card-container"
+            fxLayout="row wrap"
+            *ngIf="pendingUserLoads.length > 0"
+          >
+            <div
+              fxLayout="column"
+              class="card-item"
+              *ngFor="let loads of pendingUserLoads; let i = index"
+            >
+              <div class="card-top">
+                <button
+                  mat-icon-button
+                  [matMenuTriggerFor]="menu"
+                  class="menu-icon"
+                >
+                  <mat-icon class="button-icon">more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="onApproveLoad(i)">
+                    <mat-icon>done</mat-icon>
+                    <span>Approve Load</span>
+                  </button>
+                  <button mat-menu-item (click)="onDeclineLoad(i)">
+                    <mat-icon>close</mat-icon>
+                    <span>Decline Load</span>
+                  </button>
+                </mat-menu>
+                <p class="name-text">{{ loads.chairpersonName }}</p>
+              </div>
+
+              <div class="card-bottom">
+                <mat-icon class="faculty-icon">person</mat-icon>
+                <p class="id-text">{{ loads.idNumber }}</p>
+                <!-- <p class="semester-text">{{ 'First Semester' }}</p> -->
+                <p class="schedule-text" style="margin-top: 20px">
+                  {{ loads.semester }}
+                </p>
+                <p class="schedule-text">Date Submitted:</p>
+                <p class="schedule-text">
+                  {{ loads.dateSubmitted.toDate() | date }}
+                </p>
+                <div fxLayoutAlign="end center">
+                  <button
+                    class="folder-icon"
+                    mat-stroked-button
+                    color="primary"
+                    style="margin-right: 15px"
+                  >
+                    <mat-icon>visibility</mat-icon> View Load
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <!-- pending -->
+        <!-- declined -->
+        <mat-tab label="Declined">
+          <div
+            class="card-container"
+            fxLayout="row wrap"
+            *ngIf="declinedUserLoads.length > 0"
+          >
+            <div
+              fxLayout="column"
+              class="card-item"
+              *ngFor="let loads of declinedUserLoads; let i = index"
+            >
+              <div class="card-top">
+                <!-- <button
+                          mat-icon-button
+                          [matMenuTriggerFor]="menu"
+                          class="menu-icon"
+                        >
+                          <mat-icon class="button-icon">more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                          <button mat-menu-item (click)="onApproveLoad(i)">
+                            <mat-icon>done</mat-icon>
+                            <span>Approve Load</span>
+                          </button>
+                          <button mat-menu-item (click)="onDeclineLoad(i)">
+                            <mat-icon>close</mat-icon>
+                            <span>Decline Load</span>
+                          </button>
+                        </mat-menu> -->
+                <p class="name-text">{{ loads.chairpersonName }}</p>
+              </div>
+
+              <div class="card-bottom">
+                <mat-icon class="faculty-icon">person</mat-icon>
+                <p class="id-text">{{ loads.idNumber }}</p>
+                <!-- <p class="semester-text">{{ 'First Semester' }}</p> -->
+                <p class="schedule-text" style="margin-top: 20px">
+                  {{ loads.semester }}
+                </p>
+                <p class="schedule-text">Date Submitted:</p>
+                <p class="schedule-text">
+                  {{ loads.dateSubmitted.toDate() | date }}
+                </p>
+                <div fxLayoutAlign="end center">
+                  <button
+                    class="folder-icon"
+                    mat-stroked-button
+                    color="primary"
+                    style="margin-right: 15px"
+                  >
+                    <mat-icon>visibility</mat-icon> View Load
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <!-- declined -->
+        <!-- approved -->
+        <mat-tab label="Approved">
+          <div
+            class="card-container"
+            fxLayout="row wrap"
+            *ngIf="acceptedUserLoads.length > 0"
+          >
+            <div
+              fxLayout="column"
+              class="card-item"
+              *ngFor="let loads of acceptedUserLoads; let i = index"
+            >
+              <div class="card-top">
+                <!-- <button
+                  mat-icon-button
+                  [matMenuTriggerFor]="menu"
+                  class="menu-icon"
+                >
+                  <mat-icon class="button-icon">more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="onApproveLoad(i)">
+                    <mat-icon>done</mat-icon>
+                    <span>Approve Load</span>
+                  </button>
+                  <button mat-menu-item (click)="onDeclineLoad(i)">
+                    <mat-icon>close</mat-icon>
+                    <span>Decline Load</span>
+                  </button>
+                </mat-menu> -->
+                <p class="name-text">{{ loads.chairpersonName }}</p>
+              </div>
+
+              <div class="card-bottom">
+                <mat-icon class="faculty-icon">person</mat-icon>
+                <p class="id-text">{{ loads.idNumber }}</p>
+                <!-- <p class="semester-text">{{ 'First Semester' }}</p> -->
+                <p class="schedule-text" style="margin-top: 20px">
+                  {{ loads.semester }}
+                </p>
+                <p class="schedule-text">Date Submitted:</p>
+                <p class="schedule-text">
+                  {{ loads.dateSubmitted.toDate() | date }}
+                </p>
+                <div fxLayoutAlign="end center">
+                  <button
+                    class="folder-icon"
+                    mat-stroked-button
+                    color="primary"
+                    style="margin-right: 15px"
+                  >
+                    <mat-icon>visibility</mat-icon> View Load
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <!-- approved -->
+      </mat-tab-group>
+    </div>
   </div>
 </section>

@@ -1,0 +1,10 @@
+<div class="main-div" fxLayoutAlign="center center" fxLayout="column">
+  <p class="main-text">ATTENTION!</p>
+  <p class="heading">You will not be able to resubmit a new load without the admin's approval.</p>
+  <p class="sub-heading">Are you sure you want to submit your edited load?</p>
+  <p class="sub-heading">Please make sure your load is final.</p>
+  <div fxLayoutGap="15px">
+    <button mat-raised-button color="primary" (click)="onSubmitUserLoad()" [mat-dialog-close]="false">Submit Load</button>
+    <button mat-stroked-button color="warn" [mat-dialog-close]="false">Cancel</button>
+  </div>
+</div>

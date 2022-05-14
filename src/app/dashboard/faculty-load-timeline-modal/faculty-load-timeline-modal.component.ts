@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import jsPDF from 'jspdf';
 import { Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import { UIService } from 'src/app/shared/UIService/ui.service';
   templateUrl: './faculty-load-timeline-modal.component.html',
   styleUrls: ['./faculty-load-timeline-modal.component.css']
 })
-export class FacultyLoadTimelineModalComponent implements OnInit {
+export class FacultyLoadTimelineModalComponent implements OnInit, OnDestroy {
   @ViewChild('content', { static: true }) content: ElementRef;
   loadSubs: Subscription;
   allLoadItems: LoadItem[] = [];
@@ -63,7 +63,7 @@ export class FacultyLoadTimelineModalComponent implements OnInit {
 
   exportToPDF() {
     const DATA = this.content.nativeElement;
-    let doc: jsPDF = new jsPDF('p', 'mm', [800, 800]);
+    let doc: jsPDF = new jsPDF('p', 'mm', [1000, 1000]);
     doc.canvas;
     doc.html(DATA, {
       callback: (doc) => {
@@ -81,5 +81,9 @@ export class FacultyLoadTimelineModalComponent implements OnInit {
 
   filter(value: string) {
     this.view = value;
+  }
+
+  ngOnDestroy(): void {
+      this.loadSubs.unsubscribe();
   }
 }

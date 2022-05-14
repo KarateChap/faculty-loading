@@ -605,7 +605,7 @@ export class LoadViewComponent implements OnInit {
 
   exportToPDF() {
     const DATA = this.content.nativeElement;
-    let doc: jsPDF = new jsPDF('p', 'mm', [730, 730]);
+    let doc: jsPDF = new jsPDF('p', 'mm', [850, 850]);
     doc.canvas;
     doc.html(DATA, {
       callback: (doc) => {

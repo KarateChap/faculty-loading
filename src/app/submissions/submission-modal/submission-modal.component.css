@@ -1,0 +1,15 @@
+.main-div{
+  padding: 5vh;
+}
+
+.heading {
+  font-family: var(--mont);
+  font-size: 15px;
+  color: var(--primary);
+}
+
+.remarks{
+  font-family: var(--mont);
+  font-size: 13px;
+}
+

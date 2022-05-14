@@ -1,4 +1,4 @@
-<div
+<!-- <div
   fxLayoutAlign="center center"
   fxLayout="column"
   fxLayoutGap="20px"
@@ -167,4 +167,211 @@
 
     <router-outlet></router-outlet>
   </div>
-</section>
+</section> -->
+
+<div
+  fxLayoutAlign="center center"
+  fxLayout="column"
+  fxLayoutGap="20px"
+  *ngIf="!currentUser"
+  style="height: 100vh"
+>
+  <mat-spinner></mat-spinner>
+  <p style="color: var(--primary)">Wait a sec...</p>
+</div>
+
+<mat-sidenav-container class="sidenav-container" *ngIf="currentUser">
+  <mat-sidenav
+    [(opened)]="opened"
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar class="information">
+      <div
+        class="profile"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+        fxLayoutGap="10px"
+      >
+        <img src="../../assets/admin-img.png" alt="" class="profile-pic" />
+        <p class="profile-name">
+          {{ currentUser ? (currentUser.fullName | uppercase) : "Greetings!" }}
+        </p>
+        <p class="profile-description">
+          {{
+            currentUser
+              ? currentUser.department == "admin"
+                ? "Dean"
+                : (currentUser.department | firstLetterWord) + " Chairperson"
+              : ""
+          }}
+        </p>
+        <p class="profile-description">
+          {{
+            currentUser.isActivated
+              ? "Account Activated"
+              : "Account Deactivated"
+          }}
+        </p>
+      </div>
+    </mat-toolbar>
+
+    <mat-nav-list>
+      <a
+        class="link-text"
+        mat-list-item
+        routerLink="dashboard"
+        routerLinkActive="active"
+        (click)="onDashboardActive('dashboard')"
+        [ngStyle]="{
+          backgroundColor: activeLink == 'dashboard' ? 'white' : ''
+        }"
+        ><mat-icon class="nav-spacer" color="primary">dashboard</mat-icon
+        >Dashboard</a
+      >
+    </mat-nav-list>
+    <mat-nav-list *ngIf="currentUser.department == 'admin'">
+      <a
+        class="link-text"
+        mat-list-item
+        routerLink="submission"
+        routerLinkActive="active"
+        (click)="onSubmissionActive('submission')"
+        [ngStyle]="{
+          backgroundColor: activeLink == 'submission' ? 'white' : ''
+        }"
+        ><mat-icon class="nav-spacer" color="primary">content_paste</mat-icon
+        >Submission</a
+      >
+    </mat-nav-list>
+    <mat-nav-list *ngIf="currentUser.department == 'admin'">
+      <a
+        class="link-text"
+        mat-list-item
+        routerLink="chairperson"
+        routerLinkActive="active"
+        (click)="onChairpersonActive('chairperson')"
+        [ngStyle]="{
+          backgroundColor: activeLink == 'chairperson' ? 'white' : ''
+        }"
+        ><mat-icon class="nav-spacer" color="primary">folder_shared</mat-icon
+        >Chairperson</a
+      >
+    </mat-nav-list>
+
+    <mat-nav-list *ngIf="currentUser.department == 'admin'">
+      <a
+        class="link-text"
+        mat-list-item
+        routerLink="roomsection"
+        routerLinkActive="active"
+        (click)="onRoomSectionActive('roomsection')"
+        [ngStyle]="{
+          backgroundColor: activeLink == 'roomsection' ? 'white' : ''
+        }"
+        ><mat-icon class="nav-spacer" color="primary">room_preferences</mat-icon
+        >Rooms & Sections</a
+      >
+    </mat-nav-list>
+
+    <mat-nav-list *ngIf="currentUser.department != 'admin'">
+      <a
+        class="link-text"
+        mat-list-item
+        routerLink="sectionload"
+        routerLinkActive="active"
+        (click)="onSectionLoadActive('sectionload')"
+        [ngStyle]="{
+          backgroundColor: activeLink == 'sectionload' ? 'white' : ''
+        }"
+        ><mat-icon class="nav-spacer" color="primary">folder_shared</mat-icon
+        >Class Schedule Mode</a
+      >
+    </mat-nav-list>
+
+    <mat-nav-list *ngIf="currentUser.department != 'admin'">
+      <a
+        class="link-text"
+        mat-list-item
+        routerLink="facultyload"
+        routerLinkActive="active"
+        (click)="onFacultyLoadActive('facultyload')"
+        [ngStyle]="{
+          backgroundColor: activeLink == 'facultyload' ? 'white' : ''
+        }"
+        ><mat-icon class="nav-spacer" color="primary">group_add</mat-icon
+        >Faculty Mode</a
+      >
+    </mat-nav-list>
+
+    <mat-nav-list *ngIf="currentUser.department != 'admin'">
+      <a
+        class="link-text"
+        mat-list-item
+        routerLink="history"
+        routerLinkActive="active"
+        (click)="onHistoryActive('history')"
+        [ngStyle]="{
+          backgroundColor: activeLink == 'history' ? 'white' : ''
+        }"
+        ><mat-icon class="nav-spacer" color="primary">history</mat-icon
+        >History</a
+      >
+    </mat-nav-list>
+
+    <mat-nav-list class="logout">
+    <div fxLayoutAlign="center center" fxLayout="row">
+      <mat-icon class="logout-icon">logout</mat-icon>
+      <p class="logout-text" (click)="onLogout()">Logout</p>
+    </div>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar class="toolbar">
+      <mat-icon color="primary" style="cursor: pointer; margin-right: 15px;" (click)="onToggle()"
+      >menu</mat-icon>
+      <div>
+        <p class="toolbar-text">
+          Academic Year:
+          {{
+            currentAcademic.startYear +
+              " - " +
+              currentAcademic.endYear +
+              " " +
+              currentAcademic.semester
+          }}
+        </p>
+      </div>
+      <div fxFlex fxLayout fxLayoutAlign="flex-end">
+        <div>
+          <span *ngIf="currentUser.department != 'admin'" class="deadline">{{" [Deadline " + (currentUser.startDate.toDate() | date) + " - " + (currentUser.endDate.toDate() | date) + "]"}}</span>
+        </div>
+
+        <div>
+          <mat-icon color="primary" class="bell-icon">notifications</mat-icon>
+        </div>
+        <ul fxLayout class="navigation-items" fxLayoutGap="10px">
+          <li>
+            <a
+              >Hi,
+              {{
+                currentUser
+                  ? currentUser.department == "admin"
+                    ? "Dean"
+                    : currentUser.fullName.split(" ")[1]
+                  : "Welcome!"
+              }}!</a
+            >
+          </li>
+        </ul>
+      </div>
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

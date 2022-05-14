@@ -1,3 +1,25 @@
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--light);
+  border-radius: 20px;
+  transition: all ease-in-out 1s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
 .main-div {
   width: 100%;
   height: 92%;
@@ -37,9 +59,106 @@
 
 .content-div {
   width: 100%;
-  height: 65vh;
+  height: 95vh;
 }
 
 .acad-button{
   margin-top: 4vh; margin-right: 3vh;
 }
+
+
+
+.card-item {
+  background-color: white;
+  width: 250px;
+  height: 270px;
+  margin-bottom: 30px;
+  border-radius: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.card-top {
+  /* background-color: green; */
+  background-color: var(--primary);
+  background-image: url('../../assets/plv-bldg.png');
+  background-repeat: no-repeat;
+  background-size: auto;
+  position: relative;
+  border-radius: 20px 0 0 0;
+}
+
+.menu-icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: white;
+
+}
+
+.mat-focus-indicator:hover {
+  background-color: var(--light);
+  color: var(--primary);
+}
+
+.name-text {
+  margin-top: 90px;
+  font-family: var(--mont);
+  margin-left: 15px;
+  color: white;
+  font-size: 13px;
+}
+
+.card-bottom {
+  /* background-color: blue; */
+  position: relative;
+}
+
+.id-text {
+  margin-top: 15px;
+  margin-left: 15px;
+  font-family: var(--mont);
+  line-height: 0.02em;
+  font-size: 12px;
+  color: var(--primary);
+}
+
+.faculty-icon{
+  position: absolute;
+  right: 10px;
+  transform: translateY(-25px);
+  background-color: rgb(255, 255, 255);
+  border-radius: 100%;
+  padding: 10px;
+  font-size: 25px;
+}
+
+.semester-text{
+  margin-left: 15px;
+  font-family: var(--mont);
+  font-size: 12px;
+}
+
+.schedule-text {
+  margin-left: 15px;
+  font-family: var(--mont);
+  font-size: 13px;
+  line-height: 0.5em;
+}
+
+.folder-icon {
+  cursor: pointer;
+}
+
+.card-container{
+  padding: 5vh 5vh 0vh 5vh;
+  width: 100%;
+  height: 65.5vh;
+  background-color: var(--light);
+}
+
+mat-tab-group{
+  width: 100%;
+}
+
+

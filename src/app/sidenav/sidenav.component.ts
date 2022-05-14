@@ -1,6 +1,8 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { map, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AcademicPeriod } from '../shared/models/academic-period.model';
 import { NewUser } from '../shared/models/new-user.model';
 import { AcademicService } from '../shared/services/academic.service';
@@ -21,11 +23,15 @@ export class SidenavComponent implements OnInit, OnDestroy {
   currentAcademic: AcademicPeriod;
   currentAcademicSubs: Subscription;
 
+
+  opened = true;
+  centered = false;
   constructor(
     private authService: AuthService,
     private router: Router,
     private userService: UserService,
-    private academicService: AcademicService
+    private academicService: AcademicService,
+    private breakpointObserver: BreakpointObserver,
   ) {}
 
 
@@ -56,8 +62,25 @@ export class SidenavComponent implements OnInit, OnDestroy {
       }
     })
     // this.activeLink = localStorage.getItem('activeLink') || '{}';
-
   }
+
+  onToggle() {
+    this.opened = !this.opened;
+    if (this.opened) {
+      this.centered = false;
+    } else {
+      this.centered = true;
+    }
+    // this.notificationService.setWindowOnToggle();
+  }
+
+  isHandset$: Observable<boolean> = this.breakpointObserver
+  .observe(Breakpoints.Handset)
+  .pipe(
+    map((result) => result.matches),
+    shareReplay()
+  );
+
   onDashboardActive(link: string) {
     this.activeLink = link;
     localStorage.setItem('activeLink', this.activeLink);

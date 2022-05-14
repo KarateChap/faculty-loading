@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { NewUserLoad } from '../models/new-user-load';
 import { NewUser } from '../models/new-user.model';
+import { UserLoad } from '../models/user-load';
 import { User } from '../models/user.model';
 import { UIService } from '../UIService/ui.service';
 
@@ -12,6 +14,10 @@ export class UserService {
   usersChanged = new Subject<User[]>();
   private currentUser: NewUser;
   currentUserChanges = new Subject<NewUser>();
+  userLoads: UserLoad[] = [];
+  userLoadsChanged = new Subject<UserLoad[]>();
+  currentUserLoad: UserLoad;
+  currentUserLoadChanged = new Subject<UserLoad>();
 
   constructor(private af: AngularFirestore, private uiService: UIService) {}
 
@@ -85,4 +91,64 @@ export class UserService {
     this.uiService.showSuccessToast('All Users Updated Succesfully!', 'Success');
     });
   }
+
+
+  addUserLoadsToDatabase(userLoad: NewUserLoad) {
+    this.af.collection('userLoad').add(userLoad);
+    this.uiService.showSuccessToast('Load Submitted Succesfully!', 'Success');
+  }
+
+  fetchAllUserLoads(){
+    this.af
+    .collection('userLoad')
+    .snapshotChanges()
+    .pipe(
+      map((docArray) => {
+        return docArray.map((doc) => {
+          return {
+            id: doc.payload.doc.id,
+            ...(doc.payload.doc.data() as any),
+          };
+        });
+      })
+    )
+    .subscribe((userLoads: UserLoad[]) => {
+      this.userLoads = userLoads;
+      this.userLoadsChanged.next([...this.userLoads]);
+    });
+  }
+
+
+  fetchUserLoad(startYear: string, semester: string, chairpersonName: string) {
+
+    this.af
+      .collection('userLoad')
+      .ref.where('year', '==', startYear)
+      .where('semester', '==', semester)
+      .where('chairpersonName', '==', chairpersonName)
+      .onSnapshot((result) => {
+        result.forEach((doc) => {
+          this.currentUserLoad = { id: doc.id, ...(doc.data() as NewUserLoad) }
+        });
+        this.currentUserLoadChanged.next(this.currentUserLoad);
+
+      });
+  }
+
+  updateUserLoad(id: string, status: string) {
+    this.af.doc('userLoad/' + id).update({ status: status });
+    this.uiService.showSuccessToast(
+      'Load updated Successfully!',
+      'Success'
+    );
+  }
+
+  updateDeclinedUserLoad(id: string, status: string, comment: string) {
+    this.af.doc('userLoad/' + id).update({ status: status, comment: comment});
+    this.uiService.showSuccessToast(
+      'Load declined Successfully!',
+      'Success'
+    );
+  }
+
 }

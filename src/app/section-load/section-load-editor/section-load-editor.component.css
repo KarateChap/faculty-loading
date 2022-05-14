@@ -106,3 +106,16 @@ mat-header-cell {
   color: var(--primary);
   font-weight: bold;
 }
+
+.load-img{
+  width: 50%;
+  height: auto;
+  opacity: 50%;
+  user-select: none;
+}
+
+.choose-text{
+  font-size: 15px;
+  font-family: var(--mont);
+  color: var(--primary);
+}

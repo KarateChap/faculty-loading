@@ -182,7 +182,7 @@
     </div>
   </form>
 
-  <div class="table-div">
+  <div class="table-div" *ngIf="loads.length > 0">
     <mat-table [dataSource]="dataSource" matSort style="width: 100%;">
         <ng-container matColumnDef="subjectCode">
           <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -289,5 +289,11 @@
         ></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>
+  </div>
+
+
+  <div *ngIf="loads.length == 0" style="height: 100%;" fxLayoutAlign="center center" fxLayout="column">
+      <img src="../../../assets/load-image.png" class="load-img">
+      <p class="choose-text">Choose a section to start managing load/s</p>
   </div>
 </div>

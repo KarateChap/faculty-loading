@@ -44,6 +44,8 @@ import { ClassScheduleTimelineComponent } from './dashboard/class-schedule-timel
 import { FacultyLoadTimelineComponent } from './dashboard/faculty-load-timeline-modal/faculty-load-timeline/faculty-load-timeline.component';
 import { ClassScheduleTableComponent } from './dashboard/class-schedule-timeline-modal/class-schedule-table/class-schedule-table.component';
 import { FacultyLoadTableComponent } from './dashboard/faculty-load-timeline-modal/faculty-load-table/faculty-load-table.component';
+import { SubmitConfirmationModalComponent } from './dashboard/submit-confirmation-modal/submit-confirmation-modal.component';
+import { SubmissionModalComponent } from './submissions/submission-modal/submission-modal.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +79,8 @@ import { FacultyLoadTableComponent } from './dashboard/faculty-load-timeline-mod
     FacultyLoadTimelineComponent,
     ClassScheduleTableComponent,
     FacultyLoadTableComponent,
+    SubmitConfirmationModalComponent,
+    SubmissionModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -92,4 +92,5 @@ export class LoadService {
     this.af.doc('load/' + id).update(load);
     this.uiService.showSuccessToast('Load Updated Succesfully!', 'Success');
   }
+
 }

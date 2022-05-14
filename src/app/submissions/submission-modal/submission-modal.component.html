@@ -1,0 +1,25 @@
+<div class="main-div" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="15px">
+  <mat-icon color="primary"  style="font-size: 35px;"> quiz </mat-icon>
+  <p class="heading">
+    {{
+      status == "accepted"
+        ? "Are you sure you want to accept this load submission?"
+        : "Are you sure you want to decline this load submission?"
+    }}
+  </p>
+
+  <div *ngIf="status == 'declined'">
+    <p class="remarks">
+      Please state the reason why you want to decline this load submission:
+    </p>
+    <mat-form-field style="width: 100%;" appearance="fill">
+      <mat-label>Leave a remarks</mat-label>
+      <textarea matInput [(ngModel)]="comments"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div fxLayoutGap="15px" fxLayout="row" fxLayoutAlign="center center">
+    <button mat-raised-button color="primary" [mat-dialog-close]="false" (click)="onYesClicked()" [disabled]="status === 'declined' && comments.length == 0">Yes</button>
+    <button mat-stroked-button color="warn" [mat-dialog-close]="false">No</button>
+  </div>
+</div>

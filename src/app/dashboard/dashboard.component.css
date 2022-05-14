@@ -48,11 +48,13 @@
   margin-left: 4vh;
 }
 
+
+
 .acad-button {
   margin-top: 5vh;
 }
 
-.sub-headers{
+.sub-headers {
   margin-right: 3vh;
 }
 
@@ -63,22 +65,21 @@
   overflow-y: scroll;
 }
 
-input{
+input {
   display: none;
 }
 
-label{
-
+label {
 }
 
-.csv-div{
+.csv-div {
   margin-top: 15px;
   border: 1px solid var(--primary);
   border-radius: 10px;
   padding: 10px;
 }
 
-.upload-csv{
+.upload-csv {
   background-color: var(--primary);
   border-radius: 10px;
   color: white;
@@ -92,23 +93,22 @@ label{
   transform: scale(1.05);
 }
 
-.upload-csv:active{
+.upload-csv:active {
   transform: scale(1.03);
 }
 
-mat-header-cell{
+mat-header-cell {
   color: white;
   font-family: var(--mont);
   text-transform: uppercase;
 }
-
 
 .button-toggle {
   padding: 13px 13px;
   height: 25px;
 }
 
-mat-button-toggle{
+mat-button-toggle {
   font-family: var(--mont);
   font-size: 13px !important;
 }
@@ -123,7 +123,8 @@ mat-button-toggle:hover {
   color: white;
 }
 
-mat-cell, mat-header-cell {
+mat-cell,
+mat-header-cell {
   text-align: center;
-  justify-content:center;
+  justify-content: center;
 }

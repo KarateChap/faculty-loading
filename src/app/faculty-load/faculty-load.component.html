@@ -46,8 +46,10 @@
           <mat-icon class="faculty-icon">person</mat-icon>
           <p class="id-text">{{ faculty.idNumber }}</p>
           <p class="semester-text">{{activeAcademicYear.semester}}</p>
-          <p class="schedule-text">Schedule:</p>
-          <mat-icon class="folder-icon" color="primary" [routerLink]="['/sidenav/facultyload', faculty.id]" *ngIf="currentUser.isActivated">post_add</mat-icon>
+          <div fxLayoutAlign="center center">
+            <button class="folder-icon" mat-stroked-button color="primary" [routerLink]="['/sidenav/facultyload', faculty.id]" *ngIf="currentUser.isActivated"><mat-icon>edit</mat-icon> Manage Load</button>
+          </div>
+          <!-- <mat-icon class="folder-icon" color="primary" [routerLink]="['/sidenav/facultyload', faculty.id]" *ngIf="currentUser.isActivated">post_add</mat-icon> -->
         </div>
       </div>
 
