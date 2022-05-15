@@ -307,7 +307,7 @@
         >Faculty Mode</a
       >
     </mat-nav-list>
-
+<!--
     <mat-nav-list *ngIf="currentUser.department != 'admin'">
       <a
         class="link-text"
@@ -321,7 +321,7 @@
         ><mat-icon class="nav-spacer" color="primary">history</mat-icon
         >History</a
       >
-    </mat-nav-list>
+    </mat-nav-list> -->
 
     <mat-nav-list class="logout">
     <div fxLayoutAlign="center center" fxLayout="row">
@@ -348,8 +348,11 @@
         </p>
       </div>
       <div fxFlex fxLayout fxLayoutAlign="flex-end">
-        <div>
+        <div *ngIf="currentUser.startDate">
           <span *ngIf="currentUser.department != 'admin'" class="deadline">{{" [Deadline " + (currentUser.startDate.toDate() | date) + " - " + (currentUser.endDate.toDate() | date) + "]"}}</span>
+        </div>
+        <div *ngIf="!currentUser.startDate">
+          <span *ngIf="currentUser.department != 'admin'" class="deadline">{{"[Deadline: N/A]"}}</span>
         </div>
 
         <div>

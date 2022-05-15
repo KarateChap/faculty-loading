@@ -1,8 +1,17 @@
 <section class="main-div" fxLayout="column" fxLayoutAlign="center center">
   <div class="sub-div" fxLayout="column">
     <div fxLayout="row" fxLayoutAlign="space-between" class="header-div">
-      <div>
+      <div style="width: 65%;" >
         <p class="header-text">Dashboard</p>
+        <div fxLayoutAlign="end" *ngIf="currentUserLoad && currentUser.department != 'admin'">
+          <div *ngIf="currentUser.department != 'admin'" class="submission-status" fxLayoutAlign="center start" fxLayout="column">
+            <div fxLayoutAlign="center center" style="width: 100%;">
+              <p class="status-header">Submission Status: <span [ngClass]="currentUserLoad.status == 'accepted' ? 'blue' : 'red'">{{currentUserLoad.status | uppercase}}</span></p>
+            </div>
+              <p class="remark-text" style="color: var(--primary); margin-top: -10px;">Remarks:</p>
+              <p class="remark-text" style="margin-top: -10px; font-family: var(--mont); font-size: 13px;">{{currentUserLoad.comment.length > 0 ? currentUserLoad.comment : 'No Remarks Given'}}</p>
+          </div>
+        </div>
       </div>
       <div fxLayout="column" class="sub-headers" >
         <button
@@ -39,11 +48,14 @@
         <div *ngIf="currentUser.department != 'admin'">
           <button mat-stroked-button color="primary" style="width: 100%; margin-top: 15px;" (click)="onSubmitLoads()" [disabled]="currentUserLoad?.status == 'accepted' || currentUserLoad?.status == 'pending'">Submit Completed Loads</button>
         </div>
+        <div *ngIf="currentUser.department != 'admin'">
+          <button mat-raised-button color="primary" style="width: 100%; margin-top: 15px;" (click)="onViewHistory()">View History</button>
+        </div>
       </div>
     </div>
-    <div fxLayoutAlign="center center">
+    <div fxLayoutAlign="end center">
       <p
-      style="font-size: 20px; font-family: var(--mont); color: var(--primary)"
+      style="font-size: 20px; font-family: var(--mont); color: var(--primary); margin-right: 26px;"
     >
       Course Curriculum
     </p>

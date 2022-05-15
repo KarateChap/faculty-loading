@@ -23,7 +23,6 @@ export class FacultyLoadTimelineModalComponent implements OnInit, OnDestroy {
   view = 'Faculty Load Timeline';
   faculties: Faculty[] = [];
   facultySubs: Subscription;
-  trimmedSections: string[] = [];
   isLoading = true;
   constructor(private loadService: LoadService, @Inject(MAT_DIALOG_DATA) private passedData: any, private facultyService: FacultyService, private uiService: UIService) { }
 
@@ -85,5 +84,6 @@ export class FacultyLoadTimelineModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
       this.loadSubs.unsubscribe();
+      this.facultySubs.unsubscribe();
   }
 }

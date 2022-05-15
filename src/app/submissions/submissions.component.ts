@@ -8,6 +8,7 @@ import { AcademicService } from '../shared/services/academic.service';
 import { UserService } from '../shared/services/user.service';
 import { SetDeadlineComponent } from './set-deadline/set-deadline.component';
 import { SubmissionModalComponent } from './submission-modal/submission-modal.component';
+import { ViewLoadsComponent } from './view-loads/view-loads.component';
 
 @Component({
   selector: 'app-submissions',
@@ -47,9 +48,6 @@ export class SubmissionsComponent implements OnInit, OnDestroy{
           this.declinedUserLoads.push(element);
         }
       });
-      console.log(this.pendingUserLoads);
-      console.log(this.acceptedUserLoads);
-      console.log(this.declinedUserLoads);
     })
   }
 
@@ -71,6 +69,27 @@ export class SubmissionsComponent implements OnInit, OnDestroy{
     })
   }
 
+  onViewPendingLoad(i: number){
+    this.dialog.open(ViewLoadsComponent, {
+      data: {
+        userLoad: this.pendingUserLoads[i]
+      }
+    })
+  }
+  onViewDeclinedLoad(i: number){
+    this.dialog.open(ViewLoadsComponent, {
+      data: {
+        userLoad: this.declinedUserLoads[i]
+      }
+    })
+  }
+  onViewAcceptedLoad(i: number){
+    this.dialog.open(ViewLoadsComponent, {
+      data: {
+        userLoad: this.acceptedUserLoads[i]
+      }
+    })
+  }
   openDeadlineModal() {
     this.dialog.open(SetDeadlineComponent);
   }

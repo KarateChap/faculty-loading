@@ -73,7 +73,7 @@ export class LoadViewComponent implements OnInit {
   ngOnInit(): void {
     this.fillDayArrays();
     this.facultySubs = this.loadService.currentFacultyLoadChange.subscribe(
-      (currentFaculty) =>{
+      (currentFaculty) => {
         this.totalHours = 0;
         this.totalUnits = 0;
         this.fillDayArrays();
@@ -86,7 +86,8 @@ export class LoadViewComponent implements OnInit {
         this.checkFridayLoads();
         this.checkSaturdayLoads();
         this.checkSundayLoads();
-    })
+      }
+    );
   }
 
   checkMondayLoads() {
@@ -128,7 +129,6 @@ export class LoadViewComponent implements OnInit {
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.monday[endIndex] = '-';
           endIndex--;
         }
@@ -184,7 +184,6 @@ export class LoadViewComponent implements OnInit {
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.tuesday[endIndex] = '-';
           endIndex--;
         }
@@ -240,7 +239,6 @@ export class LoadViewComponent implements OnInit {
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.wednesday[endIndex] = '-';
           endIndex--;
         }
@@ -297,7 +295,6 @@ export class LoadViewComponent implements OnInit {
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.thursday[endIndex] = '-';
           endIndex--;
         }
@@ -353,7 +350,6 @@ export class LoadViewComponent implements OnInit {
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.friday[endIndex] = '-';
           endIndex--;
         }
@@ -410,7 +406,6 @@ export class LoadViewComponent implements OnInit {
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.saturday[endIndex] = '-';
           endIndex--;
         }
@@ -466,7 +461,6 @@ export class LoadViewComponent implements OnInit {
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-
           this.sunday[endIndex] = '-';
           endIndex--;
         }
@@ -483,8 +477,6 @@ export class LoadViewComponent implements OnInit {
       endIndexCounter = 0;
     });
   }
-
-
 
   getDays(currentFaculty: LoadItem[]) {
     this.allLoads = [];
@@ -510,55 +502,97 @@ export class LoadViewComponent implements OnInit {
       return load.day == 'sunday';
     });
 
-    this.mondayLoad.forEach(element => {
-      this.allLoads.push(element)
+    this.mondayLoad.forEach((element) => {
+      this.allLoads.push(element);
     });
-    this.tuesdayLoad.forEach(element => {
-      this.allLoads.push(element)
+    this.tuesdayLoad.forEach((element) => {
+      this.allLoads.push(element);
     });
-    this.wednesdayLoad.forEach(element => {
-      this.allLoads.push(element)
+    this.wednesdayLoad.forEach((element) => {
+      this.allLoads.push(element);
     });
-    this.thursdayLoad.forEach(element => {
-      this.allLoads.push(element)
+    this.thursdayLoad.forEach((element) => {
+      this.allLoads.push(element);
     });
-    this.fridayLoad.forEach(element => {
-      this.allLoads.push(element)
+    this.fridayLoad.forEach((element) => {
+      this.allLoads.push(element);
     });
-    this.saturdayLoad.forEach(element => {
-      this.allLoads.push(element)
+    this.saturdayLoad.forEach((element) => {
+      this.allLoads.push(element);
     });
-    this.sundayLoad.forEach(element => {
-      this.allLoads.push(element)
+    this.sundayLoad.forEach((element) => {
+      this.allLoads.push(element);
     });
 
-
-    this.allLoads.forEach(element => {
+    this.allLoads.forEach((element) => {
       this.totalHours += +element.noHour;
     });
 
+    // this.allLoads.forEach(element => {
+    //   this.totalUnits += +element.units;
+    // });
 
+    // var uniqueArray = this.removeDuplicates(this.allLoads, 'subjectCode');
+    // uniqueArray.forEach((element) => {
+    //   this.totalUnits += +element.units;
+    // });
 
-    var uniqueArray = this.removeDuplicates(this.allLoads, "subjectCode");
-    uniqueArray.forEach(element => {
+    // let uniqueLoads: LoadItem[];
+    // this.allLoads.forEach(element => {
+    //   this.allLoads.forEach(element2 => {
+    //     if(element.subjectCode != element2.subjectCode){
+
+    //     }
+    //   });
+    // });
+
+    // let uniqueLoads: LoadItem[] = [];
+    // this.allLoads.forEach((element) => {
+    //   if (uniqueLoads.length === 0) {
+    //     uniqueLoads.push(element);
+    //   } else {
+    //     uniqueLoads.forEach((element2) => {
+    //       if (
+    //         element.subjectCode == element2.subjectCode &&
+    //         element.section == element2.section
+    //       ) {
+    //       } else {
+    //         uniqueLoads.push(element);
+    //       }
+    //     });
+    //   }
+    // });
+
+    // console.log(uniqueLoads);
+
+    // uniqueLoads.forEach((element) => {
+    //   this.totalUnits += +element.units;
+    // });
+
+    let uniqueLoads = this.allLoads.filter((e, i) => {
+      return this.allLoads.findIndex((x) => {
+        return x.subjectCode == e.subjectCode && x.section == e.section;
+      }) == i;
+    })
+
+    uniqueLoads.forEach((element) => {
       this.totalUnits += +element.units;
     });
-
   }
 
-  removeDuplicates(originalArray: any, prop: any) {
-    var newArray: LoadItem[] = [];
-    var lookupObject: any  = {};
+  // removeDuplicates(originalArray: any, prop: any) {
+  //   var newArray: LoadItem[] = [];
+  //   var lookupObject: any = {};
 
-    for(var i in originalArray) {
-       lookupObject[originalArray[i][prop]] = originalArray[i];
-    }
+  //   for (var object in originalArray) {
+  //     lookupObject[originalArray[object][prop]] = originalArray[object];
+  //   }
 
-    for(i in lookupObject) {
-        newArray.push(lookupObject[i]);
-    }
-     return newArray;
-}
+  //   for (object in lookupObject) {
+  //     newArray.push(lookupObject[object]);
+  //   }
+  //   return newArray;
+  // }
 
   fillDayArrays() {
     let count = 0;

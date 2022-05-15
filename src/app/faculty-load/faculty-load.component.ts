@@ -19,6 +19,7 @@ export class FacultyLoadComponent implements OnInit, OnDestroy {
   facultySubs: Subscription;
   activeAcademicYear: AcademicPeriod;
   currentUser: NewUser;
+  isAllowedToEdit = false;
 
   constructor(
     private dialog: MatDialog,
@@ -29,6 +30,20 @@ export class FacultyLoadComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentUser = this.userService.getCurrentUser();
+    let currentDate = new Date();
+    let currentTimeStamp = currentDate.getTime() / 1000.0;
+
+    if(this.currentUser.startDate){
+      if (
+        +currentTimeStamp > +this.currentUser.startDate.seconds &&
+        +currentTimeStamp < +this.currentUser.endDate.seconds
+      ) {
+        this.isAllowedToEdit = true;
+      } else {
+        this.isAllowedToEdit = false;
+      }
+    }
+
     this.activeAcademicYear = this.academicService.getActiveAcademicYear();
     this.academicService.fetchActiveAcademicYear();
 

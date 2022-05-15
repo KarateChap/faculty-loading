@@ -63,7 +63,6 @@ export class ClassScheduleTimelineComponent implements OnInit {
   constructor(private loadService: LoadService, private uiService: UIService) { }
 
   ngOnInit(): void {
-    console.log(this.classScheduleTimeline);
     this.fillDayArrays();
     // this.sectionSubs = this.loadService.currentSectionLoadChange.subscribe(
     //   (currentSection) => {

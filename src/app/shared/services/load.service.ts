@@ -14,9 +14,11 @@ export class LoadService {
   currentFacultyLoadChange = new Subject<LoadItem[]>();
 
   loads: LoadItem[] = [];
+  facultyLoads: LoadItem[] = [];
   allLoads: LoadItem[] = [];
   allLoadChange = new Subject<LoadItem[]>();
   loadChange = new Subject<LoadItem[]>();
+  facultyLoadChange = new Subject<LoadItem[]>();
   constructor(private af: AngularFirestore, private uiService: UIService){
   }
 
@@ -55,22 +57,22 @@ export class LoadService {
     .where('chairperson', '==', chairpersonName)
     .where('facultyName', '==', facultyName)
     .onSnapshot((result) => {
-      this.loads = [];
+      this.facultyLoads = [];
       result.forEach((doc) => {
-        this.loads.push({ id: doc.id, ...(doc.data() as NewLoadItem) });
+        this.facultyLoads.push({ id: doc.id, ...(doc.data() as NewLoadItem) });
       });
-      this.loadChange.next(this.loads);
+      this.facultyLoadChange.next(this.facultyLoads);
     });
   }
 
   fetchAllLoad(startYear: string, semester: string, chairpersonName: string){
+    this.allLoads = [];
     this.af
       .collection('load')
       .ref.where('schoolYear', '==', startYear)
       .where('semester', '==', semester)
       .where('chairperson', '==', chairpersonName)
       .onSnapshot((result) => {
-        this.allLoads = [];
         result.forEach((doc) => {
           this.allLoads.push({ id: doc.id, ...(doc.data() as NewLoadItem) });
         });

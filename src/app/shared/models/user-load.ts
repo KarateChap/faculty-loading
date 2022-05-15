@@ -11,4 +11,5 @@ export interface UserLoad {
   comment: string;
   idNumber: string;
   loadItem: LoadItem[];
+  notification: Notification[];
 }

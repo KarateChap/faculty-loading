@@ -2,33 +2,51 @@ import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@an
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import jsPDF from 'jspdf';
 import { Subscription } from 'rxjs';
+import { Faculty } from 'src/app/shared/models/faculty.model';
 import { LoadItem } from 'src/app/shared/models/load-item.model';
 import { NewLoad } from 'src/app/shared/models/new-load.model';
 import { Section } from 'src/app/shared/models/section.model';
+import { UserLoad } from 'src/app/shared/models/user-load';
+import { FacultyService } from 'src/app/shared/services/faculty.service';
 import { LoadService } from 'src/app/shared/services/load.service';
 import { RoomSectionService } from 'src/app/shared/services/room-section.service';
 import { UIService } from 'src/app/shared/UIService/ui.service';
 
 @Component({
-  selector: 'app-class-schedule-timeline-modal',
-  templateUrl: './class-schedule-timeline-modal.component.html',
-  styleUrls: ['./class-schedule-timeline-modal.component.css']
+  selector: 'app-view-loads',
+  templateUrl: './view-loads.component.html',
+  styleUrls: ['./view-loads.component.css']
 })
-export class ClassScheduleTimelineModalComponent implements OnInit, OnDestroy {
+export class ViewLoadsComponent implements OnInit, OnDestroy{
   @ViewChild('content', { static: true }) content: ElementRef;
-  loadSubs: Subscription;
-  allLoadItems: LoadItem[] = [];
-  loads: NewLoad[] = [];
-
   view = 'Class Schedule Timeline';
+
   sectionSubs: Subscription;
   sections: Section[] = [];
   trimmedSections: string[] = [];
 
-  isLoading = true;
-  constructor(private loadService: LoadService, @Inject(MAT_DIALOG_DATA) private passedData: any, private roomSectionService: RoomSectionService, private uiService: UIService) { }
-  ngOnInit(): void {
+  faculties: Faculty[] = [];
+  facultySubs: Subscription;
 
+  loadItems: LoadItem[] = [];
+  userLoads: UserLoad;
+  classScheduleLoad: NewLoad[] = [];
+  facultyLoad: NewLoad[] = [];
+
+  isLoading = true;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private passedData: any,
+    private facultyService: FacultyService,
+    private uiService: UIService,
+    private roomSectionService: RoomSectionService
+  ) { }
+
+  ngOnInit(): void {
+    this.userLoads = this.passedData.userLoad;
+    this.loadItems = this.userLoads.loadItem;
+
+    //section
     this.roomSectionService.fetchSections();
     this.sectionSubs = this.roomSectionService.sectionsChanged.subscribe(
       (sections) => {
@@ -51,7 +69,7 @@ export class ClassScheduleTimelineModalComponent implements OnInit, OnDestroy {
         });
 
         sections = sections.filter((section) => {
-          return section.course == this.passedData.currentUser.department;
+          return section.course == this.userLoads.department;
         });
 
         this.trimmedSections = [];
@@ -65,30 +83,54 @@ export class ClassScheduleTimelineModalComponent implements OnInit, OnDestroy {
           );
         });
 
-        this.loadService.fetchAllLoad(
-          this.passedData.activeAcademicYear.startYear,
-          this.passedData.activeAcademicYear.semester,
-          this.passedData.currentUser.fullName);
-      }
 
+        this.classScheduleLoad = [];
+
+        this.trimmedSections.forEach(element => {
+
+          let tempItem: LoadItem[] = [];
+          this.loadItems.forEach(loadItemElement => {
+            if(loadItemElement.section === element){
+              tempItem.push(loadItemElement);
+            }
+          });
+          this.classScheduleLoad.push({loadItem: tempItem});
+        });
+        console.log(this.classScheduleLoad);
+        this.isLoading = false;
+      }
+    );
+    //faculty
+
+    this.facultyService.fetchFaculty(
+      this.userLoads.year,
+      this.userLoads.semester,
+      this.userLoads.chairpersonName
     );
 
-  this.loadSubs = this.loadService.allLoadChange.subscribe(loadItems => {
-    this.allLoadItems = loadItems;
-    this.loads = [];
+    this.facultySubs = this.facultyService.facultyChanged.subscribe(
+      (faculties) => {
+        this.faculties = faculties;
 
-    this.trimmedSections.forEach(element => {
-      console.log(element);
-      let tempItem: LoadItem[] = [];
-      loadItems.forEach(loadItemElement => {
-        if(loadItemElement.section === element){
-          tempItem.push(loadItemElement);
-        }
-      });
-      this.loads.push({loadItem: tempItem});
-      this.isLoading = false;
-    });
-  })
+        this.facultyLoad = [];
+
+        this.faculties.forEach(element => {
+          let tempItem: LoadItem[] = [];
+          this.loadItems.forEach(loadItemElement => {
+            if(loadItemElement.facultyId === element.id){
+              tempItem.push(loadItemElement);
+            }
+          });
+          this.facultyLoad.push({loadItem: tempItem});
+        });
+
+        console.log(this.facultyLoad);
+      }
+    );
+  }
+
+  filter(value: string) {
+    this.view = value;
   }
 
   exportToPDF() {
@@ -98,7 +140,7 @@ export class ClassScheduleTimelineModalComponent implements OnInit, OnDestroy {
     doc.html(DATA, {
       callback: (doc) => {
         try {
-          doc.save(`${this.passedData.currentUser.fullName}.pdf`);
+          doc.save(`${this.userLoads.chairpersonName}.pdf`);
         } catch {
           this.uiService.showErrorToast(
             'Please choose a section first!',
@@ -109,12 +151,9 @@ export class ClassScheduleTimelineModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  filter(value: string) {
-    this.view = value;
-  }
-
   ngOnDestroy(): void {
-    this.loadSubs.unsubscribe();
     this.sectionSubs.unsubscribe();
+    this.facultySubs.unsubscribe();
 }
+
 }

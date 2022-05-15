@@ -20,6 +20,7 @@ import { ClassScheduleTimelineModalComponent } from './class-schedule-timeline-m
 import { FacultyLoadTimelineModalComponent } from './faculty-load-timeline-modal/faculty-load-timeline-modal.component';
 import { SetAcademicYearComponent } from './set-academic-year/set-academic-year.component';
 import { SubmitConfirmationModalComponent } from './submit-confirmation-modal/submit-confirmation-modal.component';
+import { ViewHistoryModalComponent } from './view-history-modal/view-history-modal.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -230,6 +231,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
       });
     }
+  }
+
+  onViewHistory(){
+    this.dialog.open(ViewHistoryModalComponent);
   }
 
   ngOnDestroy(): void {

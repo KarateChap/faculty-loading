@@ -25,7 +25,8 @@ export class SubmitConfirmationModalComponent implements OnInit {
       dateSubmitted: this.passedData.dateSubmitted,
       comment: '',
       idNumber: this.passedData.idNumber,
-      loadItem: this.passedData.loadItem
+      loadItem: this.passedData.loadItem,
+      notification: []
     }
   }
 

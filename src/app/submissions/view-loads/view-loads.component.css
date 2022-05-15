@@ -1,0 +1,65 @@
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #ad2a2a;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--light);
+  border-radius: 20px;
+  transition: all ease-in-out 1s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+
+.main-div{
+  padding: 3vh 10vh 3vh 10vh;
+  width: 120vh;
+  height: 90vh;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  overflow-y: scroll;
+}
+
+.main-div::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+.button-toggle {
+  padding: 13px 13px;
+  height: 25px;
+}
+
+mat-button-toggle{
+  font-family: var(--mont);
+  font-size: 13px !important;
+}
+
+mat-button-toggle:hover {
+  background-color: var(--primary) !important;
+  color: white;
+}
+
+.mat-button-toggle-checked {
+  background-color: var(--primary) !important;
+  color: white;
+}
+
+.mat-button-toggle-group{
+  border: 0px !important;
+}
+
+.header{
+  font-family: var(--incon);
+  font-size: 20px;
+  font-weight: bold;
+}

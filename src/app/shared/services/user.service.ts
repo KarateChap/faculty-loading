@@ -17,7 +17,10 @@ export class UserService {
   userLoads: UserLoad[] = [];
   userLoadsChanged = new Subject<UserLoad[]>();
   currentUserLoad: UserLoad;
+  currentUserHistoryLoad: UserLoad;
+  emptyCurrentUserLoad: UserLoad;
   currentUserLoadChanged = new Subject<UserLoad>();
+  currentUserHistoryLoadChanged = new Subject<UserLoad>();
 
   constructor(private af: AngularFirestore, private uiService: UIService) {}
 
@@ -120,17 +123,33 @@ export class UserService {
 
 
   fetchUserLoad(startYear: string, semester: string, chairpersonName: string) {
-
     this.af
       .collection('userLoad')
       .ref.where('year', '==', startYear)
       .where('semester', '==', semester)
       .where('chairpersonName', '==', chairpersonName)
       .onSnapshot((result) => {
+        this.currentUserLoad = this.emptyCurrentUserLoad;
         result.forEach((doc) => {
           this.currentUserLoad = { id: doc.id, ...(doc.data() as NewUserLoad) }
         });
         this.currentUserLoadChanged.next(this.currentUserLoad);
+
+      });
+  }
+
+  fetchUserHistoryLoad(startYear: string, semester: string, chairpersonName: string) {
+    this.af
+      .collection('userLoad')
+      .ref.where('year', '==', startYear)
+      .where('semester', '==', semester)
+      .where('chairpersonName', '==', chairpersonName)
+      .onSnapshot((result) => {
+        this.currentUserHistoryLoad = this.emptyCurrentUserLoad;
+        result.forEach((doc) => {
+          this.currentUserHistoryLoad = { id: doc.id, ...(doc.data() as NewUserLoad) }
+        });
+        this.currentUserHistoryLoadChanged.next(this.currentUserHistoryLoad);
 
       });
   }

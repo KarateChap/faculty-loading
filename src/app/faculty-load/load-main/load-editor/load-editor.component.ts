@@ -248,7 +248,7 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
       this.activeFaculty.fullName
       );
 
-    this.loadSubs = this.loadService.loadChange.subscribe(loads => {
+    this.loadSubs = this.loadService.facultyLoadChange.subscribe(loads => {
       this.loads = loads;
       this.dataSource.data = this.loads;
       this.loadService.changeCurrentFacultyLoad(this.loads);

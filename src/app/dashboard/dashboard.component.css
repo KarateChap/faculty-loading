@@ -33,6 +33,7 @@
   background-color: white;
   overflow: hidden;
   background-image: url("../../assets/dashboard.png");
+  background-repeat: no-repeat;
 }
 
 .header-div {
@@ -63,6 +64,7 @@
   height: 65vh;
   margin-top: 30px;
   overflow-y: scroll;
+  border-top: 1px solid rgba(128, 128, 128, 0.39);
 }
 
 input {
@@ -127,4 +129,47 @@ mat-cell,
 mat-header-cell {
   text-align: center;
   justify-content: center;
+}
+
+
+.submission-status{
+  border: 2px solid var(--primary);
+  border-radius: 5px;
+  margin: 15px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.849);
+  width: 50vh;
+  max-height: 150px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  box-sizing: unset !important;
+}
+
+.status-header{
+  font-family: var(--incon);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--primary);
+  margin-top: 10px;
+}
+
+.remark-text{
+  font-family: var(--incon);
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.red{
+  background-color: rgb(253, 71, 71);
+  color: white;
+  border-radius: 5px;
+  padding: 0 5px 0 5px;
+}
+
+.blue{
+  background-color: rgb(45, 185, 45);
+  color: white;
+  border-radius: 5px;
+  padding: 0 5px 0 5px;
 }

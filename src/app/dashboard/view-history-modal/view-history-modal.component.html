@@ -1,0 +1,34 @@
+<div
+  class="main-div"
+  fxLayoutAlign="center center"
+  fxLayout="column"
+  fxLayoutGap="15px"
+  *ngIf="!isLoading"
+>
+  <p class="header">Please Choose a School Year and Semester</p>
+  <div fxLayoutalign="row" fxLayoutGap="15px">
+    <mat-form-field class="acad-select">
+      <mat-label>School Year</mat-label>
+      <mat-select [(value)]="schoolYear">
+        <mat-option value="2022">2022-2023</mat-option>
+        <mat-option value="2023">2023-2024</mat-option>
+        <mat-option value="2024">2024-2025</mat-option>
+        <mat-option value="2025">2025-2026</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="acad-select">
+      <mat-label>Semester</mat-label>
+      <mat-select [(value)]="semester">
+        <mat-option value="First Semester">First Semester</mat-option>
+        <mat-option value="Second Semester">Second Semester</mat-option>
+        <mat-option value="Mid Year">Mid Year</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <button mat-raised-button color="primary" (click)="onViewLoad()" [disabled]="!schoolYear || !semester">View Load</button>
+</div>
+
+<div class="main-div" *ngIf="isLoading">
+  <mat-spinner></mat-spinner>
+</div>

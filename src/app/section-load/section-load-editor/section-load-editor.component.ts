@@ -164,14 +164,17 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
     let currentDate = new Date();
     let currentTimeStamp = currentDate.getTime() / 1000.0;
 
-    if (
-      +currentTimeStamp > +this.currentChairperson.startDate.seconds &&
-      +currentTimeStamp < +this.currentChairperson.endDate.seconds
-    ) {
-      this.isAllowedToEdit = true;
-    } else {
-      this.isAllowedToEdit = false;
+    if(this.currentChairperson.startDate){
+      if (
+        +currentTimeStamp > +this.currentChairperson.startDate.seconds &&
+        +currentTimeStamp < +this.currentChairperson.endDate.seconds
+      ) {
+        this.isAllowedToEdit = true;
+      } else {
+        this.isAllowedToEdit = false;
+      }
     }
+
 
     this.roomSectionService.fetchRooms();
     this.roomsSubs = this.roomSectionService.roomsChanged.subscribe((rooms) => {

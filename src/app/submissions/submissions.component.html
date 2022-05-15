@@ -74,6 +74,7 @@
                     mat-stroked-button
                     color="primary"
                     style="margin-right: 15px"
+                    (click)="onViewPendingLoad(i)"
                   >
                     <mat-icon>visibility</mat-icon> View Load
                   </button>
@@ -133,6 +134,7 @@
                     mat-stroked-button
                     color="primary"
                     style="margin-right: 15px"
+                    (click)="onViewDeclinedLoad(i)"
                   >
                     <mat-icon>visibility</mat-icon> View Load
                   </button>
@@ -192,6 +194,7 @@
                     mat-stroked-button
                     color="primary"
                     style="margin-right: 15px"
+                    (click)="onViewAcceptedLoad(i)"
                   >
                     <mat-icon>visibility</mat-icon> View Load
                   </button>

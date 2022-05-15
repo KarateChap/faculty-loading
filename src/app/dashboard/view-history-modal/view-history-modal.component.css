@@ -1,0 +1,9 @@
+.main-div{
+  padding: 5vh;
+}
+
+.header{
+  font-size: 18px;
+  font-family: var(--mont);
+  color: var(--primary);
+}
