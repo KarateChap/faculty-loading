@@ -4,7 +4,9 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { AcademicPeriod } from 'src/app/shared/models/academic-period.model';
+import { NewNotification } from 'src/app/shared/models/new-notification.model';
 import { AcademicService } from 'src/app/shared/services/academic.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-set-academic-year',
@@ -24,10 +26,12 @@ export class SetAcademicYearComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private passedData: any,
-    private academicService: AcademicService
+    private academicService: AcademicService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
+    this.userService.fetchUsers();
     if (this.passedData.academicYears.length > 0) {
       this.academicYears = this.passedData.academicYears;
       this.academicService.fetchActiveAcademicYear();
@@ -68,6 +72,13 @@ export class SetAcademicYearComponent implements OnInit, OnDestroy {
 
   onSubmit() {
 
+    let notification: NewNotification;
+    notification = {
+      icon: 'campaign',
+      heading: 'Announcement',
+      contents: 'The admin updated the Academic Year and Semester to Academic Year: ' + this.startYear + ' - ' + this.endYear + ' ' + this.academicForm.value.semester
+    }
+
     this.checkError();
 
     if(this.isExisting){
@@ -76,6 +87,9 @@ export class SetAcademicYearComponent implements OnInit, OnDestroy {
       }
       this.academicService.updateActiveAcademicYear(this.existingIdString);
       this.academicService.fetchActiveAcademicYear();
+
+      this.userService.updateAllChairpersonNotification(notification);
+
     }
     else {
       if (this.activeAcadId) {
@@ -91,6 +105,7 @@ export class SetAcademicYearComponent implements OnInit, OnDestroy {
       this.academicService.fetchActiveAcademicYear();
     }
 
+    this.userService.updateAllChairpersonNotification(notification);
 
   }
 

@@ -23,7 +23,6 @@ export class ChairpersonComponent implements OnInit, OnDestroy {
     this.userSubs = this.userService.usersChanged.subscribe((users) => {
       this.users = users;
       this.isLoading = false;
-      console.log(this.users);
     });
     this.userService.fetchUsers();
   }

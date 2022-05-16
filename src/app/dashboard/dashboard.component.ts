@@ -9,6 +9,7 @@ import { AcademicPeriod } from '../shared/models/academic-period.model';
 import { Curriculum } from '../shared/models/curriculum.model';
 import { LoadItem } from '../shared/models/load-item.model';
 import { NewCurriculum } from '../shared/models/new-curriculum.model';
+import { NewNotification } from '../shared/models/new-notification.model';
 import { NewUser } from '../shared/models/new-user.model';
 import { UserLoad } from '../shared/models/user-load';
 import { AcademicService } from '../shared/services/academic.service';
@@ -131,6 +132,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   createCurriculum($event: any) {
+
+    let notification: NewNotification = {
+      icon: 'campaign',
+      heading: 'Announcement',
+      contents: 'The admin has updated the Curriculum'
+    }
+
     const files = $event.srcElement.files;
     this.ngxCsvParser
       .parse(files[0], { header: true, delimiter: ',' })
@@ -150,6 +158,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           });
         });
         this.curriculumService.setCurriculumToDatabase(this.curriculum);
+        this.userService.updateAllChairpersonNotification(notification);
         this.curriculum = [];
         this.csvRecords = [];
         // runAlready = true;

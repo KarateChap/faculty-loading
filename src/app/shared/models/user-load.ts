@@ -1,4 +1,5 @@
 import { LoadItem } from "./load-item.model";
+import { NewNotification } from "./new-notification.model";
 
 export interface UserLoad {
   id: string;
@@ -11,5 +12,4 @@ export interface UserLoad {
   comment: string;
   idNumber: string;
   loadItem: LoadItem[];
-  notification: Notification[];
 }

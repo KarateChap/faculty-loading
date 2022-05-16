@@ -1,3 +1,5 @@
+import { NewNotification } from "./new-notification.model";
+
 export interface User {
   id: string;
   idNumber: string;
@@ -7,4 +9,5 @@ export interface User {
   isActivated: boolean;
   startDate: any;
   endDate: any;
+  notification: NewNotification[];
 }

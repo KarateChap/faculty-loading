@@ -8,6 +8,7 @@ import { NewUser } from '../shared/models/new-user.model';
 import { AcademicService } from '../shared/services/academic.service';
 import { AuthService } from '../shared/services/auth.service';
 import { UserService } from '../shared/services/user.service';
+import { NewNotification } from '../shared/models/new-notification.model';
 
 @Component({
   selector: 'app-sidenav',
@@ -23,6 +24,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   currentAcademic: AcademicPeriod;
   currentAcademicSubs: Subscription;
 
+  notifications: NewNotification[] = [];
 
   opened = true;
   centered = false;
@@ -51,6 +53,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
     this.currentUserSubs = this.userService.currentUserChanges.subscribe(user => {
       this.currentUser = user;
+      this.notifications = this.currentUser.notification;
+      console.log(this.notifications)
+      console.log(this.notifications);
       if(this.currentUser.department == 'admin'){
         this.router.navigate(['/sidenav/' + 'dashboard']);
         this.activeLink = 'dashboard';
@@ -112,6 +117,17 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   onLogout() {
     this.authService.logout();
+  }
+
+
+  onDeleteNotification(i: number){
+    let notification: NewNotification = this.notifications[i];
+    this.userService.deleteNotification(notification, this.currentUser);
+  }
+
+  onDeleteAllNotification(){
+    this.userService.deleteAllNotification(this.notifications, this.currentUser);
+    this.notifications = [];
   }
 
   ngOnDestroy(): void {

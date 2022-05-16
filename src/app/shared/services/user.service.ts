@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import firebase from 'firebase';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { NewNotification } from '../models/new-notification.model';
 import { NewUserLoad } from '../models/new-user-load';
 import { NewUser } from '../models/new-user.model';
 import { UserLoad } from '../models/user-load';
@@ -86,41 +88,42 @@ export class UserService {
     this.uiService.showSuccessToast('User Updated Succesfully!', 'Success');
   }
 
-  setUserDeadline(startDate: any, endDate: any){
-    this.users.forEach(element => {
+  setUserDeadline(startDate: any, endDate: any) {
+    this.users.forEach((element) => {
       this.af
-      .doc('user/' + element.id)
-      .update({ startDate: startDate, endDate: endDate });
-    this.uiService.showSuccessToast('All Users Updated Succesfully!', 'Success');
+        .doc('user/' + element.id)
+        .update({ startDate: startDate, endDate: endDate });
+      this.uiService.showSuccessToast(
+        'All Users Updated Succesfully!',
+        'Success'
+      );
     });
   }
-
 
   addUserLoadsToDatabase(userLoad: NewUserLoad) {
     this.af.collection('userLoad').add(userLoad);
     this.uiService.showSuccessToast('Load Submitted Succesfully!', 'Success');
   }
 
-  fetchAllUserLoads(){
+  fetchAllUserLoads() {
     this.af
-    .collection('userLoad')
-    .snapshotChanges()
-    .pipe(
-      map((docArray) => {
-        return docArray.map((doc) => {
-          return {
-            id: doc.payload.doc.id,
-            ...(doc.payload.doc.data() as any),
-          };
-        });
-      })
-    )
-    .subscribe((userLoads: UserLoad[]) => {
-      this.userLoads = userLoads;
-      this.userLoadsChanged.next([...this.userLoads]);
-    });
+      .collection('userLoad')
+      .snapshotChanges()
+      .pipe(
+        map((docArray) => {
+          return docArray.map((doc) => {
+            return {
+              id: doc.payload.doc.id,
+              ...(doc.payload.doc.data() as any),
+            };
+          });
+        })
+      )
+      .subscribe((userLoads: UserLoad[]) => {
+        this.userLoads = userLoads;
+        this.userLoadsChanged.next([...this.userLoads]);
+      });
   }
-
 
   fetchUserLoad(startYear: string, semester: string, chairpersonName: string) {
     this.af
@@ -131,14 +134,17 @@ export class UserService {
       .onSnapshot((result) => {
         this.currentUserLoad = this.emptyCurrentUserLoad;
         result.forEach((doc) => {
-          this.currentUserLoad = { id: doc.id, ...(doc.data() as NewUserLoad) }
+          this.currentUserLoad = { id: doc.id, ...(doc.data() as NewUserLoad) };
         });
         this.currentUserLoadChanged.next(this.currentUserLoad);
-
       });
   }
 
-  fetchUserHistoryLoad(startYear: string, semester: string, chairpersonName: string) {
+  fetchUserHistoryLoad(
+    startYear: string,
+    semester: string,
+    chairpersonName: string
+  ) {
     this.af
       .collection('userLoad')
       .ref.where('year', '==', startYear)
@@ -147,27 +153,117 @@ export class UserService {
       .onSnapshot((result) => {
         this.currentUserHistoryLoad = this.emptyCurrentUserLoad;
         result.forEach((doc) => {
-          this.currentUserHistoryLoad = { id: doc.id, ...(doc.data() as NewUserLoad) }
+          this.currentUserHistoryLoad = {
+            id: doc.id,
+            ...(doc.data() as NewUserLoad),
+          };
         });
         this.currentUserHistoryLoadChanged.next(this.currentUserHistoryLoad);
-
       });
   }
 
   updateUserLoad(id: string, status: string) {
     this.af.doc('userLoad/' + id).update({ status: status });
-    this.uiService.showSuccessToast(
-      'Load updated Successfully!',
-      'Success'
-    );
+    this.uiService.showSuccessToast('Load updated Successfully!', 'Success');
   }
 
   updateDeclinedUserLoad(id: string, status: string, comment: string) {
-    this.af.doc('userLoad/' + id).update({ status: status, comment: comment});
-    this.uiService.showSuccessToast(
-      'Load declined Successfully!',
-      'Success'
-    );
+    this.af.doc('userLoad/' + id).update({ status: status, comment: comment });
+    this.uiService.showSuccessToast('Load declined Successfully!', 'Success');
   }
 
+  updateAdminNotification(notification: NewNotification) {
+    this.af
+      .collection('user')
+      .ref.where('department', '==', 'admin')
+      .onSnapshot((result) => {
+        result.forEach((doc) => {
+          console.log(doc.id);
+          this.af
+            .doc('user/' + doc.id)
+            .update({
+              notification:
+                firebase.firestore.FieldValue.arrayUnion(notification),
+            });
+        });
+      })
+  }
+
+  updateAllChairpersonNotification(notification: NewNotification){
+    this.users.forEach(element => {
+      if(element.department != 'admin'){
+        this.af
+            .doc('user/' + element.id)
+            .update({
+              notification:
+                firebase.firestore.FieldValue.arrayUnion(notification),
+            });
+      }
+    });
+  }
+
+  updateChairpersonNotification(notification: NewNotification, user: User){
+        this.af
+            .doc('user/' + user.id)
+            .update({
+              notification:
+                firebase.firestore.FieldValue.arrayUnion(notification),
+            });
+  }
+
+  updateLoadNotification(notification: NewNotification, name: string){
+    this.af
+      .collection('user')
+      .ref.where('fullName', '==', name)
+      .onSnapshot((result) => {
+        result.forEach((doc) => {
+          console.log(doc.id);
+          this.af
+            .doc('user/' + doc.id)
+            .update({
+              notification:
+                firebase.firestore.FieldValue.arrayUnion(notification),
+            });
+        });
+      })
+}
+
+  deleteNotification(notification: NewNotification, currentUser: NewUser) {
+    this.af
+      .collection('user')
+      .ref.where('fullName', '==', currentUser.fullName)
+      .onSnapshot((result) => {
+        result.forEach((doc) => {
+          console.log(doc.id);
+          this.af
+            .doc('user/' + doc.id)
+            .update({
+              notification:
+                firebase.firestore.FieldValue.arrayRemove(notification),
+            });
+        });
+      });
+  }
+
+  deleteAllNotification(notification: NewNotification[], currentUser: NewUser){
+
+    this.af
+      .collection('user')
+      .ref.where('fullName', '==', currentUser.fullName)
+      .onSnapshot((result) => {
+        result.forEach((doc) => {
+          console.log(doc.id);
+
+          notification.forEach(element => {
+            this.af
+            .doc('user/' + doc.id)
+            .update({
+              notification:
+                firebase.firestore.FieldValue.arrayRemove(element),
+            });
+          });
+
+        });
+      });
+  }
 }

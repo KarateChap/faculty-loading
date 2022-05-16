@@ -5,6 +5,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NewNotification } from 'src/app/shared/models/new-notification.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
@@ -88,6 +89,11 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    let notification: NewNotification = {
+      icon: 'manage_accounts',
+      heading: 'Account Update',
+      contents: 'The admin has updated your account status/information.'
+    }
 
     if(this.configType == 'add'){
       this.userService.addUserToDatabase({
@@ -98,6 +104,7 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
         isActivated: this.chairpersonForm.value.isActivated,
         startDate: null,
         endDate: null,
+        notification: []
       });
 
       this.authService.registerUser({
@@ -114,7 +121,10 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
         isActivated: this.chairpersonForm.value.isActivated,
         startDate: this.passedData.user.startDate,
         endDate: this.passedData.user.endDate,
+        notification: []
       }, this.passedData.user.id)
+
+      this.userService.updateChairpersonNotification(notification, this.passedData.user);
     }
 
 

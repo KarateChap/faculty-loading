@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NewNotification } from 'src/app/shared/models/new-notification.model';
 import { NewUserLoad } from 'src/app/shared/models/new-user-load';
 import { UserService } from 'src/app/shared/services/user.service';
 
@@ -26,15 +27,30 @@ export class SubmitConfirmationModalComponent implements OnInit {
       comment: '',
       idNumber: this.passedData.idNumber,
       loadItem: this.passedData.loadItem,
-      notification: []
     }
   }
 
   onSubmitUserLoad(){
+    let notification: NewNotification;
+
+    console.log(this.currentUserLoad);
     if(this.passedData.hasData){
+
+      notification = {
+        icon: 'notifications',
+        heading: 'Load Update',
+        contents: this.currentUserLoad.chairpersonName + ' submitted an updated load.'
+      }
       this.userService.updateUserLoad(this.passedData.userLoadId, 'pending');
+      this.userService.updateAdminNotification(notification);
     }
     else {
+      notification = {
+        icon: 'notifications',
+        heading: 'Load Submission',
+        contents: this.currentUserLoad.chairpersonName + ' submitted a load.'
+      }
+      this.userService.updateAdminNotification(notification);
       this.userService.addUserLoadsToDatabase(this.currentUserLoad);
     }
 

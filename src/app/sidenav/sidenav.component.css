@@ -1,3 +1,25 @@
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #ad2a2a;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--light);
+  border-radius: 20px;
+  transition: all ease-in-out 1s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
 .profile{
   font-family: var(--incon);
   margin-top: 40px;
@@ -107,10 +129,10 @@ button{
     transform: rotate(0deg);
   }
   40% {
-    transform: rotate(-20deg);
+    transform: rotate(-10deg);
   }
   60%{
-    transform: rotate(20deg);
+    transform: rotate(10deg);
   }
   100%{
     transform: rotate(0deg);
@@ -181,4 +203,53 @@ mat-nav-list{
   font-family: var(--icon);
   font-size: 15px;
   color: var(--primary);
+}
+
+.notif-icon{
+  margin-right: -20px;
+  position: absolute;
+  top: 12px;
+  right: 0px;
+}
+.notif-icon:hover{
+  background-color: rgb(197, 197, 197);
+  border-radius: 100%;
+}
+
+.notif-container{
+  height: 10vh;
+  position: relative;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  overflow-y: scroll;
+}
+
+.notif-container::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+.notif-header{
+  font-family: var(--mont);
+  font-size: 14px;
+  margin-top: 12px;
+  color: var(--primary);
+}
+
+.notif-content{
+  word-break: break-all;
+    white-space: normal;
+    font-family: var(--mont);
+    font-size: 12px;
+}
+
+.warn{
+  color: rgb(250, 73, 73);
+}
+
+.primary{
+  color: var(--primary);
+}
+
+.success {
+  color: rgb(63, 189, 63);
 }

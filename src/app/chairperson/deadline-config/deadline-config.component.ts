@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NewNotification } from 'src/app/shared/models/new-notification.model';
 import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
@@ -43,5 +44,15 @@ export class DeadlineConfigComponent implements OnInit {
       this.deadlineForm.value.startDate,
       this.deadlineForm.value.endDate
     );
+
+    console.log(this.deadlineForm.value.startDate.to);
+
+    let notification: NewNotification = {
+      icon: 'manage_accounts',
+      heading: 'Account Update',
+      contents: 'The admin has extended your submission deadline to: ' + this.deadlineForm.value.startDate.toString().substring(4, 15) + ' - ' + this.deadlineForm.value.endDate.toString().substring(4, 15)
+    }
+
+    this.userService.updateChairpersonNotification(notification, this.passedData.user)
   }
 }

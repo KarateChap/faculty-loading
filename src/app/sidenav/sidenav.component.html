@@ -307,7 +307,7 @@
         >Faculty Mode</a
       >
     </mat-nav-list>
-<!--
+    <!--
     <mat-nav-list *ngIf="currentUser.department != 'admin'">
       <a
         class="link-text"
@@ -324,17 +324,21 @@
     </mat-nav-list> -->
 
     <mat-nav-list class="logout">
-    <div fxLayoutAlign="center center" fxLayout="row">
-      <mat-icon class="logout-icon">logout</mat-icon>
-      <p class="logout-text" (click)="onLogout()">Logout</p>
-    </div>
+      <div fxLayoutAlign="center center" fxLayout="row">
+        <mat-icon class="logout-icon">logout</mat-icon>
+        <p class="logout-text" (click)="onLogout()">Logout</p>
+      </div>
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <mat-toolbar class="toolbar">
-      <mat-icon color="primary" style="cursor: pointer; margin-right: 15px;" (click)="onToggle()"
-      >menu</mat-icon>
+      <mat-icon
+        color="primary"
+        style="cursor: pointer; margin-right: 15px"
+        (click)="onToggle()"
+        >menu</mat-icon
+      >
       <div>
         <p class="toolbar-text">
           Academic Year:
@@ -349,14 +353,65 @@
       </div>
       <div fxFlex fxLayout fxLayoutAlign="flex-end">
         <div *ngIf="currentUser.startDate">
-          <span *ngIf="currentUser.department != 'admin'" class="deadline">{{" [Deadline " + (currentUser.startDate.toDate() | date) + " - " + (currentUser.endDate.toDate() | date) + "]"}}</span>
+          <span *ngIf="currentUser.department != 'admin'" class="deadline">{{
+            " [Deadline " +
+              (currentUser.startDate.toDate() | date) +
+              " - " +
+              (currentUser.endDate.toDate() | date) +
+              "]"
+          }}</span>
         </div>
         <div *ngIf="!currentUser.startDate">
-          <span *ngIf="currentUser.department != 'admin'" class="deadline">{{"[Deadline: N/A]"}}</span>
+          <span *ngIf="currentUser.department != 'admin'" class="deadline">{{
+            "[Deadline: N/A]"
+          }}</span>
         </div>
 
         <div>
-          <mat-icon color="primary" class="bell-icon">notifications</mat-icon>
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon
+              color="primary"
+              class="bell-icon"
+              [matBadge]="notifications ? notifications.length : '0'"
+              matBadgeColor="warn"
+              matBadgeSize="small"
+              >notifications</mat-icon
+            >
+          </button>
+          <mat-menu #menu="matMenu" xPosition="before">
+            <div
+              mat-menu-item
+              *ngIf="!notifications || notifications.length == 0"
+              fxLayoutAlign="center start"
+            >
+              <p class="notif-header">You have no notifications today</p>
+            </div>
+            <div
+              mat-menu-item
+              fxLayout="column"
+              fxLayoutAlign="start start"
+              (click)="$event.stopPropagation()"
+              [disableRipple]="true"
+              class="notif-container"
+              *ngFor="let notif of notifications; let i = index"
+            >
+              <mat-icon class="notif-icon" (click)="onDeleteNotification(i)"
+                >close</mat-icon
+              >
+              <div fxLayoutAlign="start center" style="width: 100%">
+                <mat-icon [ngClass]="notif.icon == 'notification_important' ? 'warn' : notif.icon == 'check' ? 'success' : 'primary'">{{ notif.icon}}</mat-icon>
+                <p class="notif-header">{{ notif.heading }}</p>
+              </div>
+
+              <div style="width: 100%">
+                <p class="notif-content">{{ notif.contents }}</p>
+              </div>
+            </div>
+
+            <div *ngIf="notifications && notifications.length > 0" mat-menu-item fxLayoutAlign="center end">
+              <p class="notif-header" (click)="onDeleteAllNotification()">Delete All Notifications</p>
+            </div>
+          </mat-menu>
         </div>
         <ul fxLayout class="navigation-items" fxLayoutGap="10px">
           <li>

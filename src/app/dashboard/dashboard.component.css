@@ -133,13 +133,13 @@ mat-header-cell {
 
 
 .submission-status{
-  border: 2px solid var(--primary);
+  /* border: 2px solid var(--primary);
   border-radius: 5px;
   margin: 15px;
   padding: 15px;
-  background-color: rgba(255, 255, 255, 0.849);
+  background-color: rgba(255, 255, 255, 0.849); */
   width: 50vh;
-  max-height: 150px;
+  max-height: 120px;
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
