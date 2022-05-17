@@ -173,97 +173,114 @@ export class UserService {
   }
 
   updateAdminNotification(notification: NewNotification) {
-    this.af
+      this.af
       .collection('user')
       .ref.where('department', '==', 'admin')
-      .onSnapshot((result) => {
-        result.forEach((doc) => {
-          console.log(doc.id);
-          this.af
-            .doc('user/' + doc.id)
-            .update({
-              notification:
-                firebase.firestore.FieldValue.arrayUnion(notification),
-            });
-        });
+      .get().then(data => {
+        console.log(data.docs[0].id);
+          this.af.doc('user/' + data.docs[0].id).update({
+          notification:
+              firebase.firestore.FieldValue.arrayUnion(notification),
+          });
       })
+      // .onSnapshot((result) => {
+      //   result.forEach((doc) => {
+      //     console.log(doc.id);
+      //     this.af.doc('user/' + doc.id).update({
+      //       notification:
+      //         firebase.firestore.FieldValue.arrayUnion(notification),
+      //     });
+      //   });
+      // });
   }
 
-  updateAllChairpersonNotification(notification: NewNotification){
-    this.users.forEach(element => {
-      if(element.department != 'admin'){
-        this.af
-            .doc('user/' + element.id)
-            .update({
-              notification:
-                firebase.firestore.FieldValue.arrayUnion(notification),
-            });
+  updateAllChairpersonNotification(notification: NewNotification) {
+    this.users.forEach((element) => {
+      if (element.department != 'admin') {
+         this.af.doc('user/' + element.id).update({
+          notification: firebase.firestore.FieldValue.arrayUnion(notification),
+        });
       }
     });
   }
 
-  updateChairpersonNotification(notification: NewNotification, user: User){
-        this.af
-            .doc('user/' + user.id)
-            .update({
-              notification:
-                firebase.firestore.FieldValue.arrayUnion(notification),
-            });
+  updateChairpersonNotification(notification: NewNotification, user: User) {
+     this.af.doc('user/' + user.id).update({
+      notification: firebase.firestore.FieldValue.arrayUnion(notification),
+    });
+
   }
 
-  updateLoadNotification(notification: NewNotification, name: string){
-    this.af
+  updateLoadNotification(notification: NewNotification, name: string) {
+       this.af
       .collection('user')
       .ref.where('fullName', '==', name)
-      .onSnapshot((result) => {
-        result.forEach((doc) => {
-          console.log(doc.id);
-          this.af
-            .doc('user/' + doc.id)
-            .update({
-              notification:
-                firebase.firestore.FieldValue.arrayUnion(notification),
-            });
-        });
+      .get().then(data => {
+        console.log(data.docs[0].id);
+          this.af.doc('user/' + data.docs[0].id).update({
+          notification:
+              firebase.firestore.FieldValue.arrayUnion(notification),
+          });
       })
-}
 
-  deleteNotification(notification: NewNotification, currentUser: NewUser) {
-    this.af
-      .collection('user')
-      .ref.where('fullName', '==', currentUser.fullName)
-      .onSnapshot((result) => {
-        result.forEach((doc) => {
-          console.log(doc.id);
-          this.af
-            .doc('user/' + doc.id)
-            .update({
-              notification:
-                firebase.firestore.FieldValue.arrayRemove(notification),
-            });
-        });
-      });
+
+      // .onSnapshot((result) => {
+      //   result.forEach((doc) => {
+      //     console.log(doc.id);
+      //     this.af.doc('user/' + doc.id).update({
+      //       notification:
+      //         firebase.firestore.FieldValue.arrayUnion(notification),
+      //     });
+      //   });
+      // });
   }
 
-  deleteAllNotification(notification: NewNotification[], currentUser: NewUser){
-
-    this.af
+  deleteNotification(notification: NewNotification, currentUser: NewUser) {
+        this.af
       .collection('user')
       .ref.where('fullName', '==', currentUser.fullName)
-      .onSnapshot((result) => {
-        result.forEach((doc) => {
-          console.log(doc.id);
+      .get().then(data => {
 
-          notification.forEach(element => {
-            this.af
-            .doc('user/' + doc.id)
-            .update({
-              notification:
-                firebase.firestore.FieldValue.arrayRemove(element),
-            });
+        console.log(data.docs[0].id);
+          this.af.doc('user/' + data.docs[0].id).update({
+          notification:
+              firebase.firestore.FieldValue.arrayRemove(notification),
           });
+      })
 
+      // .onSnapshot((result) => {
+      //   result.forEach((doc) => {
+      //     console.log(doc.id);
+      //     this.af.doc('user/' + doc.id).update({
+      //       notification:
+      //         firebase.firestore.FieldValue.arrayRemove(notification),
+      //     });
+      //   });
+      // });
+  }
+
+  deleteAllNotification(notification: NewNotification[], currentUser: NewUser) {
+      this.af
+      .collection('user')
+      .ref.where('fullName', '==', currentUser.fullName)
+      .get().then(data =>
+
+        notification.forEach(element => {
+              this.af.doc('user/' + data.docs[0].id).update({
+              notification: firebase.firestore.FieldValue.arrayRemove(element),
         });
-      });
+      })
+      )
+      // .onSnapshot((result) => {
+      //   result.forEach((doc) => {
+      //     console.log(doc.id);
+
+      //     notification.forEach((element) => {
+      //       this.af.doc('user/' + doc.id).update({
+      //         notification: firebase.firestore.FieldValue.arrayRemove(element),
+      //       });
+      //     });
+      //   });
+      // });
   }
 }
