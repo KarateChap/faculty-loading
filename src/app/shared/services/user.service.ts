@@ -105,6 +105,22 @@ export class UserService {
     this.uiService.showSuccessToast('Load Submitted Succesfully!', 'Success');
   }
 
+  editUserLoadsToDatabase(userLoadId: string,userLoad: NewUserLoad){
+    this.af
+        .doc('userLoad/' + userLoadId)
+        .update({
+          chairpersonName: userLoad.chairpersonName,
+          comment: userLoad.comment,
+          dateSubmitted: userLoad.dateSubmitted,
+          department: userLoad.department,
+          idNumber: userLoad.idNumber,
+          loadItem: userLoad.loadItem,
+          semester: userLoad.semester,
+          status: userLoad.status,
+          year: userLoad.year
+         });
+  }
+
   fetchAllUserLoads() {
     this.af
       .collection('userLoad')

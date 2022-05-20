@@ -116,11 +116,20 @@ export class FacultyLoadTimelineComponent implements OnInit {
         this.monday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.monday[startIndex] = '-';
+          if(this.monday[startIndex] == '-'  || this.monday[endIndex] == '@'){
+            this.monday[startIndex] = '@';
+          }else {
+            this.monday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.monday[endIndex] = '-';
+          if(this.monday[endIndex] == '-' || this.monday[endIndex] == '@'){
+            this.monday[startIndex] = '@';
+          }
+          else {
+            this.monday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -171,11 +180,20 @@ export class FacultyLoadTimelineComponent implements OnInit {
         this.tuesday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.tuesday[startIndex] = '-';
+          if(this.tuesday[startIndex] == '-'  || this.tuesday[endIndex] == '@'){
+            this.tuesday[startIndex] = '@';
+          }else {
+            this.tuesday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.tuesday[endIndex] = '-';
+          if(this.tuesday[endIndex] == '-' || this.tuesday[endIndex] == '@'){
+            this.tuesday[startIndex] = '@';
+          }
+          else {
+            this.tuesday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -226,11 +244,20 @@ export class FacultyLoadTimelineComponent implements OnInit {
         this.wednesday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.wednesday[startIndex] = '-';
+          if(this.wednesday[startIndex] == '-'  || this.wednesday[endIndex] == '@'){
+            this.wednesday[startIndex] = '@';
+          }else {
+            this.wednesday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.wednesday[endIndex] = '-';
+          if(this.wednesday[endIndex] == '-' || this.wednesday[endIndex] == '@'){
+            this.wednesday[startIndex] = '@';
+          }
+          else {
+            this.wednesday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -282,11 +309,20 @@ export class FacultyLoadTimelineComponent implements OnInit {
         this.thursday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.thursday[startIndex] = '-';
+          if(this.thursday[startIndex] == '-'  || this.thursday[endIndex] == '@'){
+            this.thursday[startIndex] = '@';
+          }else {
+            this.thursday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.thursday[endIndex] = '-';
+          if(this.thursday[endIndex] == '-' || this.thursday[endIndex] == '@'){
+            this.thursday[startIndex] = '@';
+          }
+          else {
+            this.thursday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -337,11 +373,20 @@ export class FacultyLoadTimelineComponent implements OnInit {
         this.friday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.friday[startIndex] = '-';
+          if(this.friday[startIndex] == '-'  || this.friday[endIndex] == '@'){
+            this.friday[startIndex] = '@';
+          }else {
+            this.friday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.friday[endIndex] = '-';
+          if(this.friday[endIndex] == '-' || this.friday[endIndex] == '@'){
+            this.friday[startIndex] = '@';
+          }
+          else {
+            this.friday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -393,11 +438,20 @@ export class FacultyLoadTimelineComponent implements OnInit {
         this.saturday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.saturday[startIndex] = '-';
+          if(this.saturday[startIndex] == '-'  || this.saturday[endIndex] == '@'){
+            this.saturday[startIndex] = '@';
+          }else {
+            this.saturday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.saturday[endIndex] = '-';
+          if(this.saturday[endIndex] == '-' || this.saturday[endIndex] == '@'){
+            this.saturday[startIndex] = '@';
+          }
+          else {
+            this.saturday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -448,11 +502,20 @@ export class FacultyLoadTimelineComponent implements OnInit {
         this.sunday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.sunday[startIndex] = '-';
+          if(this.sunday[startIndex] == '-'  || this.sunday[endIndex] == '@'){
+            this.sunday[startIndex] = '@';
+          }else {
+            this.sunday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.sunday[endIndex] = '-';
+          if(this.sunday[endIndex] == '-' || this.sunday[endIndex] == '@'){
+            this.sunday[startIndex] = '@';
+          }
+          else {
+            this.sunday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {

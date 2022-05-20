@@ -18,6 +18,11 @@
   background-color: rgb(219, 219, 219);
 }
 
+.on-overlap{
+  background-color: rgb(255, 154, 154);
+}
+
+
 
 .section{
   font-weight: bold; font-family: var(--incon);

@@ -41,7 +41,7 @@ export class SubmitConfirmationModalComponent implements OnInit {
         heading: 'Load Update',
         contents: this.currentUserLoad.chairpersonName + ' submitted an updated load.'
       }
-      this.userService.updateUserLoad(this.passedData.userLoadId, 'pending');
+      this.userService.editUserLoadsToDatabase(this.passedData.userLoadId, this.currentUserLoad);
       this.userService.updateAdminNotification(notification);
     }
     else {

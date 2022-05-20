@@ -51,43 +51,43 @@
         <div class="monday" fxFlex="11.714%">
           <div>
             <p class="table-item header">MONDAY</p>
-            <p class="table-item" *ngFor="let mon of monday" [ngClass]="{'on-schedule': mon != ' '}">{{mon == '-' ? '  ' : mon}}</p>
+            <p class="table-item" *ngFor="let mon of monday" [ngClass]="mon == '-' ? 'on-schedule' : mon == '@' ? 'on-overlap': mon == ' ' ? '' : 'on-schedule'">{{mon == '-' ? '  ' : mon == '@' ? '  ' : mon}}</p>
           </div>
         </div>
         <div class="tuesday" fxFlex="11.714%">
           <div>
             <p class="table-item header">TUESDAY</p>
-            <p class="table-item" *ngFor="let tue of tuesday" [ngClass]="{'on-schedule': tue != ' '}">{{tue == '-' ? '  ' : tue}}</p>
+            <p class="table-item" *ngFor="let tue of tuesday" [ngClass]="tue == '-' ? 'on-schedule' : tue == '@' ? 'on-overlap': tue == ' ' ? '' : 'on-schedule'">{{tue == '-' ? '  ' : tue == '@' ? '  ' : tue}}</p>
           </div>
         </div>
         <div class="wednesday" fxFlex="11.714%">
           <div>
             <p class="table-item header">WEDNESDAY</p>
-            <p class="table-item" *ngFor="let wed of wednesday" [ngClass]="{'on-schedule': wed != ' '}">{{wed == '-' ? '  ' : wed}}</p>
+            <p class="table-item" *ngFor="let wed of wednesday" [ngClass]="wed == '-' ? 'on-schedule' : wed == '@' ? 'on-overlap': wed == ' ' ? '' : 'on-schedule'">{{wed == '-' ? '  ' : wed == '@' ? '  ' : wed}}</p>
           </div>
         </div>
         <div class="thursday" fxFlex="11.714%">
           <div>
             <p class="table-item header">THURSDAY</p>
-            <p class="table-item" *ngFor="let thu of thursday" [ngClass]="{'on-schedule': thu != ' '}">{{thu == '-' ? '  ' : thu}}</p>
+            <p class="table-item" *ngFor="let thu of thursday" [ngClass]="thu == '-' ? 'on-schedule' : thu == '@' ? 'on-overlap': thu == ' ' ? '' : 'on-schedule'">{{thu == '-' ? '  ' : thu == '@' ? '  ' : thu}}</p>
           </div>
         </div>
         <div class="friday" fxFlex="11.714%">
           <div>
             <p class="table-item header">FRIDAY</p>
-            <p class="table-item" *ngFor="let fri of friday" [ngClass]="{'on-schedule': fri != ' '}">{{fri == '-' ? '  ' : fri}}</p>
+            <p class="table-item" *ngFor="let fri of friday" [ngClass]="fri == '-' ? 'on-schedule' : fri == '@' ? 'on-overlap': fri == ' ' ? '' : 'on-schedule'">{{fri == '-' ? '  ' : fri == '@' ? '  ' : fri}}</p>
           </div>
         </div>
         <div class="saturday" fxFlex="11.714%">
           <div>
             <p class="table-item header">SATURDAY</p>
-            <p class="table-item" *ngFor="let sat of saturday" [ngClass]="{'on-schedule': sat != ' '}">{{sat == '-' ? '  ' : sat}}</p>
+            <p class="table-item" *ngFor="let sat of saturday" [ngClass]="sat == '-' ? 'on-schedule' : sat == '@' ? 'on-overlap': sat == ' ' ? '' : 'on-schedule'">{{sat == '-' ? '  ' : sat == '@' ? '  ' : sat}}</p>
           </div>
         </div>
         <div class="sunday" fxFlex="11.714%">
           <div>
             <p class="table-item header">SUNDAY</p>
-            <p class="table-item" *ngFor="let sun of sunday" [ngClass]="{'on-schedule': sun != ' '}">{{sun == '-' ? '  ' : sun}}</p>
+            <p class="table-item" *ngFor="let sun of sunday" [ngClass]="sun == '-' ? 'on-schedule' : sun == '@' ? 'on-overlap': sun == ' ' ? '' : 'on-schedule'">{{sun == '-' ? '  ' : sun == '@' ? '  ' : sun}}</p>
           </div>
         </div>
       </div>

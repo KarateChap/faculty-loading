@@ -57,7 +57,6 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     'monday',
     'tuesday',
     'wednesday',
-    'tuesday',
     'thursday',
     'friday',
     'saturday',
