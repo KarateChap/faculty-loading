@@ -119,3 +119,8 @@ mat-header-cell {
   font-family: var(--mont);
   color: var(--primary);
 }
+
+
+.no-conflict{
+  background-color: #adffb87c !important;
+}

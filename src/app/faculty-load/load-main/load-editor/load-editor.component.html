@@ -119,9 +119,9 @@
         </mat-form-field>
         <mat-form-field fxFlex="30%">
           <mat-label>Day</mat-label>
-          <mat-select formControlName="day">
-            <mat-option *ngFor="let day of days" [value]="day">{{
-              day
+          <mat-select formControlName="day" (selectionChange)="onDayChanged($event)">
+            <mat-option *ngFor="let day of availableDays" [value]="day.day" [ngClass]="day.conflict == 'noConflict' ? 'no-conflict' : ''">{{
+              day.day
             }}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -134,8 +134,8 @@
             formControlName="startTime"
             (selectionChange)="onStartTimeChange($event)"
           >
-            <mat-option *ngFor="let time of times" [value]="time">{{
-              time
+            <mat-option *ngFor="let time of availableTimes" [value]="time.time" [ngClass]="time.conflict == 'noConflict' ? 'no-conflict' : ''">{{
+              time.time
             }}</mat-option>
           </mat-select>
         </mat-form-field>

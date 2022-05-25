@@ -82,6 +82,10 @@ export class FacultyLoadTableComponent implements OnInit {
   }
 
   checkMondayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.mondayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.mondayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -116,11 +120,20 @@ export class FacultyLoadTableComponent implements OnInit {
         this.monday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.monday[startIndex] = '-';
+          if(this.monday[startIndex] == '-'  || this.monday[endIndex] == '@'){
+            this.monday[startIndex] = '@';
+          }else {
+            this.monday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.monday[endIndex] = '-';
+          if(this.monday[endIndex] == '-' || this.monday[endIndex] == '@'){
+            this.monday[startIndex] = '@';
+          }
+          else {
+            this.monday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -138,6 +151,10 @@ export class FacultyLoadTableComponent implements OnInit {
   }
 
   checkTuesdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.thursdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.tuesdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -171,11 +188,20 @@ export class FacultyLoadTableComponent implements OnInit {
         this.tuesday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.tuesday[startIndex] = '-';
+          if(this.tuesday[startIndex] == '-'  || this.tuesday[endIndex] == '@'){
+            this.tuesday[startIndex] = '@';
+          }else {
+            this.tuesday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.tuesday[endIndex] = '-';
+          if(this.tuesday[endIndex] == '-' || this.tuesday[endIndex] == '@'){
+            this.tuesday[startIndex] = '@';
+          }
+          else {
+            this.tuesday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -192,6 +218,10 @@ export class FacultyLoadTableComponent implements OnInit {
     });
   }
   checkWednesdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.wednesdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.wednesdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -226,11 +256,20 @@ export class FacultyLoadTableComponent implements OnInit {
         this.wednesday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.wednesday[startIndex] = '-';
+          if(this.wednesday[startIndex] == '-'  || this.wednesday[endIndex] == '@'){
+            this.wednesday[startIndex] = '@';
+          }else {
+            this.wednesday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.wednesday[endIndex] = '-';
+          if(this.wednesday[endIndex] == '-' || this.wednesday[endIndex] == '@'){
+            this.wednesday[startIndex] = '@';
+          }
+          else {
+            this.wednesday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -247,6 +286,10 @@ export class FacultyLoadTableComponent implements OnInit {
     });
   }
   checkThursdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.thursdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.thursdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -282,11 +325,20 @@ export class FacultyLoadTableComponent implements OnInit {
         this.thursday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.thursday[startIndex] = '-';
+          if(this.thursday[startIndex] == '-'  || this.thursday[endIndex] == '@'){
+            this.thursday[startIndex] = '@';
+          }else {
+            this.thursday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.thursday[endIndex] = '-';
+          if(this.thursday[endIndex] == '-' || this.thursday[endIndex] == '@'){
+            this.thursday[startIndex] = '@';
+          }
+          else {
+            this.thursday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -303,6 +355,10 @@ export class FacultyLoadTableComponent implements OnInit {
     });
   }
   checkFridayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.fridayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.fridayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -337,11 +393,20 @@ export class FacultyLoadTableComponent implements OnInit {
         this.friday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.friday[startIndex] = '-';
+          if(this.friday[startIndex] == '-'  || this.friday[endIndex] == '@'){
+            this.friday[startIndex] = '@';
+          }else {
+            this.friday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.friday[endIndex] = '-';
+          if(this.friday[endIndex] == '-' || this.friday[endIndex] == '@'){
+            this.friday[startIndex] = '@';
+          }
+          else {
+            this.friday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -359,6 +424,10 @@ export class FacultyLoadTableComponent implements OnInit {
   }
 
   checkSaturdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.saturdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.saturdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -393,11 +462,20 @@ export class FacultyLoadTableComponent implements OnInit {
         this.saturday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.saturday[startIndex] = '-';
+          if(this.saturday[startIndex] == '-'  || this.saturday[endIndex] == '@'){
+            this.saturday[startIndex] = '@';
+          }else {
+            this.saturday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.saturday[endIndex] = '-';
+          if(this.saturday[endIndex] == '-' || this.saturday[endIndex] == '@'){
+            this.saturday[startIndex] = '@';
+          }
+          else {
+            this.saturday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {
@@ -415,6 +493,10 @@ export class FacultyLoadTableComponent implements OnInit {
   }
 
   checkSundayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.sundayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.sundayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -448,11 +530,20 @@ export class FacultyLoadTableComponent implements OnInit {
         this.sunday[endIndex - offset] = facultySection;
 
         for (let index = 0; index < offset; index++) {
-          this.sunday[startIndex] = '-';
+          if(this.sunday[startIndex] == '-'  || this.sunday[endIndex] == '@'){
+            this.sunday[startIndex] = '@';
+          }else {
+            this.sunday[startIndex] = '-';
+          }
           startIndex++;
         }
         for (let index = 0; index < offset; index++) {
-          this.sunday[endIndex] = '-';
+          if(this.sunday[endIndex] == '-' || this.sunday[endIndex] == '@'){
+            this.sunday[startIndex] = '@';
+          }
+          else {
+            this.sunday[endIndex] = '-';
+          }
           endIndex--;
         }
       } else {

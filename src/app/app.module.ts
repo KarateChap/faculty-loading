@@ -49,6 +49,7 @@ import { SubmissionModalComponent } from './submissions/submission-modal/submiss
 import { ViewLoadsComponent } from './submissions/view-loads/view-loads.component';
 import { ViewHistoryModalComponent } from './dashboard/view-history-modal/view-history-modal.component';
 import { NotFoundModalComponent } from './dashboard/view-history-modal/not-found-modal/not-found-modal.component';
+import { ConfirmationModalComponent } from './section-load/section-load-editor/confirmation-modal/confirmation-modal.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { NotFoundModalComponent } from './dashboard/view-history-modal/not-found
     ViewLoadsComponent,
     ViewHistoryModalComponent,
     NotFoundModalComponent,
+    ConfirmationModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
@@ -62,6 +63,17 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     'saturday',
     'sunday',
   ];
+
+  availableDays = [
+    {day: 'monday', conflict: 'conflict'},
+    {day: 'tuesday', conflict: 'conflict'},
+    {day: 'wednesday', conflict: 'conflict'},
+    {day: 'thursday', conflict: 'conflict'},
+    {day: 'friday', conflict: 'conflict'},
+    {day: 'saturday', conflict: 'conflict'},
+    {day: 'sunday', conflict: 'conflict'},
+  ]
+
   sections: Section[] = [];
   sectionSubs: Subscription;
   roomsSubs: Subscription;
@@ -99,6 +111,37 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     '8:30 PM',
   ];
 
+  availableTimes = [
+    {time: '7:00 AM', conflict: 'conflict'},
+    {time: '7:30 AM', conflict: 'conflict'},
+    {time: '8:00 AM', conflict: 'conflict'},
+    {time: '8:30 AM', conflict: 'conflict'},
+    {time: '9:00 AM', conflict: 'conflict'},
+    {time: '9:30 AM', conflict: 'conflict'},
+    {time: '10:00 AM', conflict: 'conflict'},
+    {time: '10:30 AM', conflict: 'conflict'},
+    {time: '11:00 AM', conflict: 'conflict'},
+    {time: '11:30 AM', conflict: 'conflict'},
+    {time: '12:00 PM', conflict: 'conflict'},
+    {time: '12:30 PM', conflict: 'conflict'},
+    {time: '1:00 PM', conflict: 'conflict'},
+    {time: '1:30 PM', conflict: 'conflict'},
+    {time: '2:00 PM', conflict: 'conflict'},
+    {time: '2:30 PM', conflict: 'conflict'},
+    {time: '3:00 PM', conflict: 'conflict'},
+    {time: '3:30 PM', conflict: 'conflict'},
+    {time: '4:00 PM', conflict: 'conflict'},
+    {time: '4:30 PM', conflict: 'conflict'},
+    {time: '5:00 PM', conflict: 'conflict'},
+    {time: '5:30 PM', conflict: 'conflict'},
+    {time: '6:00 PM', conflict: 'conflict'},
+    {time: '6:30 PM', conflict: 'conflict'},
+    {time: '7:00 PM', conflict: 'conflict'},
+    {time: '7:30 PM', conflict: 'conflict'},
+    {time: '8:00 PM', conflict: 'conflict'},
+    {time: '8:30 PM', conflict: 'conflict'},
+  ]
+
   onSearching = false;
   filteredCurriculums: Curriculum[] = [];
 
@@ -125,7 +168,8 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     private academicService: AcademicService,
     private userService: UserService,
     private uiService: UIService,
-    private facultyService: FacultyService
+    private facultyService: FacultyService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -252,6 +296,22 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
       this.dataSource.data = this.loads;
       this.loadService.changeCurrentFacultyLoad(this.loads);
     })
+
+
+
+    if(this.activeFaculty){
+      this.availableDays.forEach(element => {
+        element.conflict ="conflict";
+      });
+
+      this.availableDays.forEach(days => {
+        this.activeFaculty.facultySchedule.forEach((element: any) => {
+          if(days.day == element.day){
+            days.conflict = 'noConflict'
+          }
+        });
+      });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -328,6 +388,14 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
         this.loadForm.patchValue({endTime: this.times[i + (newNoHour * 2)]})
       }
     }
+
+    this.availableTimes.forEach(element => {
+      if(element.time == event.value){
+        if(element.conflict == 'conflict'){
+          this.snackBar.open('Conflict Detected! Your chosen time: ' + event.value.toUpperCase() +' is not listed in ' + this.activeFaculty.fullName + "'s time schedule", 'close', {panelClass: ['red-snackbar']});
+        }
+      }
+    });
   }
 
   // onChangeToggle(event: any) {
@@ -355,6 +423,81 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  onDayChanged(event: any){
+    console.log(event.value);
+    this.availableDays.forEach(element => {
+      if(element.day == event.value){
+        if(element.conflict == 'conflict'){
+          this.snackBar.open('Conflict Detected! Your chosen day: ' + event.value.toUpperCase() +' is not listed in ' + this.activeFaculty.fullName + "'s day schedule", 'close', {panelClass: ['red-snackbar']});
+        }
+      }
+    });
+
+
+
+
+    let activeDay: any;
+    let activeStartTime;
+    let activeEndTime;
+
+    this.availableTimes.forEach(element => {
+      element.conflict = "conflict";
+    })
+
+      this.activeFaculty.facultySchedule.forEach((element: any) => {
+        if(this.loadForm.value.day == element.day){
+          activeDay = element;
+          console.log(activeDay);
+
+
+
+
+          let counter = 0;
+          let oneStartTime = false;
+          let startIndex = 0;
+          let oneEndTime = false;
+          let endIndex = 0;
+
+          this.availableTimes.forEach(element => {
+            if(activeDay.startTime.charAt(0) == element.time.charAt(0) && activeDay.startTime.charAt(1) == element.time.charAt(1) && activeDay.startTime.charAt(5) == element.time.charAt(5)){
+              if(oneStartTime == false){
+                startIndex = counter;
+                console.log("START TIME: " + element.time);
+                oneStartTime = true;
+              }
+
+            }
+            counter++;
+          });
+
+          counter = 0;
+
+          this.availableTimes.forEach(element => {
+            if(activeDay.endTime.charAt(0) == element.time.charAt(0) && activeDay.endTime.charAt(1) == element.time.charAt(1) && activeDay.endTime.charAt(5) == element.time.charAt(5)){
+              if(oneEndTime == false){
+                endIndex = counter;
+                console.log("END TIME: " + element.time);
+                oneEndTime = true;
+              }
+
+            }
+            counter++;
+          });
+
+        console.log(startIndex);
+        console.log(endIndex);
+
+        for (let index = startIndex; index <= endIndex; index++) {
+          this.availableTimes[index].conflict = 'noConflict';
+        }
+
+        console.log(this.availableTimes);
+
+        }
+      });
+
   }
 
   onDeleteLoad(loadId: string) {
@@ -391,6 +534,89 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
       this.loadForm.patchValue({ startTime: load.startTime });
       this.loadForm.patchValue({ endTime: load.endTime });
       this.loadForm.patchValue({ room: selectedRoomName });
+
+
+
+
+      if(this.activeFaculty){
+        this.availableDays.forEach(element => {
+          element.conflict ="conflict";
+        });
+
+        this.availableDays.forEach(days => {
+          this.activeFaculty.facultySchedule.forEach((element: any) => {
+            if(days.day == element.day){
+              days.conflict = 'noConflict'
+            }
+          });
+        });
+      }
+
+
+
+    let activeDay: any;
+    let activeStartTime;
+    let activeEndTime;
+
+    this.availableTimes.forEach(element => {
+      element.conflict = "conflict";
+    })
+
+    if(this.activeFaculty && this.loadForm.value.day){
+      this.activeFaculty.facultySchedule.forEach((element: any) => {
+        if(this.loadForm.value.day == element.day){
+          activeDay = element;
+          console.log(activeDay);
+
+
+
+
+          let counter = 0;
+          let oneStartTime = false;
+          let startIndex = 0;
+          let oneEndTime = false;
+          let endIndex = 0;
+
+          this.availableTimes.forEach(element => {
+            if(activeDay.startTime.charAt(0) == element.time.charAt(0) && activeDay.startTime.charAt(1) == element.time.charAt(1) && activeDay.startTime.charAt(5) == element.time.charAt(5)){
+              if(oneStartTime == false){
+                startIndex = counter;
+                console.log("START TIME: " + element.time);
+                oneStartTime = true;
+              }
+
+            }
+            counter++;
+          });
+
+          counter = 0;
+
+          this.availableTimes.forEach(element => {
+            if(activeDay.endTime.charAt(0) == element.time.charAt(0) && activeDay.endTime.charAt(1) == element.time.charAt(1) && activeDay.endTime.charAt(5) == element.time.charAt(5)){
+              if(oneEndTime == false){
+                endIndex = counter;
+                console.log("END TIME: " + element.time);
+                oneEndTime = true;
+              }
+
+            }
+            counter++;
+          });
+
+        console.log(startIndex);
+        console.log(endIndex);
+
+        for (let index = startIndex; index <= endIndex; index++) {
+          this.availableTimes[index].conflict = 'noConflict';
+        }
+
+        console.log(this.availableTimes);
+
+        }
+      });
+    }
+
+
 
       target.scrollIntoView({ behavior: 'smooth' });
     } else {

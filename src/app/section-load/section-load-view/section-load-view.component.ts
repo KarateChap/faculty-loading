@@ -83,6 +83,11 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
   }
 
   checkMondayLoads() {
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.mondayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
+
+    console.log(this.mondayLoad);
     this.mondayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -148,6 +153,10 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
     });
   }
   checkTuesdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.tuesdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.tuesdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -212,6 +221,10 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
     });
   }
   checkWednesdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.wednesdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.wednesdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -277,6 +290,10 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
     });
   }
   checkThursdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.thursdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.thursdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -343,6 +360,10 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
     });
   }
   checkFridayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.fridayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.fridayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -409,6 +430,10 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
   }
 
   checkSaturdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.saturdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.saturdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -475,6 +500,10 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
   }
 
   checkSundayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.sundayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.sundayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;

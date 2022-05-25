@@ -82,6 +82,11 @@ export class ClassScheduleTimelineComponent implements OnInit {
 
 
   checkMondayLoads() {
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.mondayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
+
+    console.log(this.mondayLoad);
     this.mondayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -147,6 +152,10 @@ export class ClassScheduleTimelineComponent implements OnInit {
     });
   }
   checkTuesdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.tuesdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.tuesdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -211,6 +220,10 @@ export class ClassScheduleTimelineComponent implements OnInit {
     });
   }
   checkWednesdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.wednesdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.wednesdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -276,6 +289,10 @@ export class ClassScheduleTimelineComponent implements OnInit {
     });
   }
   checkThursdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.thursdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.thursdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -342,6 +359,10 @@ export class ClassScheduleTimelineComponent implements OnInit {
     });
   }
   checkFridayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.fridayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.fridayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -408,6 +429,10 @@ export class ClassScheduleTimelineComponent implements OnInit {
   }
 
   checkSaturdayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.saturdayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.saturdayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;
@@ -474,6 +499,10 @@ export class ClassScheduleTimelineComponent implements OnInit {
   }
 
   checkSundayLoads() {
+
+    const dateFromStr: any = (str:any) => new Date('1970/01/01 ' + str);
+    this.sundayLoad.sort((a,b) => dateFromStr(a.startTime) - dateFromStr(b.startTime));
+
     this.sundayLoad.forEach((load) => {
       let startIndex = 0;
       let endIndex = 0;

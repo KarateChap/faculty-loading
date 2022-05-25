@@ -22,6 +22,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatCardModule} from '@angular/material/card';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [],
@@ -48,7 +49,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatChipsModule,
     MatSidenavModule,
     MatCardModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatSnackBarModule
   ],
   exports: [
     MatButtonModule,
@@ -74,7 +76,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatChipsModule,
     MatSidenavModule,
     MatCardModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatSnackBarModule
   ],
   providers: [MatDatepickerModule]
 })
