@@ -59,7 +59,7 @@
           Set Academic Year
         </button>
 
-        <div
+        <!-- <div
           fxLayout="column"
           fxLayoutAlign="start start"
           class="csv-div"
@@ -76,7 +76,54 @@
               accept=".csv"
             />
           </label>
-        </div>
+        </div> -->
+
+        <div
+          fxLayout="column"
+          fxLayoutAlign="start start"
+          class="csv-div"
+          *ngIf="currentUser.department == 'admin'"
+        >
+        <mat-form-field>
+          <mat-label>Department</mat-label>
+          <mat-select [(value)]="selectedDepartment">
+            <mat-option value="Information Technology"
+              >Information Technology</mat-option
+            >
+            <mat-option value="Civil Engineering"
+              >Civil Engineering</mat-option
+            >
+            <mat-option value="Electrical Engineering"
+              >Electrical Engineering</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          disabled
+          *ngIf="!selectedDepartment"
+          style="width: 100%"
+        >
+          Upload CSV
+        </button>
+
+        <label fxFlexFill *ngIf="selectedDepartment">
+          <div class="upload-csv">Upload CSV</div>
+          <input
+            type="file"
+            #fileImportInput
+            name="File Upload"
+            id="csvFileUpload"
+            (change)="fileChangeListener($event)"
+            accept=".csv"
+          />
+        </label>
+
+      </div>
+
+
         <div fxLayoutAlign="end" fxLayoutGap="15px"></div>
 
         <div
@@ -132,6 +179,7 @@
           font-family: var(--mont);
           color: var(--primary);
           margin-right: 26px;
+          margin-top: 10px;
         "
       >
         Course Curriculum

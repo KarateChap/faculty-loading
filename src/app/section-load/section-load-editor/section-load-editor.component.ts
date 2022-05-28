@@ -127,6 +127,8 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
     '8:30 PM',
   ];
 
+
+
   availableTimes = [
     {time: '7:00 AM', conflict: 'conflict'},
     {time: '7:30 AM', conflict: 'conflict'},
@@ -170,6 +172,14 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
   currentLoad: LoadItem;
 
   isAllowedToEdit = false;
+
+
+  roomStartTime = '';
+  roomEndTime = '';
+  roomLoad: LoadItem[] = [];
+  roomLoadSubs: Subscription;
+
+
   constructor(
     private curriculumService: CurriculumService,
     private roomSectionService: RoomSectionService,
@@ -329,6 +339,128 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
       }
     );
     this.initializeForm();
+
+
+
+
+
+    this.roomLoadSubs = this.loadService.sameRoomLoadChange.subscribe(roomLoad =>{
+      this.roomLoad = roomLoad;
+
+      this.roomStartTime = this.loadForm.value.startTime;
+      this.roomEndTime = this.loadForm.value.endTime;
+      // console.log(this.roomLoad);
+
+      let startTimeIndex = 0;
+      let endTimeIndex = 0;
+      let counter1 = 0;
+      let counter2 = 0;
+
+      this.roomLoad.forEach(element => {
+
+      let roomLoadTimes = [
+          {time: '7:00 AM', isFilled: 'no'},
+          {time: '7:30 AM', isFilled: 'no'},
+          {time: '8:00 AM', isFilled: 'no'},
+          {time: '8:30 AM', isFilled: 'no'},
+          {time: '9:00 AM', isFilled: 'no'},
+          {time: '9:30 AM', isFilled: 'no'},
+          {time: '10:00 AM', isFilled: 'no'},
+          {time: '10:30 AM', isFilled: 'no'},
+          {time: '11:00 AM', isFilled: 'no'},
+          {time: '11:30 AM', isFilled: 'no'},
+          {time: '12:00 PM', isFilled: 'no'},
+          {time: '12:30 PM', isFilled: 'no'},
+          {time: '1:00 PM', isFilled: 'no'},
+          {time: '1:30 PM', isFilled: 'no'},
+          {time: '2:00 PM', isFilled: 'no'},
+          {time: '2:30 PM', isFilled: 'no'},
+          {time: '3:00 PM', isFilled: 'no'},
+          {time: '3:30 PM', isFilled: 'no'},
+          {time: '4:00 PM', isFilled: 'no'},
+          {time: '4:30 PM', isFilled: 'no'},
+          {time: '5:00 PM', isFilled: 'no'},
+          {time: '5:30 PM', isFilled: 'no'},
+          {time: '6:00 PM', isFilled: 'no'},
+          {time: '6:30 PM', isFilled: 'no'},
+          {time: '7:00 PM', isFilled: 'no'},
+          {time: '7:30 PM', isFilled: 'no'},
+          {time: '8:00 PM', isFilled: 'no'},
+          {time: '8:30 PM', isFilled: 'no'}
+        ]
+
+        // console.log(element);
+
+        // roomLoadTimes.forEach(time =>{
+        //   if(element.startTime == time.time){
+        //     time.isFilled = 'yes';
+        //     startTimeIndex = counter;
+        //     // console.log(time);
+        //   }
+
+        //   if(element.endTime == time.time){
+        //     time.isFilled = 'yes';
+        //     endTimeIndex = counter;
+        //     // console.log(time);
+        //   }
+        //   counter += 1;
+        // })
+        // counter = 0;
+
+        for (let index = 0; index < roomLoadTimes.length; index++) {
+          if(element.startTime == roomLoadTimes[index].time){
+            roomLoadTimes[index + 1].isFilled = 'yes';
+            startTimeIndex = counter1 + 1;
+            // console.log(time);
+          }
+
+          if(element.endTime == roomLoadTimes[index].time){
+            roomLoadTimes[index - 1].isFilled = 'yes';
+            endTimeIndex = counter2 - 1;
+            // console.log(time);
+          }
+          counter1 += 1;
+          counter2 += 1;
+        }
+        counter1 = 0;
+        counter2 = 0;
+
+
+        for (let index = startTimeIndex; index < endTimeIndex; index++) {
+          roomLoadTimes[index].isFilled = 'yes';
+        }
+
+        // console.log(roomLoadTimes);
+
+        console.log(element);
+        roomLoadTimes.forEach(element2 => {
+
+          if(element.subjectCode == this.loadForm.value.subjectCode){
+
+          }
+          else if(element2.time == this.roomStartTime || element2.time == this.roomEndTime){
+            if(element2.isFilled == 'yes'){
+              // console.log(roomLoadTimes);
+              // console.log(element2);
+              this.snackBar.open('Conflict Detected! Your chosen Room: '
+              + element.room + ' (' + element.day + ')' + ' for ' + this.section + ' with the time: ' + this.loadForm.value.startTime + ' - ' + this.loadForm.value.endTime + ' has a conflict with ' +
+              (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime,
+              'close', {panelClass: ['red-snackbar']});
+            }
+          }
+          else if (element.startTime == this.loadForm.value.startTime || element.endTime == this.loadForm.value.endtime){
+            this.snackBar.open('Conflict Detected! Your chosen Room: '
+            + element.room + ' (' + element.day + ')' + ' for ' + this.section + ' with the time: ' + this.loadForm.value.startTime + ' - ' + this.loadForm.value.endTime + ' has a conflict with ' +
+            (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime,
+            'close', {panelClass: ['red-snackbar']});
+          }
+        });
+
+      });
+
+    })
+
+
   }
 
   initializeForm() {
@@ -436,6 +568,11 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
   }
 
   onStartTimeChange(event: any) {
+    if(this.loadForm.value.room){
+      this.loadService.checkRoomLoadConflict(this.loadForm.value.room.roomName, this.activeAcademicYear.semester, this.activeAcademicYear.startYear, this.loadForm.value.day);
+    }
+
+
     let newNoHour = this.loadForm.value.noHour;
     for (let i = 0; i < this.times.length; i++) {
       if (event.value == this.times[i]) {
@@ -556,6 +693,11 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
   }
 
   onDayChanged(event: any){
+
+    if(this.loadForm.value.room){
+        this.loadService.checkRoomLoadConflict(this.loadForm.value.room.roomName, this.activeAcademicYear.semester, this.activeAcademicYear.startYear, this.loadForm.value.day);
+    }
+
     console.log(event.value);
     this.availableDays.forEach(element => {
       if(element.day == event.value){
@@ -564,9 +706,6 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
         }
       }
     });
-
-
-
 
     let activeDay: any;
     let activeStartTime;
@@ -580,9 +719,6 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
         if(this.loadForm.value.day == element.day){
           activeDay = element;
           console.log(activeDay);
-
-
-
 
           let counter = 0;
           let oneStartTime = false;
@@ -631,6 +767,7 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
   }
 
   async onSectionChanged(event: any) {
+
     this.onEditMode = false;
     this.onAddMode = false;
     let year = event.value.charAt(3);
@@ -652,6 +789,14 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
 
     this.loadForm.reset();
   }
+
+
+  onRoomLoadChange(event: any){
+    this.roomLoad = [];
+    let room: string = event.value.roomName;
+    this.loadService.checkRoomLoadConflict(room, this.activeAcademicYear.semester, this.activeAcademicYear.startYear, this.loadForm.value.day);
+  }
+
 
   onDeleteLoad(loadId: string) {
     if(this.loads.length > 1){
@@ -925,5 +1070,6 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
     this.roomsSubs.unsubscribe();
     this.facultySubs.unsubscribe();
     this.secCurSubs.unsubscribe();
+    this.roomLoadSubs.unsubscribe();
   }
 }

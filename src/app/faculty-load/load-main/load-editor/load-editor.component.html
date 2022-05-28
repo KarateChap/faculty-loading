@@ -149,7 +149,7 @@
         </mat-form-field>
         <mat-form-field fxFlex="40%">
           <mat-label>Room</mat-label>
-          <mat-select formControlName="room">
+          <mat-select formControlName="room" (selectionChange)="onRoomLoadChange($event)">
             <mat-option *ngFor="let room of rooms" [value]="room">{{
               room.roomName | uppercase
             }}</mat-option>

@@ -22,13 +22,29 @@ export class CurriculumService {
     this.uiService.showSuccessToast('Curriculum Added/Edited Succesfully!', 'Success');
   }
 
-  async deleteCurriculum(){
-    await this.af.collection('curriculum')
-    .get().forEach((res: any) => {
-      res.forEach((element:any) => {
-        element.ref.delete();
+  // async deleteCurriculum(){
+  //   await this.af.collection('curriculum')
+  //   .get().forEach((res: any) => {
+  //     res.forEach((element:any) => {
+  //       element.ref.delete();
+  //     });
+  //   });
+  // }
+
+
+  deleteCurriculum(department: string){
+    this.af
+      .collection('curriculum')
+      .ref.where('department', '==', department)
+      .get()
+      .then((result) => {
+
+        result.forEach((element) => {
+          const id = element.id;
+          this.af.doc('curriculum/' + id).delete();
+        });
+        this.curriculumChanged.next();
       });
-    });
   }
 
   fetchAllCurriculum() {

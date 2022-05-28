@@ -39,6 +39,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loadSubs: Subscription;
   allLoadItems: LoadItem[] = [];
 
+  selectedDepartment = '';
+
   displayedColumns = [
     'code',
     'subjectTitle',
@@ -120,53 +122,132 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+
+
+
+
+
+
+
+
+
+
+  // uploadCsv() {}
+
+  // async fileChangeListener($event: any) {
+  //   if (this.unfilteredNewCurriculum.length > 0) {
+  //     await this.curriculumService.deleteCurriculum();
+  //     this.createCurriculum($event);
+  //   } else {
+  //     this.createCurriculum($event);
+  //   }
+  // }
+
+  // createCurriculum($event: any) {
+
+  //   let notification: NewNotification = {
+  //     icon: 'campaign',
+  //     heading: 'Announcement',
+  //     contents: 'The admin has updated the Curriculum'
+  //   }
+
+  //   const files = $event.srcElement.files;
+  //   this.ngxCsvParser
+  //     .parse(files[0], { header: true, delimiter: ',' })
+  //     .pipe()
+  //     .subscribe((result) => {
+  //       this.csvRecords = result;
+  //       this.csvRecords.forEach((element: any) => {
+  //         this.curriculum.push({
+  //           code: element['Code'],
+  //           subjectTitle: element['Subject Title'],
+  //           units: element['Units'],
+  //           preReq: element['Pre Req'],
+  //           subjectSemester: element['Subject Semester'],
+  //           subjectYear: element['Subject Year'],
+  //           department: element['Department'],
+  //           year: element['Year'],
+  //         });
+  //       });
+  //       this.curriculumService.setCurriculumToDatabase(this.curriculum);
+  //       this.userService.updateAllChairpersonNotification(notification);
+  //       this.curriculum = [];
+  //       this.csvRecords = [];
+  //       // runAlready = true;
+  //     }),
+  //     (error: NgxCSVParserError) => {
+  //       console.log('Error', error);
+  //     };
+  // }
+
   uploadCsv() {}
 
-  async fileChangeListener($event: any) {
-    if (this.unfilteredNewCurriculum.length > 0) {
-      await this.curriculumService.deleteCurriculum();
-      this.createCurriculum($event);
-    } else {
-      this.createCurriculum($event);
-    }
+  fileChangeListener($event: any): void {
+
+
+    this.deleteCurrentCurriculum();
+
+    let runAlready = false;
+
+    this.curriculumService.curriculumChanged.subscribe(() => {
+      if (runAlready == false) {
+        if (this.selectedDepartment != '') {
+          const files = $event.srcElement.files;
+          this.ngxCsvParser
+            .parse(files[0], { header: true, delimiter: ',' })
+            .pipe()
+            .subscribe((result) => {
+              this.csvRecords = result;
+              this.csvRecords.forEach((element: any) => {
+                this.curriculum.push({
+                  code: element['Code'],
+                  subjectTitle: element['Subject Title'],
+                  units: element['Units'],
+                  preReq: element['Pre Req'],
+                  subjectSemester: element['Subject Semester'],
+                  subjectYear: element['Subject Year'],
+                  department: this.selectedDepartment,
+                  year: element['Year'],
+                });
+              });
+              this.curriculumService.setCurriculumToDatabase(this.curriculum);
+              this.curriculum = [];
+              this.csvRecords = [];
+              runAlready = true;
+
+            }),(error: NgxCSVParserError) => {
+              console.log('Error', error);
+            }
+        } else {
+          runAlready = true;
+          this.uiService.showErrorToast(
+            'Please select a department first!',
+            'Error'
+          );
+        }
+        runAlready = true;
+      }
+    });
   }
 
-  createCurriculum($event: any) {
-
-    let notification: NewNotification = {
-      icon: 'campaign',
-      heading: 'Announcement',
-      contents: 'The admin has updated the Curriculum'
-    }
-
-    const files = $event.srcElement.files;
-    this.ngxCsvParser
-      .parse(files[0], { header: true, delimiter: ',' })
-      .pipe()
-      .subscribe((result) => {
-        this.csvRecords = result;
-        this.csvRecords.forEach((element: any) => {
-          this.curriculum.push({
-            code: element['Code'],
-            subjectTitle: element['Subject Title'],
-            units: element['Units'],
-            preReq: element['Pre Req'],
-            subjectSemester: element['Subject Semester'],
-            subjectYear: element['Subject Year'],
-            department: element['Department'],
-            year: element['Year'],
-          });
-        });
-        this.curriculumService.setCurriculumToDatabase(this.curriculum);
-        this.userService.updateAllChairpersonNotification(notification);
-        this.curriculum = [];
-        this.csvRecords = [];
-        // runAlready = true;
-      }),
-      (error: NgxCSVParserError) => {
-        console.log('Error', error);
-      };
+  deleteCurrentCurriculum() {
+    this.curriculumService.deleteCurriculum(this.selectedDepartment);
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;

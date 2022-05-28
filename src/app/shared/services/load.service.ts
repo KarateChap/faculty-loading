@@ -19,6 +19,10 @@ export class LoadService {
   allLoadChange = new Subject<LoadItem[]>();
   loadChange = new Subject<LoadItem[]>();
   facultyLoadChange = new Subject<LoadItem[]>();
+
+  sameRoomLoad: LoadItem[] = [];
+  sameRoomLoadChange = new Subject<LoadItem[]>();
+
   constructor(private af: AngularFirestore, private uiService: UIService){
   }
 
@@ -94,5 +98,31 @@ export class LoadService {
     this.af.doc('load/' + id).update(load);
     this.uiService.showSuccessToast('Load Updated Succesfully!', 'Success');
   }
+
+  checkRoomLoadConflict(room: string, semester: string, startYear: string, day: string){
+    this.sameRoomLoad = [];
+      this.af
+      .collection('load')
+      .ref.where('schoolYear', '==', startYear)
+      .where('semester', '==', semester)
+      .where('room', '==', room)
+      .where('day', '==', day)
+      .get().then(result => {
+        result.forEach((doc) => {
+          this.sameRoomLoad.push({ id: doc.id, ...(doc.data() as NewLoadItem) });
+        });
+        this.sameRoomLoadChange.next(this.sameRoomLoad);
+      })
+  }
+
+  // .onSnapshot((result) => {
+  //   result.forEach((doc) => {
+  //     this.sameRoomLoad.push({ id: doc.id, ...(doc.data() as NewLoadItem) });
+  //   });
+  //   this.sameRoomLoadChange.next(this.sameRoomLoad);
+  // });
+
+
+
 
 }
