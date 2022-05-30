@@ -262,6 +262,7 @@ export class UserService {
           notification:
               firebase.firestore.FieldValue.arrayRemove(notification),
           });
+          this.uiService.showSuccessToast('Notificiation Deleted Successfully', 'Success');
       })
 
       // .onSnapshot((result) => {
@@ -285,6 +286,7 @@ export class UserService {
               this.af.doc('user/' + data.docs[0].id).update({
               notification: firebase.firestore.FieldValue.arrayRemove(element),
         });
+        this.uiService.showSuccessToast('All Notificiations Deleted Successfully', 'Success');
       })
       )
       // .onSnapshot((result) => {

@@ -154,7 +154,8 @@
             (click)="onSubmitLoads()"
             [disabled]="
               currentUserLoad?.status == 'accepted' ||
-              currentUserLoad?.status == 'pending'
+              currentUserLoad?.status == 'pending' ||
+              !isAllowedToSubmit
             "
           >
             Submit Completed Loads

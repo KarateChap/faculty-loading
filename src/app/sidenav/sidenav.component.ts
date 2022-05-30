@@ -25,6 +25,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
   currentAcademicSubs: Subscription;
 
   notifications: NewNotification[] = [];
+  isLoadedAlready = false;
 
   opened = true;
   centered = false;
@@ -53,16 +54,21 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
     this.currentUserSubs = this.userService.currentUserChanges.subscribe(user => {
       this.currentUser = user;
-      this.notifications = this.currentUser.notification;
+      this.notifications = this.currentUser.notification.reverse();
       console.log(this.notifications)
-      if(this.currentUser.department == 'admin'){
-        this.router.navigate(['/sidenav/' + 'dashboard']);
-        this.activeLink = 'dashboard';
-        console.log('admin works');
-      }
-      else{
-        this.router.navigate(['/sidenav/' + 'dashboard']);
-        this.activeLink = 'dashboard';
+
+      if(this.isLoadedAlready == false){
+        if(this.currentUser.department == 'admin'){
+          this.router.navigate(['/sidenav/' + 'dashboard']);
+          this.activeLink = 'dashboard';
+          console.log('admin works');
+        }
+        else{
+          this.router.navigate(['/sidenav/' + 'dashboard']);
+          this.activeLink = 'dashboard';
+        }
+
+        this.isLoadedAlready = true;
       }
     })
     // this.activeLink = localStorage.getItem('activeLink') || '{}';

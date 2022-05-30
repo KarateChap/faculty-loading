@@ -9,6 +9,7 @@ import { UIService } from "../UIService/ui.service";
 
 export class AuthService {
   private isAuthenticated = false;
+  isAlreadyLogin = false;
 
   constructor(
     private router: Router,
@@ -20,7 +21,12 @@ export class AuthService {
     this.afauth.authState.subscribe((user) => {
       if (user) {
         this.isAuthenticated = true;
-        this.router.navigate(['/sidenav']);
+
+        if(this.isAlreadyLogin == false){
+          this.router.navigate(['/sidenav']);
+          this.isAlreadyLogin = true;
+        }
+
         // localStorage.setItem('activeLink', 'dashboard');
         this.uiService.showSuccessToast('You are succesfully logged in!', 'Login Successful');
       } else {
@@ -58,7 +64,18 @@ export class AuthService {
 
   logout() {
     this.afauth.signOut();
+    this.isAlreadyLogin = false;
+    this.uiService.showSuccessToast('You are succesfully logged out!', 'Logout Successful');
   }
+
+  onForgotPassword(email: string){
+    this.afauth.sendPasswordResetEmail(email).then(() => {
+      this.uiService.showSuccessToast("Password reset email has been sent to: " + email + '!', "Success")
+    }, err => {
+      this.uiService.showErrorToast("no email found, or something went wrong", "Error")
+    })
+  }
+
 
   isAuth() {
     return this.isAuthenticated;

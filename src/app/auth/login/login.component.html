@@ -22,7 +22,7 @@
         <mat-form-field>
           <mat-label>Password</mat-label>
           <input type="password" matInput placeholder="Ex. admin@example.com" formControlName="password"/>
-          <mat-hint align="end">Forgot password</mat-hint>
+          <mat-hint align="end" (click)="onForgotPassword()" style="cursor: pointer;">Forgot password</mat-hint>
           <mat-error>Missing password.</mat-error>
         </mat-form-field>
 

@@ -1,24 +1,34 @@
-import { Component, Inject, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { FacultySchedule } from 'src/app/shared/models/faculty-schedule.model';
+import { Faculty } from 'src/app/shared/models/faculty.model';
 import { FacultyService } from 'src/app/shared/services/faculty.service';
+import { UIService } from 'src/app/shared/UIService/ui.service';
 
 @Component({
   selector: 'app-faculty-config',
   templateUrl: './faculty-config.component.html',
   styleUrls: ['./faculty-config.component.css'],
 })
-export class FacultyConfigComponent implements OnInit {
+export class FacultyConfigComponent implements OnInit, OnDestroy{
   @Output('')
   facultyForm: FormGroup;
   daysIncluded: FacultySchedule[] = [];
   configType = 'add';
 
   pickerDisabled = false;
+  hasConflict = false;
+
+  allFaculty: Faculty[] = [];
+  allFacultySubs: Subscription;
+  tempName: string;
 
   constructor(
     private facultyService: FacultyService,
+    private uiService: UIService,
+    private dialogRef: MatDialogRef<FacultyConfigComponent>,
     @Inject(MAT_DIALOG_DATA) private passedData: any
   ) {}
 
@@ -39,7 +49,8 @@ export class FacultyConfigComponent implements OnInit {
         sunday: new FormControl(false)
       });
     } else {
-      console.log(this.passedData.faculty.facultySchedule);
+
+      this.tempName = this.passedData.faculty.fullName;
 
       this.facultyForm = new FormGroup({
         idNumber: new FormControl(
@@ -65,6 +76,35 @@ export class FacultyConfigComponent implements OnInit {
 
       this.checkSchedule();
     }
+
+    let conflictName: any;
+    let conflictDepartment: any;
+    this.allFacultySubs = this.facultyService.allFacultyChanged.subscribe(allFaculty => {
+      this.hasConflict = false;
+      this.allFaculty = allFaculty;
+
+      console.log(allFaculty);
+
+      this.allFaculty.forEach(element => {
+        if(element.idNumber == this.facultyForm.value.idNumber){
+          if(element.fullName != this.tempName){
+          this.hasConflict = true;
+          conflictName = element.fullName;
+          conflictDepartment = element.department;
+          console.log(element);
+          }
+        }
+      });
+
+      if(this.hasConflict == false){
+        this.submitLoad();
+        this.dialogRef.close();
+      }
+      else {
+        this.uiService.showErrorToast("Cannot Add/Edit already existing ID! Conflict with: " + conflictName + ' of Department: ' + conflictDepartment, 'Error');
+      }
+
+    })
   }
 
   checkSchedule() {
@@ -268,6 +308,10 @@ export class FacultyConfigComponent implements OnInit {
   }
 
   onSubmit() {
+    this.facultyService.fetchAllFaculty(this.passedData.academicYear.startYear, this.passedData.academicYear.semester);
+  }
+
+  submitLoad(){
     if (this.configType == 'add') {
       this.checkDaysIncluded();
 
@@ -349,5 +393,10 @@ export class FacultyConfigComponent implements OnInit {
         endTime: this.facultyForm.value.sundayEnd,
       });
     }
+  }
+
+
+  ngOnDestroy(): void {
+      this.allFacultySubs.unsubscribe();
   }
 }

@@ -69,6 +69,15 @@ export class SubmissionsComponent implements OnInit, OnDestroy{
     })
   }
 
+  onDeclineAcceptedLoad(i: number){
+    this.dialog.open(SubmissionModalComponent, {
+      data: {
+        status: 'declined',
+        userLoad: this.acceptedUserLoads[i]
+      }
+    })
+  }
+
   onViewPendingLoad(i: number){
     this.dialog.open(ViewLoadsComponent, {
       data: {

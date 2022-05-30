@@ -4,10 +4,12 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NewNotification } from 'src/app/shared/models/new-notification.model';
+import { User } from 'src/app/shared/models/user.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { UIService } from 'src/app/shared/UIService/ui.service';
 
 @Component({
   selector: 'app-chairperson-config',
@@ -27,15 +29,24 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
   passwordType2 = 'password';
 
   chairpersonForm: FormGroup;
+  currentUser: any;
+  tempName: string;
+
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private passedData: any,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private uiService: UIService,
+    private dialogRef: MatDialogRef<ChairpersonConfigComponent>
   ) {}
 
   ngOnInit(): void {
     this.configType = this.passedData.configType;
+
+    if(this.passedData.user){
+      this.currentUser = this.passedData.user;
+    }
 
     if(this.configType == 'add'){
       this.chairpersonForm = new FormGroup({
@@ -57,6 +68,7 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
     }
     else {
       this.selected = this.passedData.user.department;
+      this.tempName = this.passedData.user.fullName;
 
       this.chairpersonForm = new FormGroup({
         fullName: new FormControl(this.passedData.user.fullName, Validators.required),
@@ -89,44 +101,63 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    let notification: NewNotification = {
-      icon: 'manage_accounts',
-      heading: 'Account Update',
-      contents: 'The admin has updated your account status/information.'
+
+    let users: User[] = [];
+    users = this.passedData.users;
+    let isIdExisting = false;
+
+    users.forEach(element => {
+      if(element.idNumber == this.chairpersonForm.value.idNumber){
+        if(element.fullName != this.tempName){
+          this.uiService.showErrorToast('Cannot Add/Edit already existing ID!', 'Error');
+          isIdExisting = true;
+        }
+      }
+    });
+
+
+
+    if(isIdExisting == false){
+
+      let notification: NewNotification = {
+        icon: 'manage_accounts',
+        heading: 'Account Update',
+        contents: 'The admin has updated your account status/information.'
+      }
+
+      if(this.configType == 'add'){
+        this.userService.addUserToDatabase({
+          idNumber: this.chairpersonForm.value.idNumber,
+          email: this.chairpersonForm.value.email,
+          fullName: this.chairpersonForm.value.fullName,
+          department: this.chairpersonForm.value.department,
+          isActivated: this.chairpersonForm.value.isActivated,
+          startDate: null,
+          endDate: null,
+          notification: []
+        });
+
+        this.authService.registerUser({
+          email: this.chairpersonForm.value.email,
+          password: this.chairpersonForm.value.password,
+        });
+      }
+      else {
+        this.userService.updateUserToDatabase({
+          idNumber: this.chairpersonForm.value.idNumber,
+          email: this.passedData.user.email,
+          fullName: this.chairpersonForm.value.fullName,
+          department: this.chairpersonForm.value.department,
+          isActivated: this.chairpersonForm.value.isActivated,
+          startDate: this.passedData.user.startDate,
+          endDate: this.passedData.user.endDate,
+          notification: []
+        }, this.passedData.user.id)
+
+        this.userService.updateChairpersonNotification(notification, this.passedData.user);
+      }
+      this.dialogRef.close();
     }
-
-    if(this.configType == 'add'){
-      this.userService.addUserToDatabase({
-        idNumber: this.chairpersonForm.value.idNumber,
-        email: this.chairpersonForm.value.email,
-        fullName: this.chairpersonForm.value.fullName,
-        department: this.chairpersonForm.value.department,
-        isActivated: this.chairpersonForm.value.isActivated,
-        startDate: null,
-        endDate: null,
-        notification: []
-      });
-
-      this.authService.registerUser({
-        email: this.chairpersonForm.value.email,
-        password: this.chairpersonForm.value.password,
-      });
-    }
-    else {
-      this.userService.updateUserToDatabase({
-        idNumber: this.chairpersonForm.value.idNumber,
-        email: this.passedData.user.email,
-        fullName: this.chairpersonForm.value.fullName,
-        department: this.chairpersonForm.value.department,
-        isActivated: this.chairpersonForm.value.isActivated,
-        startDate: this.passedData.user.startDate,
-        endDate: this.passedData.user.endDate,
-        notification: []
-      }, this.passedData.user.id)
-
-      this.userService.updateChairpersonNotification(notification, this.passedData.user);
-    }
-
 
   }
 

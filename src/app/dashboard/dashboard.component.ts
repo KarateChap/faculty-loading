@@ -61,6 +61,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   userLoadSubs: Subscription;
   currentUserLoad: UserLoad;
   currentUserLoadSubs: Subscription;
+  currentChairperson: NewUser;
+  isAllowedToSubmit = false;
 
   constructor(
     private dialog: MatDialog,
@@ -73,6 +75,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+
+    this.currentChairperson = this.userService.getCurrentUser();
+    let currentDate = new Date();
+    let currentTimeStamp = currentDate.getTime() / 1000.0;
+
+    if(this.currentChairperson.startDate){
+      if (
+        +currentTimeStamp > +this.currentChairperson.startDate.seconds &&
+        +currentTimeStamp < +this.currentChairperson.endDate.seconds
+      ) {
+        this.isAllowedToSubmit = true;
+        console.log("ALLOWED");
+      } else {
+        this.isAllowedToSubmit = false;
+        console.log("NOT ALLOWED");
+      }
+    }
+
+
     this.activeAcademicYear = this.AcademicService.getActiveAcademicYear();
     this.currentUser = this.userService.getCurrentUser();
     this.curriculumService.fetchAllCurriculum();
@@ -183,16 +204,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
   uploadCsv() {}
 
   fileChangeListener($event: any): void {
-
-
-    this.deleteCurrentCurriculum();
+    const files = $event.srcElement.files;
+    if(files.length != 0){
+      this.curriculumService.checkCurriculumExist(this.selectedDepartment);
+    }
+    else {
+      this.uiService.showErrorToast("Please select a CSV to import!","Error")
+    }
+    // this.deleteCurrentCurriculum();
 
     let runAlready = false;
 
     this.curriculumService.curriculumChanged.subscribe(() => {
       if (runAlready == false) {
         if (this.selectedDepartment != '') {
-          const files = $event.srcElement.files;
           this.ngxCsvParser
             .parse(files[0], { header: true, delimiter: ',' })
             .pipe()
@@ -206,7 +231,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                   preReq: element['Pre Req'],
                   subjectSemester: element['Subject Semester'],
                   subjectYear: element['Subject Year'],
-                  department: this.selectedDepartment,
+                  department: element['Department'],
                   year: element['Year'],
                 });
               });

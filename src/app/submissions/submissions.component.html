@@ -157,7 +157,7 @@
               *ngFor="let loads of acceptedUserLoads; let i = index"
             >
               <div class="card-top">
-                <!-- <button
+                <button
                   mat-icon-button
                   [matMenuTriggerFor]="menu"
                   class="menu-icon"
@@ -165,15 +165,11 @@
                   <mat-icon class="button-icon">more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item (click)="onApproveLoad(i)">
-                    <mat-icon>done</mat-icon>
-                    <span>Approve Load</span>
-                  </button>
-                  <button mat-menu-item (click)="onDeclineLoad(i)">
+                  <button mat-menu-item (click)="onDeclineAcceptedLoad(i)">
                     <mat-icon>close</mat-icon>
-                    <span>Decline Load</span>
+                    <span>Set Back to Declined</span>
                   </button>
-                </mat-menu> -->
+                </mat-menu>
                 <p class="name-text">{{ loads.chairpersonName }}</p>
               </div>
 

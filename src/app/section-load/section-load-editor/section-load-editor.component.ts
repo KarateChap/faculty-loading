@@ -11,6 +11,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription} from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AcademicPeriod } from 'src/app/shared/models/academic-period.model';
@@ -44,6 +45,11 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
   curriculumSubs: Subscription;
   onEditMode = false;
   onAddMode = false;
+
+  totalUnits = 0;
+
+  currentFacultyLoad: LoadItem[] = [];
+  currentFacultySubs: Subscription;
   // onSingleDelete = true;
 
   displayedColumns = [
@@ -188,7 +194,8 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
     private academicService: AcademicService,
     private loadService: LoadService,
     private uiService: UIService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -341,9 +348,6 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
     this.initializeForm();
 
 
-
-
-
     this.roomLoadSubs = this.loadService.sameRoomLoadChange.subscribe(roomLoad =>{
       this.roomLoad = roomLoad;
 
@@ -425,7 +429,6 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
         counter1 = 0;
         counter2 = 0;
 
-
         for (let index = startTimeIndex; index < endTimeIndex; index++) {
           roomLoadTimes[index].isFilled = 'yes';
         }
@@ -435,24 +438,40 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
         console.log(element);
         roomLoadTimes.forEach(element2 => {
 
-          if(element.subjectCode == this.loadForm.value.subjectCode){
+          if(element.subjectCode == this.loadForm.value.subjectCode && element.section == this.section){
 
           }
           else if(element2.time == this.roomStartTime || element2.time == this.roomEndTime){
             if(element2.isFilled == 'yes'){
-              // console.log(roomLoadTimes);
-              // console.log(element2);
-              this.snackBar.open('Conflict Detected! Your chosen Room: '
+
+              this.toastr.error('Your chosen Room: '
               + element.room + ' (' + element.day + ')' + ' for ' + this.section + ' with the time: ' + this.loadForm.value.startTime + ' - ' + this.loadForm.value.endTime + ' has a conflict with ' +
-              (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime,
-              'close', {panelClass: ['red-snackbar']});
+              (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime, "", {
+
+                disableTimeOut: true,
+                positionClass: 'toast-bottom-left',
+              });
+
+              // this.snackBar.open('Conflict Detected! Your chosen Room: '
+              // + element.room + ' (' + element.day + ')' + ' for ' + this.section + ' with the time: ' + this.loadForm.value.startTime + ' - ' + this.loadForm.value.endTime + ' has a conflict with ' +
+              // (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime,
+              // 'close', {panelClass: ['red-snackbar']});
             }
           }
           else if (element.startTime == this.loadForm.value.startTime || element.endTime == this.loadForm.value.endtime){
-            this.snackBar.open('Conflict Detected! Your chosen Room: '
+            // this.snackBar.open('Conflict Detected! Your chosen Room: '
+            // + element.room + ' (' + element.day + ')' + ' for ' + this.section + ' with the time: ' + this.loadForm.value.startTime + ' - ' + this.loadForm.value.endTime + ' has a conflict with ' +
+            // (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime,
+            // 'close', {panelClass: ['red-snackbar']});
+
+
+            this.toastr.error('Your chosen Room: '
             + element.room + ' (' + element.day + ')' + ' for ' + this.section + ' with the time: ' + this.loadForm.value.startTime + ' - ' + this.loadForm.value.endTime + ' has a conflict with ' +
-            (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime,
-            'close', {panelClass: ['red-snackbar']});
+            (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime, "", {
+
+              disableTimeOut: true,
+              positionClass: 'toast-bottom-left',
+            });
           }
         });
 
@@ -461,6 +480,37 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
     })
 
 
+    this.currentFacultySubs = this.loadService.facultyLoadChange.subscribe(faculty => {
+      this.totalUnits = 0;
+
+        this.currentFacultyLoad = faculty;
+        console.log(this.currentFacultyLoad);
+
+
+        let uniqueLoads = this.currentFacultyLoad.filter((e, i) => {
+          return this.currentFacultyLoad.findIndex((x) => {
+            return x.subjectCode == e.subjectCode && x.section == e.section;
+          }) == i;
+        })
+
+        uniqueLoads.forEach((element) => {
+          this.totalUnits += +element.units;
+          if(this.totalUnits > 20){
+            this.toastr.error('The Total Units for ' + element.facultyName + ' Exceeded 20!',"", {
+
+              disableTimeOut: true,
+              positionClass: 'toast-bottom-left',
+            });
+          }
+        });
+
+
+    })
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   initializeForm() {
@@ -508,10 +558,7 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-  }
+
 
   onChangeHours(event: any) {
     // if (this.loadForm.value.noHour == '') {
@@ -583,7 +630,14 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
     this.availableTimes.forEach(element => {
       if(element.time == event.value){
         if(element.conflict == 'conflict'){
-          this.snackBar.open('Conflict Detected! Your chosen time: ' + event.value.toUpperCase() +' is not listed in ' + this.loadForm.value.faculty.fullName + "'s time schedule", 'close', {panelClass: ['red-snackbar']});
+
+          this.toastr.error('Your chosen time: ' + event.value.toUpperCase() +' is not listed in ' + this.loadForm.value.faculty.fullName + "'s time schedule", "", {
+
+              disableTimeOut: true,
+              positionClass: 'toast-bottom-left',
+            });
+
+          // this.snackBar.open('Conflict Detected! Your chosen time: ' + event.value.toUpperCase() +' is not listed in ' + this.loadForm.value.faculty.fullName + "'s time schedule", 'close', {panelClass: ['red-snackbar']});
         }
       }
     });
@@ -702,7 +756,15 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
     this.availableDays.forEach(element => {
       if(element.day == event.value){
         if(element.conflict == 'conflict'){
-          this.snackBar.open('Conflict Detected! Your chosen day: ' + event.value.toUpperCase() +' is not listed in ' + this.loadForm.value.faculty.fullName + "'s day schedule", 'close', {panelClass: ['red-snackbar']});
+
+          this.toastr.error('Your chosen day: ' + event.value.toUpperCase() +' is not listed in ' + this.loadForm.value.faculty.fullName + "'s day schedule", "", {
+
+            disableTimeOut: true,
+            positionClass: 'toast-bottom-left',
+          });
+
+
+          // this.snackBar.open('Conflict Detected! Your chosen day: ' + event.value.toUpperCase() +' is not listed in ' + this.loadForm.value.faculty.fullName + "'s day schedule", 'close', {panelClass: ['red-snackbar']});
         }
       }
     });
@@ -979,7 +1041,6 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
             },
             this.currentLoad.id
           );
-          this.loadForm.reset();
           this.onEditMode = false;
           this.onAddMode = false;
         } else {
@@ -1007,12 +1068,14 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
           endTime: this.loadForm.value.endTime,
           room: this.loadForm.value.room.roomName,
         });
-        this.loadForm.reset();
         this.onEditMode = false;
         this.onAddMode = false;
       }
     // }
 
+    this.loadService.fetchFacultyLoad(this.activeAcademicYear.startYear, this.activeAcademicYear.semester, this.currentChairperson.fullName, this.loadForm.value.faculty.fullName);
+
+    this.loadForm.reset();
   }
 
   onAddLoadMode() {
@@ -1063,6 +1126,10 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
 
   }
 
+  clearError(){
+    this.toastr.clear();
+  }
+
   ngOnDestroy(): void {
     this.loadSubs.unsubscribe();
     this.curriculumSubs.unsubscribe();
@@ -1071,5 +1138,6 @@ export class SectionLoadEditorComponent implements OnInit, OnDestroy {
     this.facultySubs.unsubscribe();
     this.secCurSubs.unsubscribe();
     this.roomLoadSubs.unsubscribe();
+    this.currentFacultySubs.unsubscribe();
   }
 }

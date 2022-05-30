@@ -78,3 +78,18 @@ mat-cell, mat-header-cell {
 .no-conflict{
   background-color: #adffb87c !important;
 }
+
+.choose-text{
+  font-size: 15px;
+  font-family: var(--mont);
+  color: var(--primary);
+}
+
+.load-img{
+  width: 50%;
+  height: auto;
+  opacity: 50%;
+  user-select: none;
+}
+
+

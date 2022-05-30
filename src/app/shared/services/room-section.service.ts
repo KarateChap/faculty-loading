@@ -84,11 +84,11 @@ export class RoomSectionService {
   }
 
   updateSectionToDatabase(section: NewSection, id: string) {
-    this.af.doc('section/' + id).update(section);
     this.uiService.showSuccessToast('Section Updated Succesfully!', 'Success');
   }
 
   deleteSectionToDatabase(sectionId: string){
+    console.log(sectionId);
     this.af.doc('section/' + sectionId).delete()
     this.uiService.showSuccessToast('Section Deleted Succesfully!', 'Success');
   }

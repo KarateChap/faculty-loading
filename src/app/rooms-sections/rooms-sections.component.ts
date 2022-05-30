@@ -159,9 +159,9 @@ export class RoomsSectionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onRemoveSection(index: number){
+  onRemoveSection(index: string){
     // this.buttonGroup.value = 'all'
-    this.rsService.deleteSectionToDatabase(this.sections[index].id);
+    this.rsService.deleteSectionToDatabase(index);
   }
 
   // filter(value: String){

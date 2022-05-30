@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Faculty } from 'src/app/shared/models/faculty.model';
 import { LoadItem } from 'src/app/shared/models/load-item.model';
@@ -68,7 +69,7 @@ export class LoadViewComponent implements OnInit {
   totalHours = 0;
   totalUnits = 0;
 
-  constructor(private uiService: UIService, private loadService: LoadService) {}
+  constructor(private uiService: UIService, private loadService: LoadService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.fillDayArrays();
@@ -668,6 +669,13 @@ export class LoadViewComponent implements OnInit {
 
     uniqueLoads.forEach((element) => {
       this.totalUnits += +element.units;
+      if(this.totalUnits > 20){
+        this.toastr.error('The Total Units for ' + this.activeFaculty.fullName + ' Exceeded 20!',"", {
+
+          disableTimeOut: true,
+          positionClass: 'toast-bottom-left',
+        });
+      }
     });
   }
 

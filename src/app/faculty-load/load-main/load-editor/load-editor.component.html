@@ -269,5 +269,15 @@
         ></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>
+
+      <div *ngIf="loads.length == 0" style="height: 100%;" fxLayoutAlign="center center" fxLayout="column">
+        <img src="../../../assets/load-image.png" class="load-img">
+        <p class="choose-text">Click Add Load to Start Managing Load/s</p>
+    </div>
   </div>
+
+  <div fxLayoutAlign="center center">
+    <button (click)="clearError()" mat-raised-button style="margin-top:10px; background-color: rgb(223, 35, 35); color: white;">Clear All Conflict</button>
+  </div>
+
 </div>

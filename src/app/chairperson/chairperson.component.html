@@ -63,18 +63,17 @@
             <button
               mat-icon-button
               [matMenuTriggerFor]="menu"
-              [disabled]="user.department == 'admin'"
             >
               <mat-icon class="button-icon">{{
-                user.department == "admin" ? "" : "more_vert"
+                user.department == "admin" ? "more_vert" : "more_vert"
               }}</mat-icon>
             </button>
-            <mat-menu #menu="matMenu">
+            <mat-menu #menu="matMenu"  xPosition="before">
               <button mat-menu-item (click)="onEditAccount(i)">
                 <mat-icon class="">edit</mat-icon>
                 <span>Edit Account</span>
               </button>
-              <button mat-menu-item (click)="onEditDeadline(i)">
+              <button mat-menu-item (click)="onEditDeadline(i)" *ngIf="user.department != 'admin'">
                 <mat-icon class="">schedule</mat-icon>
                 <span>Extend Submission</span>
               </button>

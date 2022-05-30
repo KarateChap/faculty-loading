@@ -41,3 +41,12 @@
   color: white;
   margin-top: 15px;
 }
+
+
+.short-width{
+  width: 50%;
+}
+
+.long-width{
+  width: 100%
+}

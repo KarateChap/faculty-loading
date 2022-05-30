@@ -11,6 +11,8 @@ import { Subject } from 'rxjs';
 export class FacultyService {
   faculties: Faculty[] = [];
   facultyChanged = new Subject<Faculty[]>();
+  allFaculties: Faculty[] = [];
+  allFacultyChanged = new Subject<Faculty[]>();
   facultyAddedChanged = new Subject<void>();
   activeFaculty: Faculty;
   activeFacultyChanged = new Subject<Faculty>();
@@ -47,6 +49,20 @@ export class FacultyService {
         });
         this.facultyChanged.next(this.faculties);
       });
+  }
+
+  fetchAllFaculty(startYear: string, semester: string){
+    this.af
+    .collection('faculty')
+    .ref.where('startYear', '==', startYear)
+    .where('semester', '==', semester)
+    .get().then((result) => {
+      this.allFaculties = [];
+      result.forEach((doc) => {
+        this.allFaculties.push({ id: doc.id, ...(doc.data() as NewFaculty) });
+      });
+      this.allFacultyChanged.next(this.allFaculties);
+    });
   }
 
   onRemoveFaculty(facultyId: string) {

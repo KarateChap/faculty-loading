@@ -58,3 +58,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: white !important;
   border: none;
 }
+
+.toast-error{
+  background-image: url("./warning.png") !important;
+}

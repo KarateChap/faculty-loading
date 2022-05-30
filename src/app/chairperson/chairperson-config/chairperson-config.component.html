@@ -18,7 +18,7 @@
         </mat-form-field>
 
         <div fxLayout="row" fxLayoutAlign="space-between">
-          <mat-form-field style="width: 50%">
+          <mat-form-field [ngClass]="currentUser?.department != 'admin' ? 'short-width' : 'long-width'">
             <mat-label>ID Number</mat-label>
             <input
               type="text"
@@ -29,7 +29,7 @@
             <mat-error>Invalid or missing input.</mat-error>
           </mat-form-field>
 
-          <mat-form-field style="width: 45%">
+          <mat-form-field style="width: 45%" *ngIf="currentUser?.department != 'admin'">
             <mat-label>Department</mat-label>
             <mat-select formControlName="department" [(value)]="selected">
               <mat-option value="Information Technology"
@@ -92,7 +92,7 @@
           <mat-error>Invalid or missing input.</mat-error>
         </mat-form-field>
 
-        <mat-slide-toggle color="primary" checked="false" formControlName="isActivated">
+        <mat-slide-toggle color="primary" checked="false" formControlName="isActivated" *ngIf="currentUser?.department != 'admin'">
           Activate Account
         </mat-slide-toggle>
 
@@ -107,7 +107,6 @@
             color="primary"
             class="button"
             type="submit"
-            [mat-dialog-close]="true"
             [disabled]="chairpersonForm.invalid || (password != confirmPassword)"
           >
             {{ configType == "add" ? "Add" : "Save" }}

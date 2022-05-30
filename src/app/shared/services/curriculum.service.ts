@@ -90,4 +90,15 @@ export class CurriculumService {
       this.sectionCurriculumChanged.next(this.sectionCurriculum);
     });
   }
+
+  checkCurriculumExist(department: string){
+    this.af
+    .collection('curriculum')
+    .ref.where('department', '==', department)
+    .get().then((result: any) => {
+      if(result){
+        this.deleteCurriculum(department);
+      }
+    });
+  }
 }

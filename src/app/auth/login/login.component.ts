@@ -32,4 +32,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  onForgotPassword(){
+    this.authService.onForgotPassword(this.loginForm.value.email);
+  }
+
 }

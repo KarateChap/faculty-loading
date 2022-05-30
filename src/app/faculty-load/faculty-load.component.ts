@@ -7,6 +7,7 @@ import { NewUser } from '../shared/models/new-user.model';
 import { AcademicService } from '../shared/services/academic.service';
 import { FacultyService } from '../shared/services/faculty.service';
 import { UserService } from '../shared/services/user.service';
+import { UIService } from '../shared/UIService/ui.service';
 import { FacultyConfigComponent } from './faculty-config/faculty-config.component';
 
 @Component({
@@ -25,7 +26,8 @@ export class FacultyLoadComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private facultyService: FacultyService,
     private academicService: AcademicService,
-    private userService: UserService
+    private userService: UserService,
+    private uiService: UIService
   ) {}
 
   ngOnInit(): void {
@@ -72,9 +74,20 @@ export class FacultyLoadComponent implements OnInit, OnDestroy {
         faculties: this.faculties,
         academicYear: this.activeAcademicYear,
         currentUser: this.currentUser,
+        semester: this.activeAcademicYear.semester
       },
     });
   }
+
+  sortFaculty(){
+    this.faculties = this.faculties.sort(function(a, b) {
+      var textA = a.fullName.toUpperCase();
+      var textB = b.fullName.toUpperCase();
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+  });
+
+  this.uiService.showSuccessToast("Faculty has been sorted successfully!","Success")
+}
 
   onEditFaculty(index: number) {
     this.dialog.open(FacultyConfigComponent, {
@@ -84,6 +97,7 @@ export class FacultyLoadComponent implements OnInit, OnDestroy {
         faculty: this.faculties[index],
         academicYear: this.activeAcademicYear,
         currentUser: this.currentUser,
+        semester: this.activeAcademicYear.semester
       },
     });
   }

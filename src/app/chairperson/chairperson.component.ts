@@ -14,6 +14,7 @@ import { DeadlineConfigComponent } from './deadline-config/deadline-config.compo
 export class ChairpersonComponent implements OnInit, OnDestroy {
   userSubs: Subscription;
   users: User[] = [];
+  currentUser: any;
 
   isLoading = true;
 
@@ -25,12 +26,15 @@ export class ChairpersonComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     });
     this.userService.fetchUsers();
+
+    this.currentUser = this.userService.getCurrentUser();
   }
 
   onAddChairperson() {
     this.dialog.open(ChairpersonConfigComponent, {
       data: {
         configType: 'add',
+        users: this.users,
       },
     });
   }
@@ -40,6 +44,7 @@ export class ChairpersonComponent implements OnInit, OnDestroy {
       data: {
         configType: 'edit',
         user: this.users[index],
+        users: this.users,
       },
     });
   }

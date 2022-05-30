@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { AcademicPeriod } from 'src/app/shared/models/academic-period.model';
 import { Curriculum } from 'src/app/shared/models/curriculum.model';
@@ -174,7 +175,8 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private uiService: UIService,
     private facultyService: FacultyService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -413,24 +415,44 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
         console.log(element);
         roomLoadTimes.forEach(element2 => {
 
-          if(element.subjectCode == this.loadForm.value.subjectCode){
-            console.log("HEHE");
+          if(element.subjectCode == this.loadForm.value.subjectCode && element.section == this.loadForm.value.section){
+
           }
+
           else if(element2.time == this.roomStartTime || element2.time == this.roomEndTime){
             if(element2.isFilled == 'yes'){
               console.log(roomLoadTimes);
               console.log(element2);
-              this.snackBar.open('Conflict Detected! Your chosen Room: '
+
+              this.toastr.error('Your chosen Room: '
               + element.room + ' (' + element.day + ')' + ' for ' + this.loadForm.value.section + ' with the time: ' + this.loadForm.value.startTime + ' - ' + this.loadForm.value.endTime + ' has a conflict with ' +
-              (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime,
-              'close', {panelClass: ['red-snackbar']});
+              (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime, "", {
+
+                disableTimeOut: true,
+                positionClass: 'toast-bottom-left',
+              });
+
+
+              // this.snackBar.open('Conflict Detected! Your chosen Room: '
+              // + element.room + ' (' + element.day + ')' + ' for ' + this.loadForm.value.section + ' with the time: ' + this.loadForm.value.startTime + ' - ' + this.loadForm.value.endTime + ' has a conflict with ' +
+              // (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime,
+              // 'close', {panelClass: ['red-snackbar']});
             }
           }
           else if (element.startTime == this.loadForm.value.startTime || element.endTime == this.loadForm.value.endtime){
-            this.snackBar.open('Conflict Detected! Your chosen Room: '
+            this.toastr.error('Your chosen Room: '
             + element.room + ' (' + element.day + ')' + ' for ' + this.loadForm.value.section + ' with the time: ' + this.loadForm.value.startTime + ' - ' + this.loadForm.value.endTime + ' has a conflict with ' +
-            (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime,
-            'close', {panelClass: ['red-snackbar']});
+            (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime, "", {
+
+              disableTimeOut: true,
+              positionClass: 'toast-bottom-left',
+            });
+
+
+            // this.snackBar.open('Conflict Detected! Your chosen Room: '
+            // + element.room + ' (' + element.day + ')' + ' for ' + this.loadForm.value.section + ' with the time: ' + this.loadForm.value.startTime + ' - ' + this.loadForm.value.endTime + ' has a conflict with ' +
+            // (element.department == this.currentChairperson.department ? 'your own schedule for ' : (element.chairperson + "'s schedule for ")) + element.section + " with the time: " + element.startTime + ' - ' + element.endTime,
+            // 'close', {panelClass: ['red-snackbar']});
           }
         });
 
@@ -529,7 +551,15 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     this.availableTimes.forEach(element => {
       if(element.time == event.value){
         if(element.conflict == 'conflict'){
-          this.snackBar.open('Conflict Detected! Your chosen time: ' + event.value.toUpperCase() +' is not listed in ' + this.activeFaculty.fullName + "'s time schedule", 'close', {panelClass: ['red-snackbar']});
+
+          this.toastr.error('Conflict Detected! Your chosen time: ' + event.value.toUpperCase() +' is not listed in ' + this.activeFaculty.fullName + "'s time schedule", "", {
+
+            disableTimeOut: true,
+            positionClass: 'toast-bottom-left',
+          });
+
+
+          // this.snackBar.open('Conflict Detected! Your chosen time: ' + event.value.toUpperCase() +' is not listed in ' + this.activeFaculty.fullName + "'s time schedule", 'close', {panelClass: ['red-snackbar']});
         }
       }
     });
@@ -572,7 +602,15 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     this.availableDays.forEach(element => {
       if(element.day == event.value){
         if(element.conflict == 'conflict'){
-          this.snackBar.open('Conflict Detected! Your chosen day: ' + event.value.toUpperCase() +' is not listed in ' + this.activeFaculty.fullName + "'s day schedule", 'close', {panelClass: ['red-snackbar']});
+
+          this.toastr.error('Conflict Detected! Your chosen day: ' + event.value.toUpperCase() +' is not listed in ' + this.activeFaculty.fullName + "'s day schedule", "", {
+
+            disableTimeOut: true,
+            positionClass: 'toast-bottom-left',
+          });
+
+
+          // this.snackBar.open('Conflict Detected! Your chosen day: ' + event.value.toUpperCase() +' is not listed in ' + this.activeFaculty.fullName + "'s day schedule", 'close', {panelClass: ['red-snackbar']});
         }
       }
     });
@@ -869,6 +907,10 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
       }
     }
 
+  }
+
+  clearError(){
+    this.toastr.clear();
   }
 
   ngOnDestroy(): void {
