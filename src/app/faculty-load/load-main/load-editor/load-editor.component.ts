@@ -528,6 +528,7 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
       this.onSearching = true;
     }
   }
+
   onClear(){
     this.loadForm.reset();
     this.onEditMode = false;
@@ -570,6 +571,8 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
   // }
 
   onCodeChange(event: any) {
+    this.filteredCurriculums = [];
+
     let codeValue = event.value;
     this.departmentCurriculums.forEach((element) => {
       if (element.code == codeValue) {
@@ -581,6 +584,9 @@ export class LoadEditorComponent implements OnInit, OnDestroy {
     });
   }
   onSubjectChange(event: any) {
+
+    this.filteredCurriculums = [];
+
     let subjectValue = event.value;
     this.departmentCurriculums.forEach((element) => {
       if (element.subjectTitle == subjectValue) {

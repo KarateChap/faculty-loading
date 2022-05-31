@@ -220,7 +220,7 @@
       </div>
     </mat-toolbar>
 
-    <mat-nav-list>
+    <mat-nav-list style="margin-top: 30px;">
       <a
         class="link-text"
         mat-list-item
@@ -352,7 +352,7 @@
         </p>
       </div>
       <div fxFlex fxLayout fxLayoutAlign="flex-end">
-        <div *ngIf="currentUser.startDate">
+        <div *ngIf="currentUser.startDate" class="deadline-text">
           <span *ngIf="currentUser.department != 'admin'" class="deadline">{{
             " [Deadline " +
               (currentUser.startDate.toDate() | date) +
@@ -361,7 +361,7 @@
               "]"
           }}</span>
         </div>
-        <div *ngIf="!currentUser.startDate">
+        <div *ngIf="!currentUser.startDate" class="deadline-text">
           <span *ngIf="currentUser.department != 'admin'" class="deadline">{{
             "[Deadline: N/A]"
           }}</span>
@@ -421,7 +421,7 @@
                 currentUser
                   ? currentUser.department == "admin"
                     ? "Dean"
-                    : currentUser.fullName.split(" ")[1]
+                    : currentUser.fullName.split(" ")[0]
                   : "Welcome!"
               }}!</a
             >

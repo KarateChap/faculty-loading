@@ -2,7 +2,7 @@
 
   <div fxLayoutAlign="start center" fxLayout="row" fxLayoutGap="15px" #target>
     <p style="font-family: var(--mont);" >Choose Section:</p>
-    <div style="width: 60%;" fxLayoutAlign="start center">
+    <div fxLayoutAlign="start center">
       <mat-form-field fxFlex="45%" appearance="fill">
         <mat-label>Section</mat-label>
         <mat-select (selectionChange)="onSectionChanged($event)" [disabled]="!currentChairperson.isActivated || isAllowedToEdit == false">

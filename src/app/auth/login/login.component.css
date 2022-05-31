@@ -2,23 +2,27 @@
   position: fixed;
   top: 0;
   right: 0;
+  animation: 2s ease-in-out 0s 1 slideInFromRight;
 }
 
 .bottom-bg {
   position: fixed;
   bottom: 0;
   right: 0;
+  animation: 1s ease-in-out 0s 1 slideInFromRight;
 }
 
 .logo-img {
   position: fixed;
   top: 2vh;
   left: 8vh;
+  animation: 2s ease-in-out 0s 1 slideInFromLeft;
 }
 
 
 .login-img{
-  height: 60vh;
+  height: 40vh;
+  animation: 2s ease-in-out imageAnimation 0s 1;
 }
 
 
@@ -34,7 +38,38 @@
   color: var(--primary);
 }
 
+.form-animation{
+  animation: 2s ease-in-out imageAnimation 0s 1;
+}
 
 .login-div{
   margin-left: 100px;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(150%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-250%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes imageAnimation {
+  0% {
+    transform: scale(1.2);
+  }
+
+  100%{
+    transform: scale(1);
+  }
 }
