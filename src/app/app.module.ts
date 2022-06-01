@@ -50,6 +50,7 @@ import { ViewLoadsComponent } from './submissions/view-loads/view-loads.componen
 import { ViewHistoryModalComponent } from './dashboard/view-history-modal/view-history-modal.component';
 import { NotFoundModalComponent } from './dashboard/view-history-modal/not-found-modal/not-found-modal.component';
 import { ConfirmationModalComponent } from './section-load/section-load-editor/confirmation-modal/confirmation-modal.component';
+import { ShortenPipe } from './shared/pipes/shorten.pipe';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { ConfirmationModalComponent } from './section-load/section-load-editor/c
     RoomConfigComponent,
     SectionConfigComponent,
     FirstLetterWordPipe,
+    ShortenPipe,
     SetDeadlineComponent,
     SetAcademicYearComponent,
     FacultyConfigComponent,

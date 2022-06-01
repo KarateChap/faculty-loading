@@ -32,6 +32,7 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
   currentUser: any;
   tempName: string;
   hasNumbers = false;
+  hasEmailAlready = "false";
 
 
   constructor(
@@ -110,6 +111,20 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
     let isIdExisting = false;
 
     this.hasNumbers = false;
+    this.hasEmailAlready = "false";
+
+    if(this.configType == 'add'){
+      users.forEach(element => {
+        if(element.email == this.chairpersonForm.value.email){
+          this.hasEmailAlready = "true";
+        }
+      });
+      if(this.hasEmailAlready == "true"){
+        this.uiService.showErrorToast('Cannot Add already existing Email!', 'Error');
+      }
+
+    }
+
 
     users.forEach(element => {
       if(element.idNumber == this.chairpersonForm.value.idNumber){
@@ -119,6 +134,8 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
         }
       }
     });
+
+
 
     this.stringContainsNumber(this.chairpersonForm.value.fullName);
 
@@ -131,7 +148,7 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
         contents: 'The admin has updated your account status/information.'
       }
 
-      if(this.configType == 'add'){
+      if(this.configType == 'add' && this.hasEmailAlready == "false"){
         this.userService.addUserToDatabase({
           idNumber: this.chairpersonForm.value.idNumber,
           email: this.chairpersonForm.value.email,

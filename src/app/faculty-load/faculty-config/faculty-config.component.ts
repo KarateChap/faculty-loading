@@ -97,7 +97,6 @@ export class FacultyConfigComponent implements OnInit, OnDestroy{
         }
       });
 
-
       this.stringContainsNumber(this.facultyForm.value.fullName);
 
 

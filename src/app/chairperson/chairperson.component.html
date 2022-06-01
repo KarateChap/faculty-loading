@@ -35,13 +35,13 @@
             fxLayoutAlign="center center"
           >
             <p class="header-sub-text center-text" fxFlex="16.66">
-              {{ user.idNumber }}
+              {{ user.idNumber | shorten: 9}}
             </p>
             <p class="header-sub-text center-text" fxFlex="16.66">
-              {{ user.fullName }}
+              {{ user.fullName | shorten: 25}}
             </p>
             <p class="header-sub-text center-text" fxFlex="16.66">
-              {{ user.email }}
+              {{ user.email | shorten: 28}}
             </p>
             <p class="header-sub-text center-text" fxFlex="16.66">
               {{ user.department }}
