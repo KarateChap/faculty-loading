@@ -24,6 +24,7 @@ export class FacultyConfigComponent implements OnInit, OnDestroy{
   allFaculty: Faculty[] = [];
   allFacultySubs: Subscription;
   tempName: string;
+  hasNumbers = false;
 
   constructor(
     private facultyService: FacultyService,
@@ -96,15 +97,36 @@ export class FacultyConfigComponent implements OnInit, OnDestroy{
         }
       });
 
+
+      this.stringContainsNumber(this.facultyForm.value.fullName);
+
+
       if(this.hasConflict == false){
         this.submitLoad();
         this.dialogRef.close();
       }
       else {
-        this.uiService.showErrorToast("Cannot Add/Edit already existing ID! Conflict with: " + conflictName + ' of Department: ' + conflictDepartment, 'Error');
+
+        if(this.hasNumbers){
+          this.uiService.showErrorToast("Cannot Add/Edit name with number/s!", 'Error');
+          console.log(this.hasNumbers = false);
+        }
+        else{
+          this.uiService.showErrorToast("Cannot Add/Edit already existing ID! Conflict with: " + conflictName + ' of Department: ' + conflictDepartment, 'Error');
+        }
       }
 
     })
+  }
+
+  stringContainsNumber(input: string){
+    let string1 = String(input);
+    for( let i = 0; i < string1.length; i++){
+        if(!isNaN(+string1.charAt(i)) && !(string1.charAt(i) === " ") ){
+          this.hasConflict = true;
+          this.hasNumbers = true;
+        }
+    }
   }
 
   checkSchedule() {

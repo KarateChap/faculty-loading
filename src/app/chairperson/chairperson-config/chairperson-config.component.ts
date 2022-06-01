@@ -31,6 +31,7 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
   chairpersonForm: FormGroup;
   currentUser: any;
   tempName: string;
+  hasNumbers = false;
 
 
   constructor(
@@ -100,11 +101,15 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
     }
   }
 
+
+
   onSubmit() {
 
     let users: User[] = [];
     users = this.passedData.users;
     let isIdExisting = false;
+
+    this.hasNumbers = false;
 
     users.forEach(element => {
       if(element.idNumber == this.chairpersonForm.value.idNumber){
@@ -115,9 +120,10 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.stringContainsNumber(this.chairpersonForm.value.fullName);
 
 
-    if(isIdExisting == false){
+    if(isIdExisting == false && this.hasNumbers == false){
 
       let notification: NewNotification = {
         icon: 'manage_accounts',
@@ -159,6 +165,19 @@ export class ChairpersonConfigComponent implements OnInit, OnDestroy {
       this.dialogRef.close();
     }
 
+  }
+
+  stringContainsNumber(input: string){
+    let string1 = String(input);
+    for( let i = 0; i < string1.length; i++){
+        if(!isNaN(+string1.charAt(i)) && !(string1.charAt(i) === " ") ){
+          this.hasNumbers = true;
+        }
+    }
+
+    if(this.hasNumbers == true){
+      this.uiService.showErrorToast("Cannot Add/Edit name with number/s!", 'Error');
+    }
   }
 
   ngOnDestroy(): void {
