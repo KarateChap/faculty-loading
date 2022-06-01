@@ -70,18 +70,32 @@ export class LoadService {
   }
 
   fetchAllLoad(startYear: string, semester: string, chairpersonName: string){
-    this.allLoads = [];
-    this.af
-      .collection('load')
-      .ref.where('schoolYear', '==', startYear)
-      .where('semester', '==', semester)
-      .where('chairperson', '==', chairpersonName)
-      .onSnapshot((result) => {
-        result.forEach((doc) => {
-          this.allLoads.push({ id: doc.id, ...(doc.data() as NewLoadItem) });
+    // this.allLoads = [];
+    // this.af
+    //   .collection('load')
+    //   .ref.where('schoolYear', '==', startYear)
+    //   .where('semester', '==', semester)
+    //   .where('chairperson', '==', chairpersonName)
+    //   .onSnapshot((result) => {
+    //     result.forEach((doc) => {
+    //       this.allLoads.push({ id: doc.id, ...(doc.data() as NewLoadItem) });
+    //     });
+    //     this.allLoadChange.next(this.allLoads);
+    //   });
+
+      this.allLoads = [];
+      this.af
+        .collection('load')
+        .ref.where('schoolYear', '==', startYear)
+        .where('semester', '==', semester)
+        .where('chairperson', '==', chairpersonName)
+        .get().then((result) => {
+          this.allLoads = [];
+          result.forEach((doc) => {
+            this.allLoads.push({ id: doc.id, ...(doc.data() as NewLoadItem) });
+          });
+          this.allLoadChange.next(this.allLoads);
         });
-        this.allLoadChange.next(this.allLoads);
-      });
   }
 
   addLoad(load: NewLoadItem){
