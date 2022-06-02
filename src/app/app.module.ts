@@ -51,6 +51,8 @@ import { ViewHistoryModalComponent } from './dashboard/view-history-modal/view-h
 import { NotFoundModalComponent } from './dashboard/view-history-modal/not-found-modal/not-found-modal.component';
 import { ConfirmationModalComponent } from './section-load/section-load-editor/confirmation-modal/confirmation-modal.component';
 import { ShortenPipe } from './shared/pipes/shorten.pipe';
+import { FacultySectionLoadComponent } from './section-load/section-load-view/faculty-section-load/faculty-section-load.component';
+import { SectionFacultyLoadComponent } from './faculty-load/load-main/load-view/section-faculty-load/section-faculty-load.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +93,8 @@ import { ShortenPipe } from './shared/pipes/shorten.pipe';
     ViewHistoryModalComponent,
     NotFoundModalComponent,
     ConfirmationModalComponent,
+    FacultySectionLoadComponent,
+    SectionFacultyLoadComponent,
   ],
   imports: [
     BrowserModule,

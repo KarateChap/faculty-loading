@@ -53,6 +53,22 @@ export class LoadService {
       });
   }
 
+  fetchSectionLoad(startYear: string, semester: string, chairpersonName: string, section: string){
+    this.af
+    .collection('load')
+    .ref.where('schoolYear', '==', startYear)
+    .where('semester', '==', semester)
+    .where('chairperson', '==', chairpersonName)
+    .where('section', '==', section)
+    .onSnapshot((result) => {
+      this.currentSectionLoad = [];
+      result.forEach((doc) => {
+        this.currentSectionLoad.push({ id: doc.id, ...(doc.data() as NewLoadItem) });
+      });
+      this.currentSectionLoadChange.next(this.currentSectionLoad);
+    });
+  }
+
   fetchFacultyLoad(startYear: string, semester: string, chairpersonName: string, facultyName: string){
     this.af
     .collection('load')
@@ -66,6 +82,7 @@ export class LoadService {
         this.facultyLoads.push({ id: doc.id, ...(doc.data() as NewLoadItem) });
       });
       this.facultyLoadChange.next(this.facultyLoads);
+      this.currentFacultyLoadChange.next(this.facultyLoads);
     });
   }
 

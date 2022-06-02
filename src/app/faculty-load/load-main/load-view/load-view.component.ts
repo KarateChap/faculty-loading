@@ -1,18 +1,26 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Faculty } from 'src/app/shared/models/faculty.model';
 import { LoadItem } from 'src/app/shared/models/load-item.model';
+import { Section } from 'src/app/shared/models/section.model';
 import { LoadService } from 'src/app/shared/services/load.service';
 import { UIService } from 'src/app/shared/UIService/ui.service';
+import { RoomSectionService } from 'src/app/shared/services/room-section.service';
+import { AcademicPeriod } from 'src/app/shared/models/academic-period.model';
+import { NewUser } from 'src/app/shared/models/new-user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { SectionFacultyLoadComponent } from './section-faculty-load/section-faculty-load.component';
+import { AcademicService } from 'src/app/shared/services/academic.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-load-view',
   templateUrl: './load-view.component.html',
   styleUrls: ['./load-view.component.css'],
 })
-export class LoadViewComponent implements OnInit {
+export class LoadViewComponent implements OnInit, OnDestroy{
   @Input() activeFaculty: Faculty;
   @ViewChild('content', { static: true }) content: ElementRef;
   view = 'Faculty Schedule Timeline';
@@ -69,9 +77,34 @@ export class LoadViewComponent implements OnInit {
   totalHours = 0;
   totalUnits = 0;
 
-  constructor(private uiService: UIService, private loadService: LoadService, private toastr: ToastrService) {}
+  allSections: Section[] = [];
+  sectionSubs: Subscription;
+
+  academicSubs: Subscription;
+  activeAcademic: AcademicPeriod;
+  currentChairperson: NewUser;
+
+
+  constructor(private uiService: UIService,
+    private loadService: LoadService,
+    private toastr: ToastrService,
+    private rsService: RoomSectionService,
+    private dialog: MatDialog,
+    private academicService: AcademicService,
+    private userService: UserService
+) {}
 
   ngOnInit(): void {
+
+    this.activeAcademic = this.academicService.getActiveAcademicYear();
+    this.currentChairperson = this.userService.getCurrentUser();
+
+    this.rsService.fetchSections();
+    this.sectionSubs = this.rsService.sectionsChanged.subscribe(sections => {
+      this.allSections = sections;
+    })
+
+
     this.fillDayArrays();
     this.facultySubs = this.loadService.currentFacultyLoadChange.subscribe(
       (currentFaculty) => {
@@ -752,5 +785,165 @@ export class LoadViewComponent implements OnInit {
         }
       },
     });
+  }
+
+
+  onOpenMondaySection(i: number){
+    let trimmedSections: string[] = [];
+    this.allSections.forEach((element) => {
+      let str = element.course;
+      let acronym = str
+        .split(/\s/)
+        .reduce((response, word) => (response += word.slice(0, 1)), '');
+        trimmedSections.push(
+        'BS' + acronym + ' ' + element.year + '-' + element.section
+      );
+    });
+
+    trimmedSections.forEach(element => {
+      if(this.monday[i] == element){
+        console.log(element);
+        this.loadService.fetchSectionLoad(this.activeAcademic.startYear, this.activeAcademic.semester, this.currentChairperson.fullName, element);
+        this.dialog.open(SectionFacultyLoadComponent);
+        }
+
+    });
+  }
+
+  onOpenTuesdaySection(i: number){
+    let trimmedSections: string[] = [];
+    this.allSections.forEach((element) => {
+      let str = element.course;
+      let acronym = str
+        .split(/\s/)
+        .reduce((response, word) => (response += word.slice(0, 1)), '');
+        trimmedSections.push(
+        'BS' + acronym + ' ' + element.year + '-' + element.section
+      );
+    });
+
+    trimmedSections.forEach(element => {
+      if(this.tuesday[i] == element){
+        console.log(element);
+        this.loadService.fetchSectionLoad(this.activeAcademic.startYear, this.activeAcademic.semester, this.currentChairperson.fullName, element);
+        this.dialog.open(SectionFacultyLoadComponent);
+        }
+
+    });
+  }
+
+  onOpenWednesdaySection(i: number){
+    let trimmedSections: string[] = [];
+    this.allSections.forEach((element) => {
+      let str = element.course;
+      let acronym = str
+        .split(/\s/)
+        .reduce((response, word) => (response += word.slice(0, 1)), '');
+        trimmedSections.push(
+        'BS' + acronym + ' ' + element.year + '-' + element.section
+      );
+    });
+
+    trimmedSections.forEach(element => {
+      if(this.wednesday[i] == element){
+        console.log(element);
+        this.loadService.fetchSectionLoad(this.activeAcademic.startYear, this.activeAcademic.semester, this.currentChairperson.fullName, element);
+        this.dialog.open(SectionFacultyLoadComponent);
+        }
+
+    });
+  }
+
+  onOpenThursdaySection(i: number){
+    let trimmedSections: string[] = [];
+    this.allSections.forEach((element) => {
+      let str = element.course;
+      let acronym = str
+        .split(/\s/)
+        .reduce((response, word) => (response += word.slice(0, 1)), '');
+        trimmedSections.push(
+        'BS' + acronym + ' ' + element.year + '-' + element.section
+      );
+    });
+
+    trimmedSections.forEach(element => {
+      if(this.thursday[i] == element){
+        console.log(element);
+        this.loadService.fetchSectionLoad(this.activeAcademic.startYear, this.activeAcademic.semester, this.currentChairperson.fullName, element);
+        this.dialog.open(SectionFacultyLoadComponent);
+        }
+
+    });
+  }
+
+  onOpenFridaySection(i: number){
+    let trimmedSections: string[] = [];
+    this.allSections.forEach((element) => {
+      let str = element.course;
+      let acronym = str
+        .split(/\s/)
+        .reduce((response, word) => (response += word.slice(0, 1)), '');
+        trimmedSections.push(
+        'BS' + acronym + ' ' + element.year + '-' + element.section
+      );
+    });
+
+    trimmedSections.forEach(element => {
+      if(this.friday[i] == element){
+        console.log(element);
+        this.loadService.fetchSectionLoad(this.activeAcademic.startYear, this.activeAcademic.semester, this.currentChairperson.fullName, element);
+        this.dialog.open(SectionFacultyLoadComponent);
+        }
+
+    });
+  }
+
+  onOpenSaturdaySection(i: number){
+    let trimmedSections: string[] = [];
+    this.allSections.forEach((element) => {
+      let str = element.course;
+      let acronym = str
+        .split(/\s/)
+        .reduce((response, word) => (response += word.slice(0, 1)), '');
+        trimmedSections.push(
+        'BS' + acronym + ' ' + element.year + '-' + element.section
+      );
+    });
+
+    trimmedSections.forEach(element => {
+      if(this.saturday[i] == element){
+        console.log(element);
+        this.loadService.fetchSectionLoad(this.activeAcademic.startYear, this.activeAcademic.semester, this.currentChairperson.fullName, element);
+        this.dialog.open(SectionFacultyLoadComponent);
+        }
+
+    });
+  }
+
+  onOpenSundaySection(i: number){
+    let trimmedSections: string[] = [];
+    this.allSections.forEach((element) => {
+      let str = element.course;
+      let acronym = str
+        .split(/\s/)
+        .reduce((response, word) => (response += word.slice(0, 1)), '');
+        trimmedSections.push(
+        'BS' + acronym + ' ' + element.year + '-' + element.section
+      );
+    });
+
+    trimmedSections.forEach(element => {
+      if(this.sunday[i] == element){
+        console.log(element);
+        this.loadService.fetchSectionLoad(this.activeAcademic.startYear, this.activeAcademic.semester, this.currentChairperson.fullName, element);
+        this.dialog.open(SectionFacultyLoadComponent);
+        }
+
+    });
+  }
+
+
+  ngOnDestroy(): void {
+      this.facultySubs.unsubscribe();
   }
 }

@@ -49,7 +49,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
       this.userService.fetchCurrentUser(this.activeUserEmail);
     }
     else {
-      this.userService.fetchCurrentUser('administrator@gmail.com');
+      this.userService.fetchCurrentUser('ceit.dean@gmail.com');
     }
 
     this.currentUserSubs = this.userService.currentUserChanges.subscribe(user => {

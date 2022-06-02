@@ -4,6 +4,15 @@ import { LoadItem } from 'src/app/shared/models/load-item.model';
 import { LoadService } from 'src/app/shared/services/load.service';
 import jsPDF from 'jspdf';
 import { UIService } from 'src/app/shared/UIService/ui.service';
+import { Faculty } from 'src/app/shared/models/faculty.model';
+import { FacultyService } from 'src/app/shared/services/faculty.service';
+import { AcademicPeriod } from 'src/app/shared/models/academic-period.model';
+import { AcademicService } from 'src/app/shared/services/academic.service';
+import { User } from 'src/app/shared/models/user.model';
+import { UserService } from 'src/app/shared/services/user.service';
+import { NewUser } from 'src/app/shared/models/new-user.model';
+import { MatDialog } from '@angular/material/dialog';
+import { FacultySectionLoadComponent } from './faculty-section-load/faculty-section-load.component';
 
 @Component({
   selector: 'app-section-load-view',
@@ -62,9 +71,34 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
   saturday: string[] = [];
   sunday: string[] = [];
 
-  constructor(private loadService: LoadService, private uiService: UIService) {}
+
+  faculties: Faculty[] = [];
+  academicSubs: Subscription;
+  activeAcademic: AcademicPeriod;
+  currentChairperson: NewUser;
+
+  constructor(
+    private loadService: LoadService,
+    private uiService: UIService,
+    private facultyService: FacultyService,
+    private academicService: AcademicService,
+    private userService: UserService,
+    private dialog: MatDialog
+    ) {}
 
   ngOnInit(): void {
+    this.activeAcademic = this.academicService.getActiveAcademicYear();
+    this.currentChairperson = this.userService.getCurrentUser();
+
+    this.facultyService.fetchFaculty(this.activeAcademic.startYear, this.activeAcademic.semester, this.currentChairperson.fullName);
+    this.academicSubs = this.facultyService.facultyChanged.subscribe(faculties => {
+      this.faculties = faculties;
+      console.log(this.faculties);
+    })
+
+
+
+
     this.fillDayArrays();
     this.sectionSubs = this.loadService.currentSectionLoadChange.subscribe(
       (currentSection) => {
@@ -673,11 +707,211 @@ export class SectionLoadViewComponent implements OnInit, OnDestroy{
     });
   }
 
+
+  onOpenMondayFaculty(i: number){
+    let facultyId = "";
+    let facultyName = "";
+    let faculty: Faculty;
+    this.mondayLoad.forEach(element => {
+      if(element.facultyName.includes(this.monday[i])){
+        facultyName = element.facultyName;
+      }
+    });
+
+    this.faculties.forEach(element => {
+      if(element.fullName == facultyName){
+        console.log(element);
+        facultyId = element.id;
+        faculty = element;
+
+        this.loadService.fetchFacultyLoad(
+          this.activeAcademic.startYear,
+          this.activeAcademic.semester,
+          this.currentChairperson.fullName,
+          faculty.fullName)
+
+        this.dialog.open(FacultySectionLoadComponent, {data: {
+          activeFaculty: faculty
+        }})
+      }
+    });
+
+  }
+  onOpenTuesdayFaculty(i: number){
+    let facultyId = "";
+    let facultyName = "";
+    let faculty: Faculty;
+    this.tuesdayLoad.forEach(element => {
+      if(element.facultyName.includes(this.tuesday[i])){
+        facultyName = element.facultyName;
+      }
+    });
+
+    this.faculties.forEach(element => {
+      if(element.fullName == facultyName){
+        console.log(element);
+        facultyId = element.id;
+        faculty = element;
+
+        this.loadService.fetchFacultyLoad(
+          this.activeAcademic.startYear,
+          this.activeAcademic.semester,
+          this.currentChairperson.fullName,
+          faculty.fullName)
+
+        this.dialog.open(FacultySectionLoadComponent, {data: {
+          activeFaculty: faculty
+        }})
+      }
+    });
+  }
+  onOpenWednesdayFaculty(i: number){
+    let facultyId = "";
+    let facultyName = "";
+    let faculty: Faculty;
+    this.wednesdayLoad.forEach(element => {
+      if(element.facultyName.includes(this.wednesday[i])){
+        facultyName = element.facultyName;
+      }
+    });
+
+    this.faculties.forEach(element => {
+      if(element.fullName == facultyName){
+        console.log(element);
+        facultyId = element.id;
+        faculty = element;
+
+        this.loadService.fetchFacultyLoad(
+          this.activeAcademic.startYear,
+          this.activeAcademic.semester,
+          this.currentChairperson.fullName,
+          faculty.fullName)
+
+        this.dialog.open(FacultySectionLoadComponent, {data: {
+          activeFaculty: faculty
+        }})
+      }
+    });
+  }
+  onOpenThursdayFaculty(i: number){
+    let facultyId = "";
+    let facultyName = "";
+    let faculty: Faculty;
+    this.thursdayLoad.forEach(element => {
+      if(element.facultyName.includes(this.thursday[i])){
+        facultyName = element.facultyName;
+      }
+    });
+
+    this.faculties.forEach(element => {
+      if(element.fullName == facultyName){
+        console.log(element);
+        facultyId = element.id;
+        faculty = element;
+
+        this.loadService.fetchFacultyLoad(
+          this.activeAcademic.startYear,
+          this.activeAcademic.semester,
+          this.currentChairperson.fullName,
+          faculty.fullName)
+
+        this.dialog.open(FacultySectionLoadComponent, {data: {
+          activeFaculty: faculty
+        }})
+      }
+    });
+  }
+  onOpenFridayFaculty(i: number){
+    let facultyId = "";
+    let facultyName = "";
+    let faculty: Faculty;
+    this.fridayLoad.forEach(element => {
+      if(element.facultyName.includes(this.friday[i])){
+        facultyName = element.facultyName;
+      }
+    });
+
+    this.faculties.forEach(element => {
+      if(element.fullName == facultyName){
+        console.log(element);
+        facultyId = element.id;
+        faculty = element;
+
+        this.loadService.fetchFacultyLoad(
+          this.activeAcademic.startYear,
+          this.activeAcademic.semester,
+          this.currentChairperson.fullName,
+          faculty.fullName)
+
+        this.dialog.open(FacultySectionLoadComponent, {data: {
+          activeFaculty: faculty
+        }})
+      }
+    });
+  }
+  onOpenSaturdayFaculty(i: number){
+    let facultyId = "";
+    let facultyName = "";
+    let faculty: Faculty;
+    this.saturdayLoad.forEach(element => {
+      if(element.facultyName.includes(this.saturday[i])){
+        facultyName = element.facultyName;
+      }
+    });
+
+    this.faculties.forEach(element => {
+      if(element.fullName == facultyName){
+        console.log(element);
+        facultyId = element.id;
+        faculty = element;
+
+        this.loadService.fetchFacultyLoad(
+          this.activeAcademic.startYear,
+          this.activeAcademic.semester,
+          this.currentChairperson.fullName,
+          faculty.fullName)
+
+        this.dialog.open(FacultySectionLoadComponent, {data: {
+          activeFaculty: faculty
+        }})
+      }
+    });
+  }
+  onOpenSundayFaculty(i: number){
+    let facultyId = "";
+    let facultyName = "";
+    let faculty: Faculty;
+    this.sundayLoad.forEach(element => {
+      if(element.facultyName.includes(this.sunday[i])){
+        facultyName = element.facultyName;
+      }
+    });
+
+    this.faculties.forEach(element => {
+      if(element.fullName == facultyName){
+        console.log(element);
+        facultyId = element.id;
+        faculty = element;
+
+        this.loadService.fetchFacultyLoad(
+          this.activeAcademic.startYear,
+          this.activeAcademic.semester,
+          this.currentChairperson.fullName,
+          faculty.fullName)
+
+        this.dialog.open(FacultySectionLoadComponent, {data: {
+          activeFaculty: faculty
+        }})
+      }
+    });
+  }
+
   filter(value: string) {
     this.view = value;
   }
 
   ngOnDestroy(): void {
       this.sectionSubs.unsubscribe();
+      this.academicSubs.unsubscribe();
   }
 }

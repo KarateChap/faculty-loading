@@ -54,31 +54,31 @@
         <div class="monday" fxFlex="12%">
           <div>
             <p class="table-item header">MONDAY</p>
-            <p class="table-item" *ngFor="let mon of monday" [ngClass]="mon == '-' ? 'on-schedule' : mon == '@' ? 'on-overlap': mon == ' ' ? '' : 'on-schedule'">{{mon == '-' ? '  ' : mon == '@' ? '  ' : mon}}</p>
+            <p class="table-item" *ngFor="let mon of monday; let i = index" style="cursor: pointer;" (click)="onOpenMondaySection(i)" [ngClass]="mon == '-' ? 'on-schedule' : mon == '@' ? 'on-overlap': mon == ' ' ? '' : 'on-schedule'">{{mon == '-' ? '  ' : mon == '@' ? '  ' : mon}}</p>
           </div>
         </div>
         <div class="tuesday" fxFlex="12%">
           <div>
             <p class="table-item header">TUESDAY</p>
-            <p class="table-item" *ngFor="let tue of tuesday" [ngClass]="tue == '-' ? 'on-schedule' : tue == '@' ? 'on-overlap': tue == ' ' ? '' : 'on-schedule'">{{tue == '-' ? '  ' : tue == '@' ? '  ' : tue}}</p>
+            <p class="table-item" *ngFor="let tue of tuesday; let i = index" style="cursor: pointer;" (click)="onOpenTuesdaySection(i)" [ngClass]="tue == '-' ? 'on-schedule' : tue == '@' ? 'on-overlap': tue == ' ' ? '' : 'on-schedule'">{{tue == '-' ? '  ' : tue == '@' ? '  ' : tue}}</p>
           </div>
         </div>
         <div class="wednesday" fxFlex="12%">
           <div>
             <p class="table-item header">WEDNESDAY</p>
-            <p class="table-item" *ngFor="let wed of wednesday" [ngClass]="wed == '-' ? 'on-schedule' : wed == '@' ? 'on-overlap': wed == ' ' ? '' : 'on-schedule'">{{wed == '-' ? '  ' : wed == '@' ? '  ' : wed}}</p>
+            <p class="table-item" *ngFor="let wed of wednesday; let i = index" style="cursor: pointer;" (click)="onOpenWednesdaySection(i)" [ngClass]="wed == '-' ? 'on-schedule' : wed == '@' ? 'on-overlap': wed == ' ' ? '' : 'on-schedule'">{{wed == '-' ? '  ' : wed == '@' ? '  ' : wed}}</p>
           </div>
         </div>
         <div class="thursday" fxFlex="12%">
           <div>
             <p class="table-item header">THURSDAY</p>
-            <p class="table-item" *ngFor="let thu of thursday" [ngClass]="thu == '-' ? 'on-schedule' : thu == '@' ? 'on-overlap': thu == ' ' ? '' : 'on-schedule'">{{thu == '-' ? '  ' : thu == '@' ? '  ' : thu}}</p>
+            <p class="table-item" *ngFor="let thu of thursday; let i = index" style="cursor: pointer;" (click)="onOpenThursdaySection(i)" [ngClass]="thu == '-' ? 'on-schedule' : thu == '@' ? 'on-overlap': thu == ' ' ? '' : 'on-schedule'">{{thu == '-' ? '  ' : thu == '@' ? '  ' : thu}}</p>
           </div>
         </div>
         <div class="friday" fxFlex="12%">
           <div>
             <p class="table-item header">FRIDAY</p>
-            <p class="table-item" *ngFor="let fri of friday" [ngClass]="fri == '-' ? 'on-schedule' : fri == '@' ? 'on-overlap': fri == ' ' ? '' : 'on-schedule'">{{fri == '-' ? '  ' : fri == '@' ? '  ' : fri}}</p>
+            <p class="table-item" *ngFor="let fri of friday; let i = index" style="cursor: pointer;" (click)="onOpenFridaySection(i)" [ngClass]="fri == '-' ? 'on-schedule' : fri == '@' ? 'on-overlap': fri == ' ' ? '' : 'on-schedule'">{{fri == '-' ? '  ' : fri == '@' ? '  ' : fri}}</p>
           </div>
         </div>
         <div class="saturday" fxFlex="12%">

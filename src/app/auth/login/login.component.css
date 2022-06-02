@@ -23,6 +23,7 @@
 .login-img{
   height: 40vh;
   animation: 2s ease-in-out imageAnimation 0s 1;
+  border-radius: 100%;
 }
 
 
